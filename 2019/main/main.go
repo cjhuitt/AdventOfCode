@@ -18,7 +18,6 @@ func main() {
     defer file.Close()
 
     masses := make([]int, 0)
-    fmt.Println(len(masses))
 
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
@@ -28,7 +27,6 @@ func main() {
         }
         masses = append(masses, i)
     }
-    fmt.Println(len(masses))
 
     if err:= scanner.Err(); err != nil {
         log.Fatal(err)
