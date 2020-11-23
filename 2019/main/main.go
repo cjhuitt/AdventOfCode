@@ -5,6 +5,7 @@ import (
     "fmt"
     "log"
     "os"
+    "strconv"
 
 //    "SpacecraftModule"
 )
@@ -16,10 +17,18 @@ func main() {
     }
     defer file.Close()
 
+    masses := make([]int, 0)
+    fmt.Println(len(masses))
+
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
-        fmt.Println(scanner.Text())
+        i, err := strconv.Atoi(scanner.Text())
+        if err != nil {
+            log.Fatal(err)
+        }
+        masses = append(masses, i)
     }
+    fmt.Println(len(masses))
 
     if err:= scanner.Err(); err != nil {
         log.Fatal(err)
