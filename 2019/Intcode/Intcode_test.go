@@ -55,6 +55,9 @@ func TestAddOpCode(t *testing.T) {
 		want  []int
 	}{
 		{input: []int{1, 2, 3, 1}, want: []int{5, 2, 3, 1}},
+		{input: []int{1, 2, 3, 2}, want: []int{1, 5, 3, 2}},
+		{input: []int{1, 2, 3, 3}, want: []int{1, 2, 5, 3}},
+		{input: []int{1, 2, 3, 4}, want: []int{1, 2, 3, 5}},
 	}
 	for _, tc := range tests {
 		p := New(tc.input)
