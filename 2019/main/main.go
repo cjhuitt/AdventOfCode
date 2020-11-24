@@ -36,7 +36,7 @@ func main() {
 
     total := 0
     for _, m := range modules {
-        total += m.FuelRequired()
+        total += m.TotalFuelRequired()
     }
 
     fmt.Println("Total Fuel:", total)
