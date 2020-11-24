@@ -1,8 +1,8 @@
 package Intcode
 
 type program struct {
-	code []int
-	xp   int
+	stack []int
+	xp    int
 }
 
 const (
@@ -20,9 +20,9 @@ func New(p []int) program {
 }
 
 func (p program) IsEmpty() bool {
-	return len(p.code) == 0
+	return len(p.stack) == 0
 }
 
 func (p program) IsDone() bool {
-	return len(p.code) == 0 || p.code[p.xp] == TERM
+	return len(p.stack) == 0 || p.stack[p.xp] == TERM
 }
