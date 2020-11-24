@@ -31,16 +31,15 @@ func (p program) IsDone() bool {
 
 // Step through execution of one opcode based on the current execution point
 func (p program) Step() program {
-	if p.xp >= len(p.stack) {
-		return p
-	}
-	switch p.stack[p.xp] {
-	case ADD:
-		return add(p.stack, p.xp)
-	case MULT:
-		return mult(p.stack, p.xp)
-	case TERM:
-		break
+	if p.xp < len(p.stack) && p.xp >= 0 {
+		switch p.stack[p.xp] {
+		case ADD:
+			return add(p.stack, p.xp)
+		case MULT:
+			return mult(p.stack, p.xp)
+		case TERM:
+			break
+		}
 	}
 	return p
 }
