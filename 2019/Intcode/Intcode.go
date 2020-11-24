@@ -54,7 +54,7 @@ func add(stack []int, xp int) program {
 		return program{stack, xp}
 	}
 	sum := stack[xp+1] + stack[xp+2]
-	loc := stack[xp+3] - 1 // convert 1-based to 0-based
+	loc := stack[xp+3]
 	if loc >= len(stack) || loc < 0 {
 		return program{stack, xp}
 	}
@@ -68,7 +68,7 @@ func mult(stack []int, xp int) program {
 		return program{stack, xp}
 	}
 	mult := stack[xp+1] * stack[xp+2]
-	loc := stack[xp+3] - 1 // convert 1-based to 0-based
+	loc := stack[xp+3]
 	if loc >= len(stack) || loc < 0 {
 		return program{stack, xp}
 	}
