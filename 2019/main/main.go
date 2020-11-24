@@ -7,7 +7,7 @@ import (
     "os"
     "strconv"
 
-//    "SpacecraftModule"
+    "SpacecraftModule"
 )
 
 func main() {
@@ -31,4 +31,7 @@ func main() {
     if err:= scanner.Err(); err != nil {
         log.Fatal(err)
     }
+
+    modules := SpacecraftModule.NewModules(masses)
+    fmt.Println(len(modules))
 }
