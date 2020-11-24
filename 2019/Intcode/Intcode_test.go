@@ -25,7 +25,7 @@ func TestProgramWithDataIsNotEmpty(t *testing.T) {
 
 func TestNewProgramWithDataIsNotDone(t *testing.T) {
 	got := New([]int{1, 2, 3, 4})
-	if got.IsEmpty() {
+	if got.IsDone() {
 		t.Fatal("New([]int{1, 2, 3, 4}).IsDone() == true, want false")
 	}
 }
