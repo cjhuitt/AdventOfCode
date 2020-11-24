@@ -14,7 +14,7 @@ const (
 )
 
 func Default() program {
-	return program{make([]int, 0), 0}
+	return program{make([]int, 0), -1}
 }
 
 func New(p []int) program {
@@ -59,7 +59,7 @@ func (p program) Data() []int {
 
 func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
-		return program{stack, xp}
+		return program{stack, -1}
 	}
 	add1 := stack[xp+1]
 	add2 := stack[xp+2]
@@ -67,7 +67,7 @@ func add(stack []int, xp int) program {
 	if add1 >= len(stack) || add1 < 0 ||
 		add2 >= len(stack) || add2 < 0 ||
 		loc >= len(stack) || loc < 0 {
-		return program{stack, xp}
+		return program{stack, -1}
 	}
 	sum := stack[add1] + stack[add2]
 	new_stack := stack
@@ -77,7 +77,7 @@ func add(stack []int, xp int) program {
 
 func mult(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
-		return program{stack, xp}
+		return program{stack, -1}
 	}
 	mult1 := stack[xp+1]
 	mult2 := stack[xp+2]
@@ -85,7 +85,7 @@ func mult(stack []int, xp int) program {
 	if mult1 >= len(stack) || mult1 < 0 ||
 		mult2 >= len(stack) || mult2 < 0 ||
 		loc >= len(stack) || loc < 0 {
-		return program{stack, xp}
+		return program{stack, -1}
 	}
 	mult := stack[mult1] * stack[mult2]
 	new_stack := stack
