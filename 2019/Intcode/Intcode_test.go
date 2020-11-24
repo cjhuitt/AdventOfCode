@@ -50,11 +50,17 @@ func Equal(a, b []int) bool {
 }
 
 func TestAddOpCode(t *testing.T) {
-	in := []int{1, 2, 3, 1}
-	want := []int{5, 2, 3, 1}
-	p := New(in)
-	got := p.Step().Data()
-	if !Equal(want, got) {
-		t.Errorf("Expected stepping %v to be %v, got %v", in, want, got)
+	tests := []struct {
+		input []int
+		want  []int
+	}{
+		{input: []int{1, 2, 3, 1}, want: []int{5, 2, 3, 1}},
+	}
+	for _, tc := range tests {
+		p := New(tc.input)
+		got := p.Step().Data()
+		if !Equal(tc.want, got) {
+			t.Errorf("Expected stepping %v to be %v, got %v", tc.input, tc.want, got)
+		}
 	}
 }
