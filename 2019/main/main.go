@@ -33,5 +33,11 @@ func main() {
     }
 
     modules := SpacecraftModule.NewModules(masses)
-    fmt.Println(len(modules))
+
+    total := 0
+    for _, m := range modules {
+        total += m.FuelRequired()
+    }
+
+    fmt.Println("Total Fuel:", total)
 }
