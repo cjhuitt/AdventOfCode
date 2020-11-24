@@ -15,3 +15,7 @@ func New(p []int) program {
 func (p program) IsEmpty() bool {
 	return len(p.code) == 0
 }
+
+func (p program) IsDone() bool {
+	return len(p.code) == 0
+}
