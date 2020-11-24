@@ -53,11 +53,15 @@ func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
 		return program{stack, xp}
 	}
-	sum := stack[xp+1] + stack[xp+2]
+	add1 := stack[xp+1]
+	add2 := stack[xp+2]
 	loc := stack[xp+3]
-	if loc >= len(stack) || loc < 0 {
+	if add1 >= len(stack) || add1 < 0 ||
+		add2 >= len(stack) || add2 < 0 ||
+		loc >= len(stack) || loc < 0 {
 		return program{stack, xp}
 	}
+	sum := stack[add1] + stack[add2]
 	new_stack := stack
 	new_stack[loc] = sum
 	return program{new_stack, xp + 4}

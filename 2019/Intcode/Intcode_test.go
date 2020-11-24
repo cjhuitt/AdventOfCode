@@ -54,19 +54,19 @@ func TestAddOpCode(t *testing.T) {
 		input []int
 		want  []int
 	}{
-		{input: []int{1, 2, 3, 0}, want: []int{5, 2, 3, 0}},   // store first
-		{input: []int{1, 2, 3, 1}, want: []int{1, 5, 3, 1}},   // store second
-		{input: []int{1, 2, 3, 2}, want: []int{1, 2, 5, 2}},   // store third
-		{input: []int{1, 2, 3, 3}, want: []int{1, 2, 3, 5}},   // store fourth
-		{input: []int{1, 3, 3, 4}, want: []int{1, 3, 3, 4}},   // store out of bounds on end
-		{input: []int{1, 3, 3, -1}, want: []int{1, 3, 3, -1}}, // store out of bounds on begin
-		{input: []int{1, 3, 3}, want: []int{1, 3, 3}},         // short input test
+		{input: []int{1, 4, 5, 0, 2, 3}, want: []int{5, 4, 5, 0, 2, 3}},   // store first
+		{input: []int{1, 4, 5, 1, 2, 3}, want: []int{1, 5, 5, 1, 2, 3}},   // store second
+		{input: []int{1, 4, 5, 2, 3, 3}, want: []int{1, 4, 6, 2, 3, 3}},   // store third
+		{input: []int{1, 4, 5, 3, 2, 3}, want: []int{1, 4, 5, 5, 2, 3}},   // store fourth
+		{input: []int{1, 3, 3, 6, 2, 3}, want: []int{1, 3, 3, 6, 2, 3}},   // store out of bounds on end
+		{input: []int{1, 3, 3, -1, 2, 3}, want: []int{1, 3, 3, -1, 2, 3}}, // store out of bounds on begin
+		{input: []int{1, 3, 3}, want: []int{1, 3, 3}},                     // short input test
 	}
-	for _, tc := range tests {
+	for i, tc := range tests {
 		p := New(tc.input)
 		got := p.Step().Data()
 		if !Equal(tc.want, got) {
-			t.Errorf("Expected stepping %v to be %v, got %v", tc.input, tc.want, got)
+			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
 }
