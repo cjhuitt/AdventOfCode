@@ -47,18 +47,11 @@ func (p program) Step() program {
 
 // Execute the intcode program
 func (p program) Execute() program {
-	if p.xp >= len(p.stack) {
-		return p
+	temp := p
+	for !temp.IsDone() {
+		temp = temp.Step()
 	}
-	switch p.stack[p.xp] {
-	case ADD:
-		return add(p.stack, p.xp)
-	case MULT:
-		return mult(p.stack, p.xp)
-	case TERM:
-		break
-	}
-	return p
+	return temp
 }
 
 func (p program) Data() []int {
