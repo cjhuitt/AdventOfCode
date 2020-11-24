@@ -5,12 +5,21 @@ type Module struct {
 }
 
 func Default() Module {
-    return New(0)
+    return NewModule(0)
 }
 
-func New(mass int) Module {
+func NewModule(mass int) Module {
     return Module{mass}
 }
+
+func NewModules(masses []int) []Module {
+    modules := make([]Module, 0)
+    for _, m := range masses {
+        modules = append(modules, Module{ m })
+    }
+    return modules
+}
+
 
 func (m Module) FuelRequired() int {
     if m.mass < 6 {

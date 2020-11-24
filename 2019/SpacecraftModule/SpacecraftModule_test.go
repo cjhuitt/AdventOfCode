@@ -21,9 +21,23 @@ func TestFuelCalculation(t *testing.T) {
         {mass:100756, want:33583},
     }
     for _, tc := range tests {
-        got := New(tc.mass).FuelRequired()
+        got := NewModule(tc.mass).FuelRequired()
         if got != tc.want {
             t.Errorf("New(%d).FuelRequired() = %d, want %d", tc.mass, got, tc.want)
         }
     }
 }
+
+func TestMultipleModuleInitialization(t *testing.T) {
+    masses := []int{10, 14}
+    modules := NewModules(masses)
+    if len(modules) != 2 {
+        t.Errorf("len(modules) = %d, want 2", len(modules))
+    }
+
+    got := modules[0].FuelRequired() + modules[1].FuelRequired()
+    if got != 3 {
+        t.Errorf("sum(modules FuelRequired) = %d, want 3", got)
+    }
+}
+
