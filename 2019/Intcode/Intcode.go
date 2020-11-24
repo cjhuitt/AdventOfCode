@@ -53,7 +53,7 @@ func add(stack []int, xp int) program {
 	}
 	sum := stack[xp+1] + stack[xp+2]
 	loc := stack[xp+3] - 1 // convert 1-based to 0-based
-	if loc >= len(stack) {
+	if loc >= len(stack) || loc < 0 {
 		return program{stack, xp}
 	}
 	new_stack := stack
