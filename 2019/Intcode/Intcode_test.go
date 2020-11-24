@@ -76,7 +76,13 @@ func TestMultOpCode(t *testing.T) {
 		input []int
 		want  []int
 	}{
-		{input: []int{2, 3, 3, 1}, want: []int{9, 3, 3, 1}}, // store first
+		{input: []int{2, 3, 3, 1}, want: []int{9, 3, 3, 1}},   // store first
+		{input: []int{2, 3, 3, 2}, want: []int{2, 9, 3, 2}},   // store second
+		{input: []int{2, 3, 3, 3}, want: []int{2, 3, 9, 3}},   // store third
+		{input: []int{2, 3, 3, 4}, want: []int{2, 3, 3, 9}},   // store fourth
+		{input: []int{2, 3, 3, 5}, want: []int{2, 3, 3, 5}},   // store out of bounds on end
+		{input: []int{2, 3, 3, -1}, want: []int{2, 3, 3, -1}}, // store out of bounds on begin
+		{input: []int{2, 3, 3}, want: []int{2, 3, 3}},         // short input test
 	}
 	for _, tc := range tests {
 		p := New(tc.input)
