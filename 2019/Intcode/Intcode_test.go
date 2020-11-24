@@ -36,3 +36,25 @@ func TestNewProgramWithTerminateOpcode(t *testing.T) {
 		t.Fatal("New([]int{99, 2, 3, 4}).IsDone() == false, want true")
 	}
 }
+
+func Equal(a, b []int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func TestAddOpCode(t *testing.T) {
+	in := []int{1, 2, 3, 1}
+	want := []int{5, 2, 3, 1}
+	p := New(in)
+	got := p.Step().Data()
+	if !Equal(want, got) {
+		t.Errorf("Expected stepping %v to be %v, got %v", in, want, got)
+	}
+}
