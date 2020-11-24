@@ -108,3 +108,19 @@ func TestMultOpCode(t *testing.T) {
 		}
 	}
 }
+
+func TestSamplePrograms(t *testing.T) {
+	tests := []struct {
+		input []int
+		want  []int
+	}{
+		{input: []int{1, 0, 0, 0, 99}, want: []int{2, 0, 0, 0, 99}},
+	}
+	for i, tc := range tests {
+		p := New(tc.input)
+		got := p.Execute().Data()
+		if !Equal(tc.want, got) {
+			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
