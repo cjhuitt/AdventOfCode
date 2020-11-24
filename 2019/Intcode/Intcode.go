@@ -26,7 +26,8 @@ func (p program) IsEmpty() bool {
 }
 
 func (p program) IsDone() bool {
-	return len(p.stack) == 0 || p.stack[p.xp] == TERM
+	return p.xp < 0 || p.xp >= len(p.stack) ||
+		p.stack[p.xp] == TERM
 }
 
 // Step through execution of one opcode based on the current execution point
