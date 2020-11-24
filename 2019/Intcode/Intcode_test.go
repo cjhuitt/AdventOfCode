@@ -84,19 +84,27 @@ func TestMultOpCode(t *testing.T) {
 		input []int
 		want  []int
 	}{
-		{input: []int{2, 3, 3, 0}, want: []int{9, 3, 3, 0}},   // store first
-		{input: []int{2, 3, 3, 1}, want: []int{2, 9, 3, 1}},   // store second
-		{input: []int{2, 3, 3, 2}, want: []int{2, 3, 9, 2}},   // store third
-		{input: []int{2, 3, 3, 3}, want: []int{2, 3, 3, 9}},   // store fourth
-		{input: []int{2, 3, 3, 4}, want: []int{2, 3, 3, 4}},   // store out of bounds on end
-		{input: []int{2, 3, 3, -1}, want: []int{2, 3, 3, -1}}, // store out of bounds on begin
-		{input: []int{2, 3, 3}, want: []int{2, 3, 3}},         // short input test
+		{input: []int{2, 4, 5, 0, 3, 3}, want: []int{9, 4, 5, 0, 3, 3}}, // store first
+		{input: []int{2, 4, 5, 1, 3, 3}, want: []int{2, 9, 5, 1, 3, 3}}, // store second
+		{input: []int{2, 4, 5, 2, 3, 3}, want: []int{2, 4, 9, 2, 3, 3}}, // store third
+		{input: []int{2, 4, 5, 3, 3, 3}, want: []int{2, 4, 5, 9, 3, 3}}, // store fourth
+
+		{input: []int{2, 6, 3, 0, 3, 3}, want: []int{2, 6, 3, 0, 3, 3}},   // read out of bounds on end
+		{input: []int{2, -1, 3, 0, 3, 3}, want: []int{2, -1, 3, 0, 3, 3}}, // read out of bounds on begin
+
+		{input: []int{2, 3, 6, 0, 3, 3}, want: []int{2, 3, 6, 0, 3, 3}},   // read out of bounds on end
+		{input: []int{2, 3, -1, 0, 3, 3}, want: []int{2, 3, -1, 0, 3, 3}}, // read out of bounds on begin
+
+		{input: []int{2, 3, 3, 6, 3, 3}, want: []int{2, 3, 3, 6, 3, 3}},   // store out of bounds on end
+		{input: []int{2, 3, 3, -1, 3, 3}, want: []int{2, 3, 3, -1, 3, 3}}, // store out of bounds on begin
+
+		{input: []int{2, 3, 3}, want: []int{2, 3, 3}}, // short input test
 	}
-	for _, tc := range tests {
+	for i, tc := range tests {
 		p := New(tc.input)
 		got := p.Step().Data()
 		if !Equal(tc.want, got) {
-			t.Errorf("Expected stepping %v to be %v, got %v", tc.input, tc.want, got)
+			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
 }

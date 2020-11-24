@@ -71,11 +71,15 @@ func mult(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
 		return program{stack, xp}
 	}
-	mult := stack[xp+1] * stack[xp+2]
+	mult1 := stack[xp+1]
+	mult2 := stack[xp+2]
 	loc := stack[xp+3]
-	if loc >= len(stack) || loc < 0 {
+	if mult1 >= len(stack) || mult1 < 0 ||
+		mult2 >= len(stack) || mult2 < 0 ||
+		loc >= len(stack) || loc < 0 {
 		return program{stack, xp}
 	}
+	mult := stack[mult1] * stack[mult2]
 	new_stack := stack
 	new_stack[loc] = mult
 	return program{new_stack, xp + 4}
