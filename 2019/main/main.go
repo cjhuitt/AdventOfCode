@@ -1,43 +1,43 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "log"
-    "os"
-    "strconv"
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+	"strconv"
 
-    "SpacecraftModule"
+	"SpacecraftModule"
 )
 
 func main() {
-    file, err := os.Open("input.txt")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer file.Close()
+	file, err := os.Open("input.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
 
-    masses := make([]int, 0)
+	masses := make([]int, 0)
 
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        i, err := strconv.Atoi(scanner.Text())
-        if err != nil {
-            log.Fatal(err)
-        }
-        masses = append(masses, i)
-    }
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		i, err := strconv.Atoi(scanner.Text())
+		if err != nil {
+			log.Fatal(err)
+		}
+		masses = append(masses, i)
+	}
 
-    if err:= scanner.Err(); err != nil {
-        log.Fatal(err)
-    }
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 
-    modules := SpacecraftModule.NewModules(masses)
+	modules := SpacecraftModule.NewModules(masses)
 
-    total := 0
-    for _, m := range modules {
-        total += m.TotalFuelRequired()
-    }
+	total := 0
+	for _, m := range modules {
+		total += m.TotalFuelRequired()
+	}
 
-    fmt.Println("Total Fuel:", total)
+	fmt.Println("Total Fuel:", total)
 }
