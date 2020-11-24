@@ -60,6 +60,7 @@ func TestAddOpCode(t *testing.T) {
 		{input: []int{1, 2, 3, 4}, want: []int{1, 2, 3, 5}},   // store fourth
 		{input: []int{1, 3, 3, 5}, want: []int{1, 3, 3, 5}},   // store out of bounds on end
 		{input: []int{1, 3, 3, -1}, want: []int{1, 3, 3, -1}}, // store out of bounds on begin
+		{input: []int{1, 3, 3}, want: []int{1, 3, 3}},         // short input test
 	}
 	for _, tc := range tests {
 		p := New(tc.input)
