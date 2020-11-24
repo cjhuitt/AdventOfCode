@@ -37,6 +37,8 @@ func (p program) Step() program {
 	switch p.stack[p.xp] {
 	case ADD:
 		return add(p.stack, p.xp)
+	case MULT:
+		return mult(p.stack, p.xp)
 	case TERM:
 		break
 	}
@@ -58,5 +60,19 @@ func add(stack []int, xp int) program {
 	}
 	new_stack := stack
 	new_stack[loc] = sum
+	return program{new_stack, xp + 4}
+}
+
+func mult(stack []int, xp int) program {
+	if xp+3 >= len(stack) {
+		return program{stack, xp}
+	}
+	mult := stack[xp+1] * stack[xp+2]
+	loc := stack[xp+3] - 1 // convert 1-based to 0-based
+	if loc >= len(stack) || loc < 0 {
+		return program{stack, xp}
+	}
+	new_stack := stack
+	new_stack[loc] = mult
 	return program{new_stack, xp + 4}
 }

@@ -70,3 +70,19 @@ func TestAddOpCode(t *testing.T) {
 		}
 	}
 }
+
+func TestMultOpCode(t *testing.T) {
+	tests := []struct {
+		input []int
+		want  []int
+	}{
+		{input: []int{2, 3, 3, 1}, want: []int{9, 3, 3, 1}}, // store first
+	}
+	for _, tc := range tests {
+		p := New(tc.input)
+		got := p.Step().Data()
+		if !Equal(tc.want, got) {
+			t.Errorf("Expected stepping %v to be %v, got %v", tc.input, tc.want, got)
+		}
+	}
+}
