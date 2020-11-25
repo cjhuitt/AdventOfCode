@@ -15,10 +15,10 @@ func empty() path {
 
 func Route(r string) path {
 	if r == "" {
-		return path{[]node{{0, 0}}}
+		return empty()
 	}
 	lastnode := Node(0, 0)
-	nodes := []node{lastnode}
+	nodes := []node{}
 	steps := strings.Split(r, ",")
 	for _, step := range steps {
 		dir := step[0]
