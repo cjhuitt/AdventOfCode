@@ -10,6 +10,13 @@ func Node(x int, y int) node {
 	return node{x, y}
 }
 
+func abs(val int) int {
+	if val < 0 {
+		return -val
+	}
+	return val
+}
+
 func (n node) ManhattanLength() int {
-	return n.x + n.y
+	return abs(n.x) + abs(n.y)
 }

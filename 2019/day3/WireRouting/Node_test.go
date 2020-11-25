@@ -14,6 +14,9 @@ func TestManhattanLengths(t *testing.T) {
 		{x: 1, y: 0, want: 1},
 		{x: 0, y: 1, want: 1},
 		{x: 1, y: 1, want: 2},
+		{x: -1, y: 0, want: 1},
+		{x: 0, y: -1, want: 1},
+		{x: -1, y: -1, want: 2},
 	}
 	for i, tc := range tests {
 		n := Node(tc.x, tc.y)
