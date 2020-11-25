@@ -1,7 +1,7 @@
 package WireRouting
 
 type path struct {
-	path []node
+	nodes []node
 }
 
 func Default() path {
@@ -13,11 +13,11 @@ func Route(r string) path {
 }
 
 func (p path) Length() int {
-	return len(p.path)
+	return len(p.nodes)
 }
 
 func (p path) Contains(n node) bool {
-	for _, test := range p.path {
+	for _, test := range p.nodes {
 		if n.EqualTo(test) {
 			return true
 		}
