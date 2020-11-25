@@ -28,3 +28,15 @@ func (n node) EqualTo(other node) bool {
 func (n node) Right() node {
 	return node{n.x + 1, n.y}
 }
+
+func (n node) Left() node {
+	return node{n.x - 1, n.y}
+}
+
+func (n node) Up() node {
+	return node{n.x, n.y + 1}
+}
+
+func (n node) Down() node {
+	return node{n.x, n.y - 1}
+}

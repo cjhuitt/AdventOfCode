@@ -73,3 +73,57 @@ func TestRightGenerator(t *testing.T) {
 		}
 	}
 }
+
+func TestLeftGenerator(t *testing.T) {
+	tests := []struct {
+		start node
+		want  node
+	}{
+		{start: Node(0, 0), want: Node(-1, 0)},
+		{start: Node(1, 0), want: Node(0, 0)},
+		{start: Node(-1, 0), want: Node(-2, 0)},
+		{start: Node(10, 0), want: Node(9, 0)},
+	}
+	for i, tc := range tests {
+		got := tc.start.Left()
+		if !tc.want.EqualTo(got) {
+			t.Errorf("%v.Left() want %v, got %v (case %d)", tc.start, tc.want, got, i)
+		}
+	}
+}
+
+func TestUpGenerator(t *testing.T) {
+	tests := []struct {
+		start node
+		want  node
+	}{
+		{start: Node(0, 0), want: Node(0, 1)},
+		{start: Node(0, 1), want: Node(0, 2)},
+		{start: Node(0, -1), want: Node(0, 0)},
+		{start: Node(0, -10), want: Node(0, -9)},
+	}
+	for i, tc := range tests {
+		got := tc.start.Up()
+		if !tc.want.EqualTo(got) {
+			t.Errorf("%v.Up() want %v, got %v (case %d)", tc.start, tc.want, got, i)
+		}
+	}
+}
+
+func TestDownGenerator(t *testing.T) {
+	tests := []struct {
+		start node
+		want  node
+	}{
+		{start: Node(0, 0), want: Node(0, -1)},
+		{start: Node(0, 1), want: Node(0, 0)},
+		{start: Node(0, -1), want: Node(0, -2)},
+		{start: Node(0, 10), want: Node(0, 9)},
+	}
+	for i, tc := range tests {
+		got := tc.start.Down()
+		if !tc.want.EqualTo(got) {
+			t.Errorf("%v.Down() want %v, got %v (case %d)", tc.start, tc.want, got, i)
+		}
+	}
+}
