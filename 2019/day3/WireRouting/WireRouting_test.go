@@ -16,6 +16,7 @@ func TestBuildsPathFromInstructions(t *testing.T) {
 		contains []node
 	}{
 		{path: "", length: 0, contains: []node{}},
+		{path: "R1", length: 1, contains: []node{node{1, 0}}},
 	}
 	for i, tc := range tests {
 		r := Route(tc.path)
@@ -25,7 +26,7 @@ func TestBuildsPathFromInstructions(t *testing.T) {
 		}
 		for _, n := range tc.contains {
 			if !r.Contains(n) {
-				t.Errorf("Route(%v).Contains(%v) want true, got false (case %d)", tc.path, n, i)
+				t.Errorf("Route(%v).Contains(%v) want true, got false (case %d; %v)", tc.path, n, i, r)
 			}
 		}
 	}

@@ -1,5 +1,7 @@
 package WireRouting
 
+import "strings"
+
 type path struct {
 	nodes []node
 }
@@ -9,7 +11,15 @@ func Default() path {
 }
 
 func Route(r string) path {
-	return path{[]node{}}
+	if r == "" {
+		return path{[]node{}}
+	}
+	nodes := []node{}
+	steps := strings.Split(r, ",")
+	for i, _ := range steps {
+		nodes = append(nodes, node{i + 1, 0})
+	}
+	return path{nodes}
 }
 
 func (p path) Length() int {
