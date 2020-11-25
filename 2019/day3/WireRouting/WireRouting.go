@@ -9,7 +9,7 @@ type path struct {
 	nodes []node
 }
 
-func Default() path {
+func empty() path {
 	return path{[]node{}}
 }
 
@@ -24,7 +24,7 @@ func Route(r string) path {
 		dir := step[0]
 		count, err := strconv.Atoi(step[1:])
 		if err != nil {
-			return Default()
+			return empty()
 		}
 		i := 0
 		switch dir {
