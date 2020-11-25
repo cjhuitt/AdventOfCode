@@ -12,9 +12,9 @@ func Default() path {
 
 func Route(r string) path {
 	if r == "" {
-		return path{[]node{}}
+		return path{[]node{{0, 0}}}
 	}
-	nodes := []node{}
+	nodes := []node{{0, 0}}
 	steps := strings.Split(r, ",")
 	for i, _ := range steps {
 		nodes = append(nodes, node{i + 1, 0})
