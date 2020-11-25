@@ -40,6 +40,8 @@ func (p program) Step() program {
 			return mult(p.stack, p.xp)
 		case TERM:
 			break
+		default:
+			return program{p.stack, -1}
 		}
 	}
 	return p
