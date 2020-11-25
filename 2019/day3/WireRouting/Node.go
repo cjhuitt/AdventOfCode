@@ -24,3 +24,7 @@ func (n node) ManhattanLength() int {
 func (n node) EqualTo(other node) bool {
 	return n.x == other.x && n.y == other.y
 }
+
+func (n node) Right() node {
+	return node{n.x + 1, n.y}
+}

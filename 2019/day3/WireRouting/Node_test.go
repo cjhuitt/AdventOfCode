@@ -55,3 +55,21 @@ func TestEquality(t *testing.T) {
 		}
 	}
 }
+
+func TestRightGenerator(t *testing.T) {
+	tests := []struct {
+		start node
+		want  node
+	}{
+		{start: Node(0, 0), want: Node(1, 0)},
+		{start: Node(1, 0), want: Node(2, 0)},
+		{start: Node(-1, 0), want: Node(0, 0)},
+		{start: Node(-10, 0), want: Node(-9, 0)},
+	}
+	for i, tc := range tests {
+		got := tc.start.Right()
+		if !tc.want.EqualTo(got) {
+			t.Errorf("%v.Right() want %v, got %v (case %d)", tc.start, tc.want, got, i)
+		}
+	}
+}
