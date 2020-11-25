@@ -79,6 +79,20 @@ func (p path) Intersections(other path) []node {
 	return intersects
 }
 
+func Closest(nodes []node) node {
+	if len(nodes) == 0 {
+		return node{}
+	}
+
+	closest := nodes[0]
+	for _, n := range nodes {
+		if n.ManhattanLength() < closest.ManhattanLength() {
+			closest = n
+		}
+	}
+	return closest
+}
+
 func contains(nodes []node, n node) bool {
 	for _, test := range nodes {
 		if n.EqualTo(test) {

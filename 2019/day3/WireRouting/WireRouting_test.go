@@ -70,17 +70,8 @@ func TestClosestIntersections(t *testing.T) {
 	for i, tc := range tests {
 		one := Route(tc.first)
 		two := Route(tc.second)
-		got := one.Intersections(two)
-		if len(got) == 0 {
-			t.Errorf("Route(%v).Intersections(Route(%v)) expected intersections, got none (case %d)", tc.first, tc.second, i)
-		}
-		closest := got[0].ManhattanLength()
-		for _, n := range got {
-			d := n.ManhattanLength()
-			if d < closest {
-				closest = d
-			}
-		}
+		got := Closest(one.Intersections(two))
+		closest := got.ManhattanLength()
 		if closest != tc.want {
 			t.Errorf("Route(%v).Intersections(Route(%v)) want closest intersection %d away, got %d (case %d)", tc.first, tc.second, tc.want, closest, i)
 		}
