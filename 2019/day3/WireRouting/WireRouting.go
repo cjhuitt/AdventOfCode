@@ -1,6 +1,9 @@
 package WireRouting
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 type path struct {
 	nodes []node
@@ -14,10 +17,25 @@ func Route(r string) path {
 	if r == "" {
 		return path{[]node{{0, 0}}}
 	}
-	nodes := []node{{0, 0}}
+	lastnode := node{0, 0}
+	nodes := []node{lastnode}
 	steps := strings.Split(r, ",")
-	for i, _ := range steps {
-		nodes = append(nodes, node{i + 1, 0})
+	for _, step := range steps {
+		dir := step[0]
+		count, err := strconv.Atoi(step[1:])
+		if err != nil {
+			return Default()
+		}
+		i := 0
+		switch dir {
+		case 'R':
+			for i < count {
+				n := lastnode.Right()
+				nodes = append(nodes, n)
+				lastnode = n
+				i++
+			}
+		}
 	}
 	return path{nodes}
 }
