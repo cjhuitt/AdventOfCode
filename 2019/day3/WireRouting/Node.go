@@ -20,3 +20,7 @@ func abs(val int) int {
 func (n node) ManhattanLength() int {
 	return abs(n.x) + abs(n.y)
 }
+
+func (n node) EqualTo(other node) bool {
+	return n.x == other.x && n.y == other.y
+}

@@ -30,3 +30,28 @@ func TestManhattanLengths(t *testing.T) {
 		}
 	}
 }
+
+func TestEquality(t *testing.T) {
+	tests := []struct {
+		a, b node
+		want bool
+	}{
+		{a: Node(0, 0), b: Node(0, 0), want: true},
+		{a: Node(1, 0), b: Node(1, 0), want: true},
+		{a: Node(0, 1), b: Node(0, 1), want: true},
+		{a: Node(1, 1), b: Node(1, 1), want: true},
+		{a: Node(1, 0), b: Node(0, 0), want: false},
+		{a: Node(0, 0), b: Node(1, 0), want: false},
+		{a: Node(0, 0), b: Node(0, 1), want: false},
+		{a: Node(0, 0), b: Node(1, 1), want: false},
+		{a: Node(1, 0), b: Node(0, 0), want: false},
+		{a: Node(0, 1), b: Node(0, 0), want: false},
+		{a: Node(1, 1), b: Node(0, 0), want: false},
+	}
+	for i, tc := range tests {
+		got := tc.a.EqualTo(tc.b)
+		if tc.want != got {
+			t.Errorf("%v.EqualTo(%v) want %v, got %v (case %d)", tc.a, tc.b, tc.want, got, i)
+		}
+	}
+}
