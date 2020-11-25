@@ -36,13 +36,32 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Adapt to last good state
-	stack[1] = 12
-	stack[2] = 2
+	// Attempt to find proper execution input
+	value := 0
+	i := 0
+	j := -1
+	for value != 19690720 {
+		temp := make([]int, len(stack))
+		copy(temp, stack)
 
-	// Go
-	program := Intcode.New(stack)
-	program = program.Execute()
+		temp[1] = i
+		temp[2] = j
 
-	fmt.Println("First position value:", program.Data()[0])
+		program := Intcode.New(temp)
+		program = program.Execute()
+		value = program.Data()[0]
+		if value == 19690720 {
+			break
+		}
+		j++
+		if j >= 100 {
+			i++
+			if i >= 100 {
+				break
+			}
+			j = 0
+		}
+	}
+
+	fmt.Println("100 *", i, "+", j, "=", (100*i)+j)
 }
