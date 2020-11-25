@@ -70,7 +70,13 @@ func (p path) Contains(n node) bool {
 }
 
 func (p path) Intersections(other path) []node {
-	return []node{}
+	intersects := []node{}
+	for _, n := range p.nodes {
+		if contains(other.nodes, n) {
+			intersects = append(intersects, n)
+		}
+	}
+	return intersects
 }
 
 func contains(nodes []node, n node) bool {

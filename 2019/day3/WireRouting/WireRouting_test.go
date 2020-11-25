@@ -40,6 +40,7 @@ func TestIntersections(t *testing.T) {
 		{first: "", second: "", want: []node{}},
 		{first: "R8,U5,L5,D3", second: "", want: []node{}},
 		{first: "", second: "U7,R6,D4,L4", want: []node{}},
+		{first: "R8,U5,L5,D3", second: "U7,R6,D4,L4", want: []node{Node(3, 3), Node(6, 5)}},
 	}
 	for i, tc := range tests {
 		one := Route(tc.first)
