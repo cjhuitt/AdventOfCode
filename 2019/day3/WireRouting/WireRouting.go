@@ -1,13 +1,13 @@
 package WireRouting
 
 type path struct {
-	length int
+	path []node
 }
 
 func Default() path {
-	return path{0}
+	return path{[]node{}}
 }
 
 func (p path) Length() int {
-	return p.length
+	return len(p.path)
 }
