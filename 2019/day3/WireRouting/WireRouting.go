@@ -17,7 +17,7 @@ func Route(r string) path {
 	if r == "" {
 		return path{[]node{{0, 0}}}
 	}
-	lastnode := node{0, 0}
+	lastnode := Node(0, 0)
 	nodes := []node{lastnode}
 	steps := strings.Split(r, ",")
 	for _, step := range steps {
@@ -31,6 +31,27 @@ func Route(r string) path {
 		case 'R':
 			for i < count {
 				n := lastnode.Right()
+				nodes = append(nodes, n)
+				lastnode = n
+				i++
+			}
+		case 'L':
+			for i < count {
+				n := lastnode.Left()
+				nodes = append(nodes, n)
+				lastnode = n
+				i++
+			}
+		case 'U':
+			for i < count {
+				n := lastnode.Up()
+				nodes = append(nodes, n)
+				lastnode = n
+				i++
+			}
+		case 'D':
+			for i < count {
+				n := lastnode.Down()
 				nodes = append(nodes, n)
 				lastnode = n
 				i++
