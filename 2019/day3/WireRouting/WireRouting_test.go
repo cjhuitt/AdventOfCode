@@ -17,6 +17,7 @@ func TestBuildsPathFromInstructions(t *testing.T) {
 	}{
 		{path: "", length: 1, contains: []node{}},
 		{path: "R1", length: 2, contains: []node{node{1, 0}}},
+		{path: "R5", length: 6, contains: []node{node{1, 0}, node{5, 0}}},
 	}
 	for i, tc := range tests {
 		r := Route(tc.path)
