@@ -21,11 +21,34 @@ func TestBuildsPathFromInstructions(t *testing.T) {
 		r := Route(tc.path)
 		got := r.Length()
 		if got != tc.length {
-			t.Errorf("Route(%v).Length) want %d, got %d (case %d)", tc.path, tc.length, got, i)
+			t.Errorf("Route(%v).Length() want %d, got %d (case %d)", tc.path, tc.length, got, i)
 		}
 		for _, n := range tc.contains {
 			if !r.Contains(n) {
 				t.Errorf("Route(%v).Contains(%v) want true, got false (case %d; %v)", tc.path, n, i, r)
+			}
+		}
+	}
+}
+
+func TestIntersections(t *testing.T) {
+	tests := []struct {
+		first  string
+		second string
+		want   []node
+	}{
+		{first: "", second: "", want: []node{}},
+	}
+	for i, tc := range tests {
+		one := Route(tc.first)
+		two := Route(tc.second)
+		got := one.Intersections(two)
+		if len(got) != len(tc.want) {
+			t.Errorf("Route(%v).Intersections(Route(%v)) want length %d, got %d (case %d)", tc.first, tc.second, len(tc.want), len(got), i)
+		}
+		for _, n := range tc.want {
+			if !contains(got, n) {
+				t.Errorf("Route(%v).Intersections(Route(%v)) want contains %v, does not (case %d)", tc.first, tc.second, n, i)
 			}
 		}
 	}

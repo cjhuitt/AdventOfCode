@@ -66,7 +66,15 @@ func (p path) Length() int {
 }
 
 func (p path) Contains(n node) bool {
-	for _, test := range p.nodes {
+	return contains(p.nodes, n)
+}
+
+func (p path) Intersections(other path) []node {
+	return []node{}
+}
+
+func contains(nodes []node, n node) bool {
+	for _, test := range nodes {
 		if n.EqualTo(test) {
 			return true
 		}
