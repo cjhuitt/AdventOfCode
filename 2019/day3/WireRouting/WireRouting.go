@@ -87,10 +87,6 @@ func (p path) Length() int {
 	return len(p.nodes)
 }
 
-func (p path) Contains(n node) bool {
-	return contains(p.nodes, n)
-}
-
 func (p path) Intersections(other path) []node {
 	found := []node{}
 	//	for _, n := range p.nodes {
