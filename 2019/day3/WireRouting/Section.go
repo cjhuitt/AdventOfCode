@@ -1,6 +1,9 @@
 package WireRouting
 
-type section struct{ a, b node }
+type section struct {
+	a, b               node
+	start_steps, steps int
+}
 type intersectPoint struct {
 	loc   node
 	steps int
@@ -8,6 +11,10 @@ type intersectPoint struct {
 
 func (s section) ManhattanLength() int {
 	return abs(s.a.x-s.b.x) + abs(s.a.y-s.b.y)
+}
+
+func (p intersectPoint) RouteLength() int {
+	return p.steps
 }
 
 func min(a, b int) int {

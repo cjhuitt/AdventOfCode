@@ -54,7 +54,7 @@ func Route(r string) path {
 				i++
 			}
 		}
-		sections = append(sections, section{next, lastnode})
+		sections = append(sections, section{next, lastnode, 0, 0})
 	}
 	return path{sections}
 }
