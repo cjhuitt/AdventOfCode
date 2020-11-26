@@ -35,7 +35,18 @@ func det(a, b node) int {
 	return a.x*b.y - a.y*b.x
 }
 
-// WARNING: Only works for vertical or horizontal line segments
+// WARNING: Only works for vertical or horizontal line segments right now
+func (s section) stepsTo(n node) int {
+	len := abs(s.a.x-s.b.x) + abs(s.a.y-s.b.y)
+	plen := abs(s.a.x-n.x) + abs(s.a.y-n.y)
+	if len == 0 {
+		return 0
+	}
+	return s.steps * plen / len
+}
+
+// WARNING: Only works for non-overlapping vertical or horizontal line
+// segments right now
 func (s section) Intersect(other section) (bool, intersectPoint) {
 	if max(s.a.x, s.b.x) < min(other.a.x, other.b.x) ||
 		max(other.a.x, other.b.x) < min(s.a.x, s.b.x) ||
@@ -45,13 +56,13 @@ func (s section) Intersect(other section) (bool, intersectPoint) {
 	}
 	if (s.a.EqualTo(other.a) && s.b.EqualTo(other.b)) ||
 		(s.a.EqualTo(other.b) && s.b.EqualTo(other.a)) {
-		return true, intersectPoint{s.a, 0}
+		return true, intersectPoint{s.a, s.stepsTo(s.a) + other.stepsTo(s.a)}
 	}
 	if s.a.EqualTo(other.a) || s.a.EqualTo(other.b) {
-		return true, intersectPoint{s.a, 0}
+		return true, intersectPoint{s.a, s.stepsTo(s.a) + other.stepsTo(s.a)}
 	}
 	if s.b.EqualTo(other.a) || s.b.EqualTo(other.b) {
-		return true, intersectPoint{s.b, 0}
+		return true, intersectPoint{s.b, s.stepsTo(s.b) + other.stepsTo(s.b)}
 	}
 	// TODO: overlapping case
 	// if s.a.x == other.a.x && s.a.x == other.b.x {
@@ -71,5 +82,6 @@ func (s section) Intersect(other section) (bool, intersectPoint) {
 	d := node{det(s.a, s.b), det(other.a, other.b)}
 	x := det(d, xdiff) / div
 	y := det(d, ydiff) / div
-	return true, intersectPoint{Node(x, y), 0}
+	loc := Node(x, y)
+	return true, intersectPoint{loc, s.stepsTo(loc) + other.stepsTo(loc)}
 }
