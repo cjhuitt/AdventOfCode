@@ -20,6 +20,7 @@ func Route(r string) path {
 	lastnode := Node(0, 0)
 	sections := []section{}
 	steps := strings.Split(r, ",")
+	step_count := 0
 	for _, step := range steps {
 		dir := step[0]
 		count, err := strconv.Atoi(step[1:])
@@ -54,7 +55,8 @@ func Route(r string) path {
 				i++
 			}
 		}
-		sections = append(sections, section{next, lastnode, 0, 0})
+		sections = append(sections, section{next, lastnode, step_count, i})
+		step_count += i
 	}
 	return path{sections}
 }
