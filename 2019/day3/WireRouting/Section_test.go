@@ -74,7 +74,8 @@ func TestIntersectRouteLengths(t *testing.T) {
 		a, b        section
 		want_length int
 	}{
-		{a: section{Node(1, 0), Node(-1, 0), 1, 3}, b: section{Node(0, 1), Node(0, -1), 1, 3}, want_length: 2},
+		{a: section{Node(1, 0), Node(-1, 0), 0, 3}, b: section{Node(0, 1), Node(0, -1), 0, 3}, want_length: 2},
+		{a: section{Node(1, 0), Node(-1, 0), 10, 3}, b: section{Node(0, 1), Node(0, -1), 0, 3}, want_length: 12},
 	}
 	for i, tc := range tests {
 		found, intersect := tc.a.Intersect(tc.b)

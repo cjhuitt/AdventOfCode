@@ -42,7 +42,7 @@ func (s section) stepsTo(n node) int {
 	if len == 0 {
 		return 0
 	}
-	return s.steps * plen / len
+	return s.start_steps + (s.steps * plen / len)
 }
 
 // WARNING: Only works for non-overlapping vertical or horizontal line
