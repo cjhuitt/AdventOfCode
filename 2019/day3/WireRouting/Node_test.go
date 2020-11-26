@@ -19,7 +19,7 @@ func TestManhattanLengths(t *testing.T) {
 		n := Node(tc.x, tc.y)
 		got := n.ManhattanLength()
 		if tc.want != got {
-			t.Errorf("Node(%d, %d).MahattenLength() want %d, got %d (case %d)", tc.x, tc.y, tc.want, got, i)
+			t.Errorf("Node(%d, %d).ManhattanLength() want %d, got %d (case %d)", tc.x, tc.y, tc.want, got, i)
 		}
 	}
 }
