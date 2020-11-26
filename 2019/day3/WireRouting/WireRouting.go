@@ -28,7 +28,8 @@ func Route(r string) path {
 		if err != nil {
 			return empty()
 		}
-		a := lastnode
+		var a node
+		set_a := true
 		i := 0
 		switch dir {
 		case 'R':
@@ -36,6 +37,10 @@ func Route(r string) path {
 				n := lastnode.Right()
 				nodes = append(nodes, n)
 				lastnode = n
+				if set_a {
+					set_a = false
+					a = lastnode
+				}
 				i++
 			}
 		case 'L':
@@ -43,6 +48,10 @@ func Route(r string) path {
 				n := lastnode.Left()
 				nodes = append(nodes, n)
 				lastnode = n
+				if set_a {
+					set_a = false
+					a = lastnode
+				}
 				i++
 			}
 		case 'U':
@@ -50,6 +59,10 @@ func Route(r string) path {
 				n := lastnode.Up()
 				nodes = append(nodes, n)
 				lastnode = n
+				if set_a {
+					set_a = false
+					a = lastnode
+				}
 				i++
 			}
 		case 'D':
@@ -57,10 +70,15 @@ func Route(r string) path {
 				n := lastnode.Down()
 				nodes = append(nodes, n)
 				lastnode = n
+				if set_a {
+					set_a = false
+					a = lastnode
+				}
 				i++
 			}
 		}
 		sections = append(sections, section{a, lastnode})
+		set_a = true
 	}
 	return path{nodes, sections}
 }
@@ -74,13 +92,16 @@ func (p path) Contains(n node) bool {
 }
 
 func (p path) Intersections(other path) []node {
-	intersects := []node{}
-	for _, n := range p.nodes {
-		if contains(other.nodes, n) {
-			intersects = append(intersects, n)
-		}
+	found := []node{}
+	//	for _, n := range p.nodes {
+	//		if contains(other.nodes, n) {
+	//			found = append(found, n)
+	//		}
+	//	}
+	for _, s := range p.sections {
+		found = append(found, intersects(other.sections, s)...)
 	}
-	return intersects
+	return found
 }
 
 func Closest(nodes []node) node {
@@ -104,4 +125,15 @@ func contains(nodes []node, n node) bool {
 		}
 	}
 	return false
+}
+
+func intersects(sections []section, s section) []node {
+	nodes := []node{}
+	for _, test := range sections {
+		good, node := test.Intersect(s)
+		if good {
+			nodes = append(nodes, node)
+		}
+	}
+	return nodes
 }
