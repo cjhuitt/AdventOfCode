@@ -89,11 +89,6 @@ func (p path) Length() int {
 
 func (p path) Intersections(other path) []node {
 	found := []node{}
-	//	for _, n := range p.nodes {
-	//		if contains(other.nodes, n) {
-	//			found = append(found, n)
-	//		}
-	//	}
 	for _, s := range p.sections {
 		found = append(found, intersects(other.sections, s)...)
 	}
