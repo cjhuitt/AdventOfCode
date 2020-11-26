@@ -22,5 +22,11 @@ func max(a, b int) int {
 
 // WARNING: Only works for vertical or horizontal line segments
 func (s section) Intersect(other section) (bool, node) {
-	return false, node{}
+	if max(s.a.x, s.b.x) < min(other.a.x, other.b.x) ||
+		max(other.a.x, other.b.x) < min(s.a.x, s.b.x) ||
+		max(s.a.y, s.b.y) < min(other.a.y, other.b.y) ||
+		max(other.a.y, other.b.y) < min(s.a.y, s.b.y) {
+		return false, node{}
+	}
+	return true, node{}
 }
