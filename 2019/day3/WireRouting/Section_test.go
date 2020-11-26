@@ -28,6 +28,9 @@ func TestIntersect(t *testing.T) {
 		want_found       bool
 	}{
 		{a: Node(1, 0), b: Node(-1, 0), c: Node(1, 1), d: Node(-1, 1), want: node{}, want_found: false},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(1, 1), d: Node(1, -1), want: node{}, want_found: false},
+		{a: Node(1, 0), b: Node(-1, 0), c: Node(2, 0), d: Node(3, 0), want: node{}, want_found: false},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 2), d: Node(0, 3), want: node{}, want_found: false},
 	}
 	for i, tc := range tests {
 		s1 := section{tc.a, tc.b}
