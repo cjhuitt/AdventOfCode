@@ -6,7 +6,6 @@ import (
 )
 
 type path struct {
-	nodes    []node
 	sections []section
 }
 
@@ -19,7 +18,6 @@ func Route(r string) path {
 		return empty()
 	}
 	lastnode := Node(0, 0)
-	nodes := []node{}
 	sections := []section{}
 	steps := strings.Split(r, ",")
 	for _, step := range steps {
@@ -35,7 +33,6 @@ func Route(r string) path {
 		case 'R':
 			for i < count {
 				n := lastnode.Right()
-				nodes = append(nodes, n)
 				lastnode = n
 				if set_a {
 					set_a = false
@@ -46,7 +43,6 @@ func Route(r string) path {
 		case 'L':
 			for i < count {
 				n := lastnode.Left()
-				nodes = append(nodes, n)
 				lastnode = n
 				if set_a {
 					set_a = false
@@ -57,7 +53,6 @@ func Route(r string) path {
 		case 'U':
 			for i < count {
 				n := lastnode.Up()
-				nodes = append(nodes, n)
 				lastnode = n
 				if set_a {
 					set_a = false
@@ -68,7 +63,6 @@ func Route(r string) path {
 		case 'D':
 			for i < count {
 				n := lastnode.Down()
-				nodes = append(nodes, n)
 				lastnode = n
 				if set_a {
 					set_a = false
@@ -80,7 +74,7 @@ func Route(r string) path {
 		sections = append(sections, section{a, lastnode})
 		set_a = true
 	}
-	return path{nodes, sections}
+	return path{sections}
 }
 
 func (p path) Intersections(other path) []node {
