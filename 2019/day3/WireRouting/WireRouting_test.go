@@ -29,7 +29,7 @@ func TestIntersections(t *testing.T) {
 	}
 }
 
-func TestClosestIntersections(t *testing.T) {
+func TestClosestPhysicalIntersections(t *testing.T) {
 	tests := []struct {
 		first  string
 		second string
@@ -41,7 +41,7 @@ func TestClosestIntersections(t *testing.T) {
 	for i, tc := range tests {
 		one := Route(tc.first)
 		two := Route(tc.second)
-		got := Closest(one.Intersections(two))
+		got := ClosestPhysical(one.Intersections(two))
 		closest := got.ManhattanLength()
 		if closest != tc.want {
 			t.Errorf("Route(%v).Intersections(Route(%v)) want closest intersection %d away, got %d (case %d)", tc.first, tc.second, tc.want, closest, i)

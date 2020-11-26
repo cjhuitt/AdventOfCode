@@ -67,7 +67,7 @@ func (p path) Intersections(other path) []node {
 	return found
 }
 
-func Closest(nodes []node) node {
+func ClosestPhysical(nodes []node) node {
 	if len(nodes) == 0 {
 		return node{}
 	}
