@@ -2,13 +2,6 @@ package WireRouting
 
 import "testing"
 
-func TestDefaultLength(t *testing.T) {
-	got := DefaultSection().ManhattanLength()
-	if got != 0 {
-		t.Errorf("DefaultSection.ManhattanLength() want 0, got %d (case %d)", got, 0)
-	}
-}
-
 func TestLengths(t *testing.T) {
 	tests := []struct {
 		a, b node
