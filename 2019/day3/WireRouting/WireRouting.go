@@ -6,11 +6,12 @@ import (
 )
 
 type path struct {
-	nodes []node
+	nodes    []node
+	sections []section
 }
 
 func empty() path {
-	return path{[]node{}}
+	return path{}
 }
 
 func Route(r string) path {
@@ -19,6 +20,7 @@ func Route(r string) path {
 	}
 	lastnode := Node(0, 0)
 	nodes := []node{}
+	sections := []section{}
 	steps := strings.Split(r, ",")
 	for _, step := range steps {
 		dir := step[0]
@@ -26,6 +28,7 @@ func Route(r string) path {
 		if err != nil {
 			return empty()
 		}
+		a := lastnode
 		i := 0
 		switch dir {
 		case 'R':
@@ -57,8 +60,9 @@ func Route(r string) path {
 				i++
 			}
 		}
+		sections = append(sections, section{a, lastnode})
 	}
-	return path{nodes}
+	return path{nodes, sections}
 }
 
 func (p path) Length() int {
