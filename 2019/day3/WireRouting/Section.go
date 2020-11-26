@@ -2,7 +2,7 @@ package WireRouting
 
 type section struct{ a, b node }
 type intersectPoint struct {
-	point node
+	loc   node
 	steps int
 }
 

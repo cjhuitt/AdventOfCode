@@ -74,16 +74,16 @@ func ClosestPhysical(points []intersectPoint) node {
 
 	closest := points[0]
 	for _, p := range points {
-		if p.point.ManhattanLength() < closest.point.ManhattanLength() {
+		if p.loc.ManhattanLength() < closest.loc.ManhattanLength() {
 			closest = p
 		}
 	}
-	return closest.point
+	return closest.loc
 }
 
 func contains(points []intersectPoint, n node) bool {
 	for _, test := range points {
-		if n.EqualTo(test.point) {
+		if n.EqualTo(test.loc) {
 			return true
 		}
 	}
