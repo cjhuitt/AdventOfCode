@@ -83,10 +83,6 @@ func Route(r string) path {
 	return path{nodes, sections}
 }
 
-func (p path) Length() int {
-	return len(p.nodes)
-}
-
 func (p path) Intersections(other path) []node {
 	found := []node{}
 	for _, s := range p.sections {
