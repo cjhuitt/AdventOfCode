@@ -32,6 +32,12 @@ func (s section) Intersect(other section) (bool, node) {
 		(s.a.EqualTo(other.b) && s.b.EqualTo(other.a)) {
 		return true, s.a
 	}
+	if s.a.EqualTo(other.a) || s.a.EqualTo(other.b) {
+		return true, s.a
+	}
+	if s.b.EqualTo(other.a) || s.b.EqualTo(other.b) {
+		return true, s.b
+	}
 
 	return true, node{}
 }
