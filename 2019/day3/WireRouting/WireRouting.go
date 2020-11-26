@@ -20,7 +20,7 @@ func Route(r string) path {
 	lastnode := Node(0, 0)
 	sections := []section{}
 	steps := strings.Split(r, ",")
-	step_count := 0
+	step_count := 1
 	for _, step := range steps {
 		dir := step[0]
 		count, err := strconv.Atoi(step[1:])
@@ -81,6 +81,20 @@ func ClosestPhysical(points []intersectPoint) node {
 		}
 	}
 	return closest.loc
+}
+
+func ClosestRouted(points []intersectPoint) intersectPoint {
+	if len(points) == 0 {
+		return intersectPoint{}
+	}
+
+	closest := points[0]
+	for _, p := range points {
+		if p.RouteLength() < closest.RouteLength() {
+			closest = p
+		}
+	}
+	return closest
 }
 
 func contains(points []intersectPoint, n node) bool {
