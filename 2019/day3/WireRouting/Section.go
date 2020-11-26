@@ -6,6 +6,6 @@ func DefaultSection() section {
 	return section{}
 }
 
-func (s section) Length() int {
-	return 0
+func (s section) ManhattanLength() int {
+	return abs(s.a.x-s.b.x) + abs(s.a.y-s.b.y)
 }
