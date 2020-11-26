@@ -31,15 +31,17 @@ func TestIntersect(t *testing.T) {
 		{a: Node(0, 1), b: Node(0, -1), c: Node(1, 1), d: Node(1, -1), want: node{}, want_found: false},
 		{a: Node(1, 0), b: Node(-1, 0), c: Node(2, 0), d: Node(3, 0), want: node{}, want_found: false},
 		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 2), d: Node(0, 3), want: node{}, want_found: false},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 1), d: Node(0, -1), want: Node(0, 1), want_found: true},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(0, -1), d: Node(0, 1), want: Node(0, 1), want_found: true},
 	}
 	for i, tc := range tests {
 		s1 := section{tc.a, tc.b}
 		s2 := section{tc.c, tc.d}
 		found, got := s1.Intersect(s2)
 		if found != tc.want_found {
-			t.Errorf("Section(%v, %v).Intersect(Section(%v, %v)) want found = %v, got %v (case %d)", tc.a, tc.b, tc.c, tc.d, tc.want_found, found, i)
+			t.Errorf("%v.Intersect(%v) want found = %v, got %v (case %d)", s1, s2, tc.want_found, found, i)
 		} else if found && tc.want != got {
-			t.Errorf("Section(%v, %v).Intersect(Section(%v, %v)) want %v, got %v (case %d)", tc.a, tc.b, tc.c, tc.d, tc.want, got, i)
+			t.Errorf("%v.Intersect%v)) want %v, got %v (case %d)", s1, s2, tc.want, got, i)
 		}
 	}
 }

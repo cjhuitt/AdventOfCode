@@ -28,5 +28,10 @@ func (s section) Intersect(other section) (bool, node) {
 		max(other.a.y, other.b.y) < min(s.a.y, s.b.y) {
 		return false, node{}
 	}
+	if (s.a.EqualTo(other.a) && s.b.EqualTo(other.b)) ||
+		(s.a.EqualTo(other.b) && s.b.EqualTo(other.a)) {
+		return true, s.a
+	}
+
 	return true, node{}
 }
