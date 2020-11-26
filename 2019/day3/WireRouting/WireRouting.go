@@ -26,53 +26,35 @@ func Route(r string) path {
 		if err != nil {
 			return empty()
 		}
-		var a node
-		set_a := true
+		var next node
 		i := 0
 		switch dir {
 		case 'R':
+			next = lastnode.Right()
 			for i < count {
-				n := lastnode.Right()
-				lastnode = n
-				if set_a {
-					set_a = false
-					a = lastnode
-				}
+				lastnode = lastnode.Right()
 				i++
 			}
 		case 'L':
+			next = lastnode.Left()
 			for i < count {
-				n := lastnode.Left()
-				lastnode = n
-				if set_a {
-					set_a = false
-					a = lastnode
-				}
+				lastnode = lastnode.Left()
 				i++
 			}
 		case 'U':
+			next = lastnode.Up()
 			for i < count {
-				n := lastnode.Up()
-				lastnode = n
-				if set_a {
-					set_a = false
-					a = lastnode
-				}
+				lastnode = lastnode.Up()
 				i++
 			}
 		case 'D':
+			next = lastnode.Down()
 			for i < count {
-				n := lastnode.Down()
-				lastnode = n
-				if set_a {
-					set_a = false
-					a = lastnode
-				}
+				lastnode = lastnode.Down()
 				i++
 			}
 		}
-		sections = append(sections, section{a, lastnode})
-		set_a = true
+		sections = append(sections, section{next, lastnode})
 	}
 	return path{sections}
 }
