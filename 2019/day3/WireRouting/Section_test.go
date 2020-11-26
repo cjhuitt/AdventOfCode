@@ -24,37 +24,38 @@ func TestLengths(t *testing.T) {
 
 func TestIntersect(t *testing.T) {
 	tests := []struct {
-		a, b, c, d, want node
-		want_found       bool
+		a, b, c, d node
+		want       intersectPoint
+		want_found bool
 	}{
 		// parallel non-intersecting
-		{a: Node(1, 0), b: Node(-1, 0), c: Node(1, 1), d: Node(-1, 1), want: node{}, want_found: false},
-		{a: Node(0, 1), b: Node(0, -1), c: Node(1, 1), d: Node(1, -1), want: node{}, want_found: false},
-		{a: Node(1, 0), b: Node(-1, 0), c: Node(2, 0), d: Node(3, 0), want: node{}, want_found: false},
-		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 2), d: Node(0, 3), want: node{}, want_found: false},
+		{a: Node(1, 0), b: Node(-1, 0), c: Node(1, 1), d: Node(-1, 1), want: intersectPoint{}, want_found: false},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(1, 1), d: Node(1, -1), want: intersectPoint{}, want_found: false},
+		{a: Node(1, 0), b: Node(-1, 0), c: Node(2, 0), d: Node(3, 0), want: intersectPoint{}, want_found: false},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 2), d: Node(0, 3), want: intersectPoint{}, want_found: false},
 
 		// Identical (both directions)
-		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 1), d: Node(0, -1), want: Node(0, 1), want_found: true},
-		{a: Node(0, 1), b: Node(0, -1), c: Node(0, -1), d: Node(0, 1), want: Node(0, 1), want_found: true},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 1), d: Node(0, -1), want: intersectPoint{Node(0, 1), 0}, want_found: true},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(0, -1), d: Node(0, 1), want: intersectPoint{Node(0, 1), 0}, want_found: true},
 
 		// End-point intersection
-		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 1), d: Node(0, 3), want: Node(0, 1), want_found: true},
-		{a: Node(1, 0), b: Node(-1, 0), c: Node(1, 0), d: Node(3, 0), want: Node(1, 0), want_found: true},
-		{a: Node(0, 1), b: Node(0, -1), c: Node(0, -1), d: Node(0, -3), want: Node(0, -1), want_found: true},
-		{a: Node(1, 0), b: Node(-1, 0), c: Node(-1, 0), d: Node(-3, 0), want: Node(-1, 0), want_found: true},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(0, 1), d: Node(0, 3), want: intersectPoint{Node(0, 1), 0}, want_found: true},
+		{a: Node(1, 0), b: Node(-1, 0), c: Node(1, 0), d: Node(3, 0), want: intersectPoint{Node(1, 0), 0}, want_found: true},
+		{a: Node(0, 1), b: Node(0, -1), c: Node(0, -1), d: Node(0, -3), want: intersectPoint{Node(0, -1), 0}, want_found: true},
+		{a: Node(1, 0), b: Node(-1, 0), c: Node(-1, 0), d: Node(-3, 0), want: intersectPoint{Node(-1, 0), 0}, want_found: true},
 
 		// Parallel complete overlap
 		// Ignored for the time being
-		// {a: Node(0, 1), b: Node(0, -1), c: Node(0, 3), d: Node(0, -3), want: Node(0, 1), want_found: true},
-		// {a: Node(0, 3), b: Node(0, -3), c: Node(0, 1), d: Node(0, -1), want: Node(0, 1), want_found: true},
-		// {a: Node(1, 0), b: Node(-1, 0), c: Node(3, 0), d: Node(-3, 0), want: Node(1, 0), want_found: true},
-		// {a: Node(3, 0), b: Node(-3, 0), c: Node(1, 0), d: Node(-1, 0), want: Node(1, 0), want_found: true},
+		// {a: Node(0, 1), b: Node(0, -1), c: Node(0, 3), d: Node(0, -3), want: intersectPoint{Node(0, 1), 0}, want_found: true},
+		// {a: Node(0, 3), b: Node(0, -3), c: Node(0, 1), d: Node(0, -1), want: intersectPoint{Node(0, 1), 0}, want_found: true},
+		// {a: Node(1, 0), b: Node(-1, 0), c: Node(3, 0), d: Node(-3, 0), want: intersectPoint{Node(1, 0), 0}, want_found: true},
+		// {a: Node(3, 0), b: Node(-3, 0), c: Node(1, 0), d: Node(-1, 0), want: intersectPoint{Node(1, 0), 0}, want_found: true},
 
 		// Non-parallel non-intersecting
-		{a: Node(1, 0), b: Node(-1, 0), c: Node(3, 1), d: Node(3, -1), want: node{}, want_found: false},
+		{a: Node(1, 0), b: Node(-1, 0), c: Node(3, 1), d: Node(3, -1), want: intersectPoint{}, want_found: false},
 
 		// Intersecting
-		{a: Node(1, 0), b: Node(-1, 0), c: Node(0, 1), d: Node(0, -1), want: Node(0, 0), want_found: true},
+		{a: Node(1, 0), b: Node(-1, 0), c: Node(0, 1), d: Node(0, -1), want: intersectPoint{Node(0, 0), 0}, want_found: true},
 	}
 	for i, tc := range tests {
 		s1 := section{tc.a, tc.b}

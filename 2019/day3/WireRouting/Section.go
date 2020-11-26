@@ -1,6 +1,10 @@
 package WireRouting
 
 type section struct{ a, b node }
+type intersectPoint struct {
+	point node
+	steps int
+}
 
 func (s section) ManhattanLength() int {
 	return abs(s.a.x-s.b.x) + abs(s.a.y-s.b.y)
@@ -25,22 +29,22 @@ func det(a, b node) int {
 }
 
 // WARNING: Only works for vertical or horizontal line segments
-func (s section) Intersect(other section) (bool, node) {
+func (s section) Intersect(other section) (bool, intersectPoint) {
 	if max(s.a.x, s.b.x) < min(other.a.x, other.b.x) ||
 		max(other.a.x, other.b.x) < min(s.a.x, s.b.x) ||
 		max(s.a.y, s.b.y) < min(other.a.y, other.b.y) ||
 		max(other.a.y, other.b.y) < min(s.a.y, s.b.y) {
-		return false, node{}
+		return false, intersectPoint{}
 	}
 	if (s.a.EqualTo(other.a) && s.b.EqualTo(other.b)) ||
 		(s.a.EqualTo(other.b) && s.b.EqualTo(other.a)) {
-		return true, s.a
+		return true, intersectPoint{s.a, 0}
 	}
 	if s.a.EqualTo(other.a) || s.a.EqualTo(other.b) {
-		return true, s.a
+		return true, intersectPoint{s.a, 0}
 	}
 	if s.b.EqualTo(other.a) || s.b.EqualTo(other.b) {
-		return true, s.b
+		return true, intersectPoint{s.b, 0}
 	}
 	// TODO: overlapping case
 	// if s.a.x == other.a.x && s.a.x == other.b.x {
@@ -54,11 +58,11 @@ func (s section) Intersect(other section) (bool, node) {
 	ydiff := node{s.a.y - s.b.y, other.a.y - other.b.y}
 	div := det(xdiff, ydiff)
 	if div == 0 {
-		return false, node{}
+		return false, intersectPoint{}
 	}
 
 	d := node{det(s.a, s.b), det(other.a, other.b)}
 	x := det(d, xdiff) / div
 	y := det(d, ydiff) / div
-	return true, Node(x, y)
+	return true, intersectPoint{Node(x, y), 0}
 }
