@@ -33,7 +33,9 @@ func main() {
 
 	r0 := WireRouting.Route(paths[0])
 	r1 := WireRouting.Route(paths[1])
-	p := WireRouting.ClosestPhysical(r0.Intersections(r1))
+	pp := WireRouting.ClosestPhysical(r0.Intersections(r1))
+	pr := WireRouting.ClosestRouted(r0.Intersections(r1))
 
-	fmt.Println("Closest intersection at", p, "distance", p.ManhattanLength())
+	fmt.Println("Closest physical intersection at", pp, "distance", pp.ManhattanLength())
+	fmt.Println("Closest routed intersection at", pr, "distance", pr.RouteLength())
 }
