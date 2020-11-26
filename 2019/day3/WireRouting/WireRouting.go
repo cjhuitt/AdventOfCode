@@ -59,44 +59,44 @@ func Route(r string) path {
 	return path{sections}
 }
 
-func (p path) Intersections(other path) []node {
-	found := []node{}
+func (p path) Intersections(other path) []intersectPoint {
+	found := []intersectPoint{}
 	for _, s := range p.sections {
 		found = append(found, intersects(other.sections, s)...)
 	}
 	return found
 }
 
-func ClosestPhysical(nodes []node) node {
-	if len(nodes) == 0 {
+func ClosestPhysical(points []intersectPoint) node {
+	if len(points) == 0 {
 		return node{}
 	}
 
-	closest := nodes[0]
-	for _, n := range nodes {
-		if n.ManhattanLength() < closest.ManhattanLength() {
-			closest = n
+	closest := points[0]
+	for _, p := range points {
+		if p.point.ManhattanLength() < closest.point.ManhattanLength() {
+			closest = p
 		}
 	}
-	return closest
+	return closest.point
 }
 
-func contains(nodes []node, n node) bool {
-	for _, test := range nodes {
-		if n.EqualTo(test) {
+func contains(points []intersectPoint, n node) bool {
+	for _, test := range points {
+		if n.EqualTo(test.point) {
 			return true
 		}
 	}
 	return false
 }
 
-func intersects(sections []section, s section) []node {
-	nodes := []node{}
+func intersects(sections []section, s section) []intersectPoint {
+	points := []intersectPoint{}
 	for _, test := range sections {
 		good, node := test.Intersect(s)
 		if good {
-			nodes = append(nodes, node)
+			points = append(points, node)
 		}
 	}
-	return nodes
+	return points
 }
