@@ -112,26 +112,43 @@ func find_read(stack []int, opcode, pos, pnum int) *int {
 	return input
 }
 
+func find_write(stack []int, opcode, pos, pnum int) *int {
+	var threshold int
+	switch pnum {
+	case 1:
+		threshold = 100
+	case 2:
+		threshold = 1000
+	case 3:
+		threshold = 10000
+	}
+	if opcode > threshold {
+		return nil
+	}
+
+	loc := stack[pos+pnum]
+	if loc >= len(stack) || loc < 0 {
+		return nil
+	}
+	return &stack[loc]
+}
+
 func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
 		return invalid(stack)
 	}
 	opcode := stack[xp]
+	new_stack := stack
 
 	read1 := find_read(stack, opcode, xp, 1)
 	read2 := find_read(stack, opcode, xp, 2)
-	if read1 == nil || read2 == nil {
-		return invalid(stack)
-	}
-
-	loc := stack[xp+3]
-	if loc >= len(stack) || loc < 0 || opcode > 10000 {
+	write := find_write(new_stack, opcode, xp, 3)
+	if read1 == nil || read2 == nil || write == nil {
 		return invalid(stack)
 	}
 
 	sum := *read1 + *read2
-	new_stack := stack
-	new_stack[loc] = sum
+	*write = sum
 	return program{new_stack, xp + 4, nil, nil}
 }
 
@@ -140,21 +157,17 @@ func mult(stack []int, xp int) program {
 		return invalid(stack)
 	}
 	opcode := stack[xp]
+	new_stack := stack
 
 	read1 := find_read(stack, opcode, xp, 1)
 	read2 := find_read(stack, opcode, xp, 2)
-	if read1 == nil || read2 == nil {
-		return invalid(stack)
-	}
-
-	loc := stack[xp+3]
-	if loc >= len(stack) || loc < 0 || opcode > 10000 {
+	write := find_write(new_stack, opcode, xp, 3)
+	if read1 == nil || read2 == nil || write == nil {
 		return invalid(stack)
 	}
 
 	mult := *read1 * *read2
-	new_stack := stack
-	new_stack[loc] = mult
+	*write = mult
 	return program{new_stack, xp + 4, nil, nil}
 }
 
@@ -163,19 +176,23 @@ func in(stack []int, xp int, input *int) program {
 		return invalid(stack)
 	}
 	opcode := stack[xp]
-	loc := stack[xp+1]
-	if loc >= len(stack) || loc < 0 || opcode > 100 {
-		return invalid(stack)
-	}
 
 	if input == nil {
 		// Prep and repeat instruction
-		in := &stack[loc]
-		return program{stack, xp, nil, in}
+		write := find_write(stack, opcode, xp, 1)
+		if write == nil {
+			return invalid(stack)
+		}
+
+		return program{stack, xp, nil, write}
 	}
 
 	new_stack := stack
-	new_stack[loc] = *input
+	write := find_write(new_stack, opcode, xp, 1)
+	if write == nil {
+		return invalid(stack)
+	}
+	*write = *input
 	return program{new_stack, xp + 2, nil, nil}
 }
 
