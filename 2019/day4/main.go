@@ -82,11 +82,22 @@ func (set generators) Next() (generators, error) {
 	return r, nil
 }
 
+func (set generators) HasDouble() bool {
+	for i := 1; i < len(set.places); i++ {
+		if set.places[i-1].Position() == set.places[i].Position() {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
 	g := InitGenerators(1, 2, 8, 3, 9, 2)
 	g, err := g.Next() // can skip the first because we know it's not valid
-	for err == nil {
-		fmt.Println(g.Value())
+	for err == nil && g.Value() < 643281 {
+		if g.HasDouble() {
+			fmt.Println(g.Value())
+		}
 		g, err = g.Next()
 	}
 }
