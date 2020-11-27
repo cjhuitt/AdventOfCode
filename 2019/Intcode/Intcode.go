@@ -147,8 +147,7 @@ func add(stack []int, xp int) program {
 		return invalid(stack)
 	}
 
-	sum := *read1 + *read2
-	*write = sum
+	*write = *read1 + *read2
 	return program{new_stack, xp + 4, nil, nil}
 }
 
@@ -166,8 +165,7 @@ func mult(stack []int, xp int) program {
 		return invalid(stack)
 	}
 
-	mult := *read1 * *read2
-	*write = mult
+	*write = *read1 * *read2
 	return program{new_stack, xp + 4, nil, nil}
 }
 
