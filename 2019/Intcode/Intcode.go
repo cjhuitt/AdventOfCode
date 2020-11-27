@@ -89,32 +89,39 @@ func (p program) WithInput(input *int) program {
 	return program{p.stack, p.xp, nil, input}
 }
 
+func find_read(stack []int, opcode, pos, pnum int) *int {
+	var input *int
+	var mod, threshold int
+	switch pnum {
+	case 1:
+		mod = 1000
+		threshold = 100
+	case 2:
+		mod = 10000
+		threshold = 1000
+	}
+	if (opcode % mod) > threshold {
+		input = &stack[pos+pnum]
+	} else {
+		loc := stack[pos+pnum]
+		if loc >= len(stack) || loc < 0 {
+			return nil
+		}
+		input = &stack[loc]
+	}
+	return input
+}
+
 func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
 		return invalid(stack)
 	}
 	opcode := stack[xp]
 
-	var read1 *int
-	if (opcode % 1000) > 100 {
-		read1 = &stack[xp+1]
-	} else {
-		add1 := stack[xp+1]
-		if add1 >= len(stack) || add1 < 0 {
-			return invalid(stack)
-		}
-		read1 = &stack[add1]
-	}
-
-	var read2 *int
-	if (opcode % 10000) > 1000 {
-		read2 = &stack[xp+2]
-	} else {
-		add2 := stack[xp+2]
-		if add2 >= len(stack) || add2 < 0 {
-			return invalid(stack)
-		}
-		read2 = &stack[add2]
+	read1 := find_read(stack, opcode, xp, 1)
+	read2 := find_read(stack, opcode, xp, 2)
+	if read1 == nil || read2 == nil {
+		return invalid(stack)
 	}
 
 	loc := stack[xp+3]
@@ -134,26 +141,10 @@ func mult(stack []int, xp int) program {
 	}
 	opcode := stack[xp]
 
-	var read1 *int
-	if (opcode % 1000) > 100 {
-		read1 = &stack[xp+1]
-	} else {
-		add1 := stack[xp+1]
-		if add1 >= len(stack) || add1 < 0 {
-			return invalid(stack)
-		}
-		read1 = &stack[add1]
-	}
-
-	var read2 *int
-	if (opcode % 10000) > 1000 {
-		read2 = &stack[xp+2]
-	} else {
-		add2 := stack[xp+2]
-		if add2 >= len(stack) || add2 < 0 {
-			return invalid(stack)
-		}
-		read2 = &stack[add2]
+	read1 := find_read(stack, opcode, xp, 1)
+	read2 := find_read(stack, opcode, xp, 2)
+	if read1 == nil || read2 == nil {
+		return invalid(stack)
 	}
 
 	loc := stack[xp+3]
@@ -194,15 +185,9 @@ func out(stack []int, xp int) program {
 	}
 	opcode := stack[xp]
 
-	var out *int
-	if (opcode % 1000) > 100 {
-		out = &stack[xp+1]
-	} else {
-		loc := stack[xp+1]
-		if loc >= len(stack) || loc < 0 {
-			return invalid(stack)
-		}
-		out = &stack[loc]
+	out := find_read(stack, opcode, xp, 1)
+	if out == nil {
+		return invalid(stack)
 	}
 
 	return program{stack, xp + 2, out, nil}
