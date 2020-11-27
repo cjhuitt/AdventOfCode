@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -17,6 +18,10 @@ func (g generator) Step() generator {
 
 func (g generator) AtEnd() bool {
 	return g.current == 10
+}
+
+func (g generator) Position() int {
+	return g.current
 }
 
 func (g generator) Value() int {
@@ -42,7 +47,7 @@ func InitGenerators(hun_k, ten_k, k, hun, ten, one int) generators {
 	return generators{[6]generator{a, b, c, d, e, f}}
 }
 
-func (set generators) GeneratedValue() int {
+func (set generators) Value() int {
 	v := 0
 	for _, g := range set.places {
 		v += g.Value()
@@ -50,7 +55,43 @@ func (set generators) GeneratedValue() int {
 	return v
 }
 
+func (set generators) Next() (generators, error) {
+	r := generators{}
+	pivot := len(set.places) - 1
+	for ; pivot > 0; pivot-- {
+		if !set.places[pivot].AtEnd() {
+			break
+		}
+	}
+	for true {
+		if pivot < 0 {
+			return r, errors.New("exceeded generator capacity")
+		}
+		r.places[pivot] = set.places[pivot].Step()
+		if !r.places[pivot].AtEnd() {
+			break
+		}
+		pivot--
+	}
+	for i := pivot + 1; i < len(r.places); i++ {
+		r.places[i] = r.places[i].ResetTo(r.places[i-1].Position())
+	}
+	for i := pivot - 1; i >= 0; i-- {
+		r.places[i] = set.places[i]
+	}
+	return r, nil
+}
+
 func main() {
-	g := InitGenerators(1, 2, 8, 3, 9, 2)
-	fmt.Println(g.GeneratedValue())
+	//g := InitGenerators(1, 2, 8, 3, 9, 2)
+	g := InitGenerators(1, 2, 8, 3, 9, 9)
+	var err error
+	for true {
+		fmt.Println(g.Value())
+		g, err = g.Next()
+		if err != nil {
+			fmt.Println("Generated too far")
+			break
+		}
+	}
 }
