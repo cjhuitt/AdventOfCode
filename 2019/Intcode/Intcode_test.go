@@ -75,7 +75,7 @@ func TestAddOpCode(t *testing.T) {
 		{input: []int{1001, 1, 3, 1, 99}, want: []int{1001, 4, 3, 1, 99}},
 		{input: []int{101, 100, 3, 1, 99}, want: []int{101, 101, 3, 1, 99}},
 		{input: []int{1101, 100, -5, 1, 99}, want: []int{1101, 95, -5, 1, 99}},
-		{input: []int{11101, 100, -5, 1, 99}, want: []int{11101, 100, -5, 1, 99}},
+		{input: []int{11101, 100, -5, 1, 99}, want: []int{11101, 100, -5, 1, 99}}, //invalid parameterized store
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
@@ -109,6 +109,10 @@ func TestMultOpCode(t *testing.T) {
 
 		// Parameter modes
 		{input: []int{1102, 100, 3, 1, 99}, want: []int{1102, 300, 3, 1, 99}},
+		{input: []int{1002, 1, 3, 1, 99}, want: []int{1002, 3, 3, 1, 99}},
+		{input: []int{102, 100, 1, 1, 99}, want: []int{102, 10000, 1, 1, 99}},
+		{input: []int{1102, 100, -5, 1, 99}, want: []int{1102, -500, -5, 1, 99}},
+		{input: []int{11102, 100, -5, 1, 99}, want: []int{11102, 100, -5, 1, 99}}, //invalid parameterized store
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
