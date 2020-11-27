@@ -156,6 +156,9 @@ func TestOutputOpCode(t *testing.T) {
 
 		{input: []int{4, -1, 99}, expected: false, want: 0}, // out of bounds
 		{input: []int{4, 3, 99}, expected: false, want: 0},  // out of bounds
+
+		// parameter mode
+		{input: []int{104, 25, 99}, expected: true, want: 25},
 	}
 	for i, tc := range tests {
 		p := New(tc.input)

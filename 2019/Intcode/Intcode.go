@@ -94,6 +94,7 @@ func add(stack []int, xp int) program {
 		return invalid(stack)
 	}
 	opcode := stack[xp]
+
 	var read1 *int
 	if (opcode % 1000) > 100 {
 		read1 = &stack[xp+1]
@@ -132,6 +133,7 @@ func mult(stack []int, xp int) program {
 		return invalid(stack)
 	}
 	opcode := stack[xp]
+
 	var read1 *int
 	if (opcode % 1000) > 100 {
 		read1 = &stack[xp+1]
@@ -190,10 +192,18 @@ func out(stack []int, xp int) program {
 	if xp+1 >= len(stack) {
 		return invalid(stack)
 	}
-	loc := stack[xp+1]
-	if loc >= len(stack) || loc < 0 {
-		return invalid(stack)
+	opcode := stack[xp]
+
+	var out *int
+	if (opcode % 1000) > 100 {
+		out = &stack[xp+1]
+	} else {
+		loc := stack[xp+1]
+		if loc >= len(stack) || loc < 0 {
+			return invalid(stack)
+		}
+		out = &stack[loc]
 	}
-	out := &stack[loc]
+
 	return program{stack, xp + 2, out, nil}
 }
