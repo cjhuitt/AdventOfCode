@@ -73,6 +73,10 @@ func (p program) Output() *int {
 	return p.output
 }
 
+func (p program) WithInput(input int) program {
+	return p
+}
+
 func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
 		return program{stack, -1, nil}

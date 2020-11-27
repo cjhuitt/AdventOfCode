@@ -155,6 +155,7 @@ func TestOutputOpCode(t *testing.T) {
 		}
 	}
 }
+
 func TestPausesAtOutput(t *testing.T) {
 	tests := []struct {
 		input  []int
@@ -173,6 +174,23 @@ func TestPausesAtOutput(t *testing.T) {
 			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.input, i)
 		} else if got.IsDone() != tc.ended {
 			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.input, i)
+		}
+	}
+}
+
+func TestInputOpCode(t *testing.T) {
+	tests := []struct {
+		program []int
+		input   int
+		want    []int
+	}{
+		{program: []int{3, 1, 99}, input: 5, want: []int{3, 5, 99}},
+	}
+	for i, tc := range tests {
+		p := New(tc.program).WithInput(tc.input)
+		got := p.Step().Data()
+		if !Equal(tc.want, got) {
+			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
 }
