@@ -126,7 +126,14 @@ func mult(stack []int, xp int) program {
 }
 
 func in(stack []int, xp int, input *int) program {
+	if xp+1 >= len(stack) {
+		return invalid(stack)
+	}
 	loc := stack[xp+1]
+	if loc >= len(stack) || loc < 0 {
+		return invalid(stack)
+	}
+
 	if input == nil {
 		// Prep and repeat instruction
 		in := &stack[loc]
