@@ -36,32 +36,18 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Attempt to find proper execution input
-	value := 0
-	i := 0
-	j := -1
-	for value != 19690720 {
-		temp := make([]int, len(stack))
-		copy(temp, stack)
-
-		temp[1] = i
-		temp[2] = j
-
-		program := Intcode.New(temp)
+	program := Intcode.New(stack)
+	input := 1
+	for !program.IsDone() {
 		program = program.Execute()
-		value = program.Data()[0]
-		if value == 19690720 {
-			break
+		if program.WantsInput() {
+			fmt.Println("In:", input)
+			program = program.WithInput(&input)
 		}
-		j++
-		if j >= 100 {
-			i++
-			if i >= 100 {
-				break
-			}
-			j = 0
+		if program.HasOutput() {
+			fmt.Println("Out:", *program.Output())
 		}
 	}
 
-	fmt.Println("100 *", i, "+", j, "=", (100*i)+j)
+	fmt.Println("Done")
 }
