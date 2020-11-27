@@ -83,8 +83,7 @@ func (set generators) Next() (generators, error) {
 }
 
 func main() {
-	//g := InitGenerators(1, 2, 8, 3, 9, 2)
-	g := InitGenerators(1, 2, 8, 3, 9, 9)
+	g := InitGenerators(1, 2, 8, 3, 9, 2)
 	var err error
 	for true {
 		fmt.Println(g.Value())
