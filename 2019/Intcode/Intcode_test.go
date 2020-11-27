@@ -165,7 +165,9 @@ func TestPausesAtOutput(t *testing.T) {
 		{input: []int{4, 1, 2, 0, 1, 2, 99}, paused: true, ended: false},
 		{input: []int{2, 0, 1, 2, 4, 1, 2, 0, 1, 2, 99}, paused: true, ended: false},
 		{input: []int{2, 0, 1, 2, 2, 0, 1, 2, 99}, paused: false, ended: true},
-		{input: []int{4, 1, 99}, paused: false, ended: true}, // if terminating execution, don't count as "paused"
+
+		// if terminating execution, don't count as "paused"
+		{input: []int{4, 1, 99}, paused: false, ended: true},
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
@@ -197,6 +199,30 @@ func TestInputOpCode(t *testing.T) {
 		got := p.Step().Data()
 		if !Equal(tc.want, got) {
 			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
+
+func TestPausesAtInput(t *testing.T) {
+	tests := []struct {
+		program []int
+		paused  bool
+		ended   bool
+	}{
+		{program: []int{3, 1, 2, 0, 1, 2, 99}, paused: true, ended: false},
+		{program: []int{2, 0, 1, 2, 3, 1, 2, 0, 1, 2, 99}, paused: true, ended: false},
+		{program: []int{2, 0, 1, 2, 2, 0, 1, 2, 99}, paused: false, ended: true},
+
+		// if terminating execution but input hasn't been received yet, be paused
+		{program: []int{3, 1, 99}, paused: true, ended: false},
+	}
+	for i, tc := range tests {
+		p := New(tc.program)
+		got := p.Execute()
+		if got.IsPaused() != tc.paused {
+			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.program, i)
+		} else if got.IsDone() != tc.ended {
+			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.program, i)
 		}
 	}
 }
