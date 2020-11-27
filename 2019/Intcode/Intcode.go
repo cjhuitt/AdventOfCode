@@ -89,18 +89,20 @@ func (p program) WithInput(input *int) program {
 	return program{p.stack, p.xp, nil, input}
 }
 
+func cutoff(pnum int) (int, int) {
+	cut := 100
+	for i := 1; i < pnum; i++ {
+		cut = cut * 10
+	}
+	return cut, cut * 10
+}
+
 func find_read(stack []int, opcode, pos, pnum int) *int {
 	var input *int
-	var mod, threshold int
-	switch pnum {
-	case 1:
-		mod = 1000
-		threshold = 100
-	case 2:
-		mod = 10000
-		threshold = 1000
-	}
-	if (opcode % mod) > threshold {
+
+	cut, mod := cutoff(pnum)
+
+	if (opcode % mod) > cut {
 		input = &stack[pos+pnum]
 	} else {
 		loc := stack[pos+pnum]
@@ -113,15 +115,7 @@ func find_read(stack []int, opcode, pos, pnum int) *int {
 }
 
 func find_write(stack []int, opcode, pos, pnum int) *int {
-	var threshold int
-	switch pnum {
-	case 1:
-		threshold = 100
-	case 2:
-		threshold = 1000
-	case 3:
-		threshold = 10000
-	}
+	threshold, _ := cutoff(pnum)
 	if opcode > threshold {
 		return nil
 	}
