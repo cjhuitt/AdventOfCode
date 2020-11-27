@@ -226,3 +226,19 @@ func TestPausesAtInput(t *testing.T) {
 		}
 	}
 }
+
+func TestParameterCodes(t *testing.T) {
+	tests := []struct {
+		program []int
+		want    []int
+	}{
+		{program: []int{1101, 100, 3, 1, 99}, want: []int{1101, 103, 3, 1, 99}},
+	}
+	for i, tc := range tests {
+		p := New(tc.program)
+		got := p.Step().Data()
+		if !Equal(tc.want, got) {
+			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.program, tc.want, got, i)
+		}
+	}
+}
