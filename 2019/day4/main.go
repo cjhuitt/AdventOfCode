@@ -36,6 +36,13 @@ type generators struct {
 	places [6]generator
 }
 
+func max(a, b int) int {
+	if a < b {
+		return b
+	}
+	return a
+}
+
 func InitGenerators(hun_k, ten_k, k, hun, ten, one int) generators {
 	a := generator{0, 0, 100000}.ResetTo(hun_k)
 	b := generator{0, 0, 10000}.ResetTo(ten_k)
@@ -44,7 +51,20 @@ func InitGenerators(hun_k, ten_k, k, hun, ten, one int) generators {
 	e := generator{0, 0, 10}.ResetTo(ten)
 	f := generator{0, 0, 1}.ResetTo(one)
 
-	return generators{[6]generator{a, b, c, d, e, f}}
+	g := generators{[6]generator{a, b, c, d, e, f}}
+
+	i := 1
+	for ; i < len(g.places); i++ {
+		if g.places[i-1].Position() > g.places[i].Position() {
+			break
+		}
+	}
+	reset := g.places[i-1].Position()
+	for ; i < len(g.places); i++ {
+		g.places[i] = g.places[i].ResetTo(reset)
+	}
+
+	return g
 }
 
 func (set generators) Value() int {
@@ -93,8 +113,8 @@ func (set generators) HasDouble() bool {
 
 func main() {
 	pws := []int{}
-	g := InitGenerators(1, 2, 8, 8, 8, 7)
-	g, err := g.Next() // can skip the first because we know it's not valid
+	g := InitGenerators(1, 2, 8, 3, 9, 2)
+	var err error
 	for err == nil && g.Value() < 643281 {
 		if g.HasDouble() {
 			pws = append(pws, g.Value())
