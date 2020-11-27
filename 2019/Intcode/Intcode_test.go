@@ -132,16 +132,19 @@ func TestSamplePrograms(t *testing.T) {
 
 func TestOutputOpCode(t *testing.T) {
 	tests := []struct {
-		input []int
-		want  int
+		input    []int
+		expected bool
+		want     int
 	}{
-		{input: []int{4, 1, 99}, want: 1},
+		{input: []int{4, 1, 99}, expected: true, want: 1},
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
 		got := p.Step().Output()
-		if got == nil {
-			t.Errorf("Expected stepping %v to be have output, it doesn't (case %d)", tc.input, i)
+		if got == nil && tc.expected {
+			t.Errorf("Expected stepping %v to have output, it doesn't (case %d)", tc.input, i)
+		} else if got != nil && !tc.expected {
+			t.Errorf("Expected stepping %v to not have output, it does (case %d)", tc.input, i)
 		} else if tc.want != *got {
 			t.Errorf("Expected stepping %v to output %v, got %v (case %d)", tc.input, tc.want, *got, i)
 		}
