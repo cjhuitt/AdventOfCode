@@ -185,6 +185,8 @@ func TestInputOpCode(t *testing.T) {
 		want    []int
 	}{
 		{program: []int{3, 1, 99}, input: 5, want: []int{3, 5, 99}},
+		{program: []int{3, 0, 99}, input: 5, want: []int{5, 0, 99}},
+		{program: []int{3, 2, 99}, input: 5, want: []int{3, 2, 5}},
 	}
 	for i, tc := range tests {
 		p := New(tc.program)
