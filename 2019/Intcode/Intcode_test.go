@@ -162,6 +162,9 @@ func TestPausesAtOutput(t *testing.T) {
 		ended  bool
 	}{
 		{input: []int{4, 1, 2, 0, 1, 2, 99}, paused: true, ended: false},
+		{input: []int{2, 0, 1, 2, 4, 1, 2, 0, 1, 2, 99}, paused: true, ended: false},
+		{input: []int{2, 0, 1, 2, 2, 0, 1, 2, 99}, paused: false, ended: true},
+		{input: []int{4, 1, 99}, paused: false, ended: true}, // if terminating execution, don't count as "paused"
 	}
 	for i, tc := range tests {
 		p := New(tc.input)

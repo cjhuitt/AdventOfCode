@@ -34,7 +34,7 @@ func (p program) IsDone() bool {
 }
 
 func (p program) IsPaused() bool {
-	return p.output != nil
+	return p.output != nil && !p.IsDone()
 }
 
 // Step through execution of one opcode based on the current execution point
