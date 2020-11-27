@@ -72,6 +72,10 @@ func TestAddOpCode(t *testing.T) {
 
 		// Parameter modes
 		{input: []int{1101, 100, 3, 1, 99}, want: []int{1101, 103, 3, 1, 99}},
+		{input: []int{1001, 1, 3, 1, 99}, want: []int{1001, 4, 3, 1, 99}},
+		{input: []int{101, 100, 3, 1, 99}, want: []int{101, 101, 3, 1, 99}},
+		{input: []int{1101, 100, -5, 1, 99}, want: []int{1101, 95, -5, 1, 99}},
+		{input: []int{11101, 100, -5, 1, 99}, want: []int{11101, 100, -5, 1, 99}},
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
