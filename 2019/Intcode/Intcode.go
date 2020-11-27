@@ -5,8 +5,10 @@ type program struct {
 	stack []int
 	// the execution point
 	xp int
-	// The most recent output (if any)
+	// The output (if any)
 	output *int
+	// Where to store input (if requested)
+	input *int
 }
 
 const (
@@ -17,11 +19,11 @@ const (
 )
 
 func Default() program {
-	return program{make([]int, 0), -1, nil}
+	return program{make([]int, 0), -1, nil, nil}
 }
 
 func New(p []int) program {
-	return program{p, 0, nil}
+	return program{p, 0, nil, nil}
 }
 
 func (p program) IsEmpty() bool {
@@ -50,7 +52,7 @@ func (p program) Step() program {
 		case TERM:
 			break
 		default:
-			return program{p.stack, -1, nil}
+			return program{p.stack, -1, nil, nil}
 		}
 	}
 	return p
@@ -79,7 +81,7 @@ func (p program) WithInput(input int) program {
 
 func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
-		return program{stack, -1, nil}
+		return program{stack, -1, nil, nil}
 	}
 	add1 := stack[xp+1]
 	add2 := stack[xp+2]
@@ -87,17 +89,17 @@ func add(stack []int, xp int) program {
 	if add1 >= len(stack) || add1 < 0 ||
 		add2 >= len(stack) || add2 < 0 ||
 		loc >= len(stack) || loc < 0 {
-		return program{stack, -1, nil}
+		return program{stack, -1, nil, nil}
 	}
 	sum := stack[add1] + stack[add2]
 	new_stack := stack
 	new_stack[loc] = sum
-	return program{new_stack, xp + 4, nil}
+	return program{new_stack, xp + 4, nil, nil}
 }
 
 func mult(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
-		return program{stack, -1, nil}
+		return program{stack, -1, nil, nil}
 	}
 	mult1 := stack[xp+1]
 	mult2 := stack[xp+2]
@@ -105,22 +107,22 @@ func mult(stack []int, xp int) program {
 	if mult1 >= len(stack) || mult1 < 0 ||
 		mult2 >= len(stack) || mult2 < 0 ||
 		loc >= len(stack) || loc < 0 {
-		return program{stack, -1, nil}
+		return program{stack, -1, nil, nil}
 	}
 	mult := stack[mult1] * stack[mult2]
 	new_stack := stack
 	new_stack[loc] = mult
-	return program{new_stack, xp + 4, nil}
+	return program{new_stack, xp + 4, nil, nil}
 }
 
 func out(stack []int, xp int) program {
 	if xp+1 >= len(stack) {
-		return program{stack, -1, nil}
+		return program{stack, -1, nil, nil}
 	}
 	loc := stack[xp+1]
 	if loc >= len(stack) || loc < 0 {
-		return program{stack, -1, nil}
+		return program{stack, -1, nil, nil}
 	}
 	out := &stack[loc]
-	return program{stack, xp + 2, out}
+	return program{stack, xp + 2, out, nil}
 }
