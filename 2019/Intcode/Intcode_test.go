@@ -187,7 +187,8 @@ func TestInputOpCode(t *testing.T) {
 		{program: []int{3, 1, 99}, input: 5, want: []int{3, 5, 99}},
 	}
 	for i, tc := range tests {
-		p := New(tc.program).WithInput(tc.input)
+		p := New(tc.program)
+		p = p.Step().WithInput(&tc.input)
 		got := p.Step().Data()
 		if !Equal(tc.want, got) {
 			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.input, tc.want, got, i)

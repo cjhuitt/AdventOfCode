@@ -14,7 +14,8 @@ type program struct {
 const (
 	ADD  = 1
 	MULT = 2
-	OUT  = 4
+	INP  = 3
+	OUTP = 4
 	TERM = 99
 )
 
@@ -51,7 +52,9 @@ func (p program) Step() program {
 			return add(p.stack, p.xp)
 		case MULT:
 			return mult(p.stack, p.xp)
-		case OUT:
+		case INP:
+			return in(p.stack, p.xp, p.input)
+		case OUTP:
 			return out(p.stack, p.xp)
 		case TERM:
 			break
@@ -79,8 +82,11 @@ func (p program) Output() *int {
 	return p.output
 }
 
-func (p program) WithInput(input int) program {
-	return p
+func (p program) WithInput(input *int) program {
+	if p.input == nil {
+		return invalid(p.stack)
+	}
+	return program{p.stack, p.xp, nil, input}
 }
 
 func add(stack []int, xp int) program {
@@ -117,6 +123,19 @@ func mult(stack []int, xp int) program {
 	new_stack := stack
 	new_stack[loc] = mult
 	return program{new_stack, xp + 4, nil, nil}
+}
+
+func in(stack []int, xp int, input *int) program {
+	loc := stack[xp+1]
+	if input == nil {
+		// Prep and repeat instruction
+		in := &stack[loc]
+		return program{stack, xp, nil, in}
+	}
+
+	new_stack := stack
+	new_stack[loc] = *input
+	return program{new_stack, xp + 2, nil, nil}
 }
 
 func out(stack []int, xp int) program {
