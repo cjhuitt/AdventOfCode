@@ -60,6 +60,10 @@ func (p program) Data() []int {
 	return p.stack
 }
 
+func (p program) Output() (int, error) {
+	return 0, nil
+}
+
 func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
 		return program{stack, -1}
