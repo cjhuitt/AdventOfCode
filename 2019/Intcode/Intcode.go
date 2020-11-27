@@ -18,6 +18,10 @@ const (
 	TERM = 99
 )
 
+func invalid(stack []int) program {
+	return program{stack, -1, nil, nil}
+}
+
 func Default() program {
 	return program{make([]int, 0), -1, nil, nil}
 }
@@ -52,7 +56,7 @@ func (p program) Step() program {
 		case TERM:
 			break
 		default:
-			return program{p.stack, -1, nil, nil}
+			return invalid(p.stack)
 		}
 	}
 	return p
@@ -81,7 +85,7 @@ func (p program) WithInput(input int) program {
 
 func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
-		return program{stack, -1, nil, nil}
+		return invalid(stack)
 	}
 	add1 := stack[xp+1]
 	add2 := stack[xp+2]
@@ -89,7 +93,7 @@ func add(stack []int, xp int) program {
 	if add1 >= len(stack) || add1 < 0 ||
 		add2 >= len(stack) || add2 < 0 ||
 		loc >= len(stack) || loc < 0 {
-		return program{stack, -1, nil, nil}
+		return invalid(stack)
 	}
 	sum := stack[add1] + stack[add2]
 	new_stack := stack
@@ -99,7 +103,7 @@ func add(stack []int, xp int) program {
 
 func mult(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
-		return program{stack, -1, nil, nil}
+		return invalid(stack)
 	}
 	mult1 := stack[xp+1]
 	mult2 := stack[xp+2]
@@ -107,7 +111,7 @@ func mult(stack []int, xp int) program {
 	if mult1 >= len(stack) || mult1 < 0 ||
 		mult2 >= len(stack) || mult2 < 0 ||
 		loc >= len(stack) || loc < 0 {
-		return program{stack, -1, nil, nil}
+		return invalid(stack)
 	}
 	mult := stack[mult1] * stack[mult2]
 	new_stack := stack
@@ -117,11 +121,11 @@ func mult(stack []int, xp int) program {
 
 func out(stack []int, xp int) program {
 	if xp+1 >= len(stack) {
-		return program{stack, -1, nil, nil}
+		return invalid(stack)
 	}
 	loc := stack[xp+1]
 	if loc >= len(stack) || loc < 0 {
-		return program{stack, -1, nil, nil}
+		return invalid(stack)
 	}
 	out := &stack[loc]
 	return program{stack, xp + 2, out, nil}
