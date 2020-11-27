@@ -47,7 +47,7 @@ func (p program) IsPaused() bool {
 // Step through execution of one opcode based on the current execution point
 func (p program) Step() program {
 	if p.xp < len(p.stack) && p.xp >= 0 {
-		switch p.stack[p.xp] {
+		switch p.stack[p.xp] % 100 {
 		case ADD:
 			return add(p.stack, p.xp)
 		case MULT:
@@ -93,15 +93,35 @@ func add(stack []int, xp int) program {
 	if xp+3 >= len(stack) {
 		return invalid(stack)
 	}
-	add1 := stack[xp+1]
-	add2 := stack[xp+2]
+	opcode := stack[xp]
+	var read1 *int
+	if (opcode % 1000) > 100 {
+		read1 = &stack[xp+1]
+	} else {
+		add1 := stack[xp+1]
+		if add1 >= len(stack) || add1 < 0 {
+			return invalid(stack)
+		}
+		read1 = &stack[add1]
+	}
+
+	var read2 *int
+	if (opcode % 10000) > 1000 {
+		read2 = &stack[xp+2]
+	} else {
+		add2 := stack[xp+2]
+		if add2 >= len(stack) || add2 < 0 {
+			return invalid(stack)
+		}
+		read2 = &stack[add2]
+	}
+
 	loc := stack[xp+3]
-	if add1 >= len(stack) || add1 < 0 ||
-		add2 >= len(stack) || add2 < 0 ||
-		loc >= len(stack) || loc < 0 {
+	if loc >= len(stack) || loc < 0 || opcode > 10000 {
 		return invalid(stack)
 	}
-	sum := stack[add1] + stack[add2]
+
+	sum := *read1 + *read2
 	new_stack := stack
 	new_stack[loc] = sum
 	return program{new_stack, xp + 4, nil, nil}
