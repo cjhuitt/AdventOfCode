@@ -69,6 +69,9 @@ func TestAddOpCode(t *testing.T) {
 		{input: []int{1, 3, 3, -1, 2, 3}, want: []int{1, 3, 3, -1, 2, 3}}, // store out of bounds on begin
 
 		{input: []int{1, 3, 3}, want: []int{1, 3, 3}}, // short input test
+
+		// Parameter modes
+		{input: []int{1101, 100, 3, 1, 99}, want: []int{1101, 103, 3, 1, 99}},
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
@@ -223,22 +226,6 @@ func TestPausesAtInput(t *testing.T) {
 			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.program, i)
 		} else if got.IsDone() != tc.ended {
 			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.program, i)
-		}
-	}
-}
-
-func TestParameterCodes(t *testing.T) {
-	tests := []struct {
-		program []int
-		want    []int
-	}{
-		{program: []int{1101, 100, 3, 1, 99}, want: []int{1101, 103, 3, 1, 99}},
-	}
-	for i, tc := range tests {
-		p := New(tc.program)
-		got := p.Step().Data()
-		if !Equal(tc.want, got) {
-			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.program, tc.want, got, i)
 		}
 	}
 }
