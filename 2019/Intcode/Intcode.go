@@ -98,23 +98,27 @@ func cutoff(pnum int) (int, int) {
 }
 
 func find_read(stack []int, opcode, pos, pnum int) *int {
-	var input *int
+	if pos+pnum >= len(stack) {
+		return nil
+	}
 
 	cut, mod := cutoff(pnum)
-
 	if (opcode % mod) > cut {
-		input = &stack[pos+pnum]
-	} else {
-		loc := stack[pos+pnum]
-		if loc >= len(stack) || loc < 0 {
-			return nil
-		}
-		input = &stack[loc]
+		return &stack[pos+pnum]
 	}
-	return input
+
+	loc := stack[pos+pnum]
+	if loc >= len(stack) || loc < 0 {
+		return nil
+	}
+	return &stack[loc]
 }
 
 func find_write(stack []int, opcode, pos, pnum int) *int {
+	if pos+pnum >= len(stack) {
+		return nil
+	}
+
 	threshold, _ := cutoff(pnum)
 	if opcode > threshold {
 		return nil
@@ -128,9 +132,6 @@ func find_write(stack []int, opcode, pos, pnum int) *int {
 }
 
 func add(stack []int, xp int) program {
-	if xp+3 >= len(stack) {
-		return invalid(stack)
-	}
 	opcode := stack[xp]
 	new_stack := stack
 
@@ -146,9 +147,6 @@ func add(stack []int, xp int) program {
 }
 
 func mult(stack []int, xp int) program {
-	if xp+3 >= len(stack) {
-		return invalid(stack)
-	}
 	opcode := stack[xp]
 	new_stack := stack
 
@@ -164,9 +162,6 @@ func mult(stack []int, xp int) program {
 }
 
 func in(stack []int, xp int, input *int) program {
-	if xp+1 >= len(stack) {
-		return invalid(stack)
-	}
 	opcode := stack[xp]
 
 	if input == nil {
@@ -189,9 +184,6 @@ func in(stack []int, xp int, input *int) program {
 }
 
 func out(stack []int, xp int) program {
-	if xp+1 >= len(stack) {
-		return invalid(stack)
-	}
 	opcode := stack[xp]
 
 	out := find_read(stack, opcode, xp, 1)
