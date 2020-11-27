@@ -41,7 +41,15 @@ func (p program) IsDone() bool {
 }
 
 func (p program) IsPaused() bool {
-	return (p.output != nil || p.input != nil) && !p.IsDone()
+	return (p.WantsInput() || p.HasOutput()) && !p.IsDone()
+}
+
+func (p program) WantsInput() bool {
+	return p.input != nil
+}
+
+func (p program) HasOutput() bool {
+	return p.output != nil
 }
 
 // Step through execution of one opcode based on the current execution point
@@ -68,8 +76,11 @@ func (p program) Step() program {
 // Execute the intcode program
 func (p program) Execute() program {
 	temp := p
-	for !temp.IsDone() && !temp.IsPaused() {
+	for !temp.IsDone() {
 		temp = temp.Step()
+		if temp.IsPaused() {
+			break
+		}
 	}
 	return temp
 }
