@@ -92,12 +92,16 @@ func (set generators) HasDouble() bool {
 }
 
 func main() {
-	g := InitGenerators(1, 2, 8, 3, 9, 2)
+	pws := []int{}
+	g := InitGenerators(1, 2, 8, 8, 8, 7)
 	g, err := g.Next() // can skip the first because we know it's not valid
 	for err == nil && g.Value() < 643281 {
 		if g.HasDouble() {
+			pws = append(pws, g.Value())
 			fmt.Println(g.Value())
 		}
 		g, err = g.Next()
 	}
+
+	fmt.Println("Found", len(pws), "candidates")
 }
