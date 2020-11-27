@@ -139,6 +139,9 @@ func TestOutputOpCode(t *testing.T) {
 		{input: []int{4, 1, 99}, expected: true, want: 1},
 		{input: []int{4, 0, 99}, expected: true, want: 4},
 		{input: []int{4, 2, 99}, expected: true, want: 99},
+
+		{input: []int{4, -1, 99}, expected: false, want: 0}, // out of bounds
+		{input: []int{4, 3, 99}, expected: false, want: 0},  // out of bounds
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
@@ -147,7 +150,7 @@ func TestOutputOpCode(t *testing.T) {
 			t.Errorf("Expected stepping %v to have output, it doesn't (case %d)", tc.input, i)
 		} else if got != nil && !tc.expected {
 			t.Errorf("Expected stepping %v to not have output, it does (case %d)", tc.input, i)
-		} else if tc.want != *got {
+		} else if got != nil && tc.want != *got {
 			t.Errorf("Expected stepping %v to output %v, got %v (case %d)", tc.input, tc.want, *got, i)
 		}
 	}
