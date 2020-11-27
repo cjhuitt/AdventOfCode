@@ -204,8 +204,9 @@ func TestInputOpCode(t *testing.T) {
 		{program: []int{3, 0, 99}, input: 5, want: []int{5, 0, 99}},
 		{program: []int{3, 2, 99}, input: 5, want: []int{3, 2, 5}},
 
-		{program: []int{3, -1, 99}, input: 5, want: []int{3, -1, 99}}, // out of bounds
-		{program: []int{3, 4, 99}, input: 5, want: []int{3, 4, 99}},   // out of bounds
+		{program: []int{3, -1, 99}, input: 5, want: []int{3, -1, 99}},   // out of bounds
+		{program: []int{3, 4, 99}, input: 5, want: []int{3, 4, 99}},     // out of bounds
+		{program: []int{103, 2, 99}, input: 5, want: []int{103, 2, 99}}, // Invalid parameterized store
 	}
 	for i, tc := range tests {
 		p := New(tc.program)

@@ -169,8 +169,9 @@ func in(stack []int, xp int, input *int) program {
 	if xp+1 >= len(stack) {
 		return invalid(stack)
 	}
+	opcode := stack[xp]
 	loc := stack[xp+1]
-	if loc >= len(stack) || loc < 0 {
+	if loc >= len(stack) || loc < 0 || opcode > 100 {
 		return invalid(stack)
 	}
 
