@@ -33,6 +33,10 @@ func (p program) IsDone() bool {
 		p.stack[p.xp] == TERM
 }
 
+func (p program) IsPaused() bool {
+	return p.output != nil
+}
+
 // Step through execution of one opcode based on the current execution point
 func (p program) Step() program {
 	if p.xp < len(p.stack) && p.xp >= 0 {
@@ -55,7 +59,7 @@ func (p program) Step() program {
 // Execute the intcode program
 func (p program) Execute() program {
 	temp := p
-	for !temp.IsDone() {
+	for !temp.IsDone() && !temp.IsPaused() {
 		temp = temp.Step()
 	}
 	return temp

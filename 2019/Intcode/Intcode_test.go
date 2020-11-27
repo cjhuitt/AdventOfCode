@@ -155,3 +155,21 @@ func TestOutputOpCode(t *testing.T) {
 		}
 	}
 }
+func TestPausesAtOutput(t *testing.T) {
+	tests := []struct {
+		input  []int
+		paused bool
+		ended  bool
+	}{
+		{input: []int{4, 1, 2, 0, 1, 2, 99}, paused: true, ended: false},
+	}
+	for i, tc := range tests {
+		p := New(tc.input)
+		got := p.Execute()
+		if got.IsPaused() != tc.paused {
+			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.input, i)
+		} else if got.IsDone() != tc.ended {
+			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.input, i)
+		}
+	}
+}
