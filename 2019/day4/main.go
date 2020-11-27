@@ -84,13 +84,9 @@ func (set generators) Next() (generators, error) {
 
 func main() {
 	g := InitGenerators(1, 2, 8, 3, 9, 2)
-	var err error
-	for true {
+	g, err := g.Next() // can skip the first because we know it's not valid
+	for err == nil {
 		fmt.Println(g.Value())
 		g, err = g.Next()
-		if err != nil {
-			fmt.Println("Generated too far")
-			break
-		}
 	}
 }
