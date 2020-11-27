@@ -106,6 +106,9 @@ func TestMultOpCode(t *testing.T) {
 		{input: []int{2, 3, 3, -1, 3, 3}, want: []int{2, 3, 3, -1, 3, 3}}, // store out of bounds on begin
 
 		{input: []int{2, 3, 3}, want: []int{2, 3, 3}}, // short input test
+
+		// Parameter modes
+		{input: []int{1102, 100, 3, 1, 99}, want: []int{1102, 300, 3, 1, 99}},
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
