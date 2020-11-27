@@ -103,8 +103,12 @@ func (set generators) Next() (generators, error) {
 }
 
 func (set generators) HasDouble() bool {
-	for i := 1; i < len(set.places); i++ {
-		if set.places[i-1].Position() == set.places[i].Position() {
+	counts := [10]int{}
+	for _, g := range set.places {
+		counts[g.Position()] += 1
+	}
+	for _, i := range counts {
+		if i == 2 {
 			return true
 		}
 	}
