@@ -137,6 +137,8 @@ func TestOutputOpCode(t *testing.T) {
 		want     int
 	}{
 		{input: []int{4, 1, 99}, expected: true, want: 1},
+		{input: []int{4, 0, 99}, expected: true, want: 4},
+		{input: []int{4, 2, 99}, expected: true, want: 99},
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
