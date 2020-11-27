@@ -139,12 +139,11 @@ func TestOutputOpCode(t *testing.T) {
 	}
 	for i, tc := range tests {
 		p := New(tc.input)
-		got, err := p.Step().Output()
-		if err != nil {
-			t.Errorf("Expected stepping %v to be have output, got %v (case %d)", tc.input, err, i)
-		}
-		if tc.want != got {
-			t.Errorf("Expected stepping %v to output %v, got %v (case %d)", tc.input, tc.want, got, i)
+		got := p.Step().Output()
+		if got == nil {
+			t.Errorf("Expected stepping %v to be have output, it doesn't (case %d)", tc.input, i)
+		} else if tc.want != *got {
+			t.Errorf("Expected stepping %v to output %v, got %v (case %d)", tc.input, tc.want, *got, i)
 		}
 	}
 }

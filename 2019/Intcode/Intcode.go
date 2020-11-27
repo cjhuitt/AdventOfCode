@@ -62,8 +62,8 @@ func (p program) Data() []int {
 	return p.stack
 }
 
-func (p program) Output() (int, error) {
-	return 0, nil
+func (p program) Output() *int {
+	return p.output
 }
 
 func add(stack []int, xp int) program {
