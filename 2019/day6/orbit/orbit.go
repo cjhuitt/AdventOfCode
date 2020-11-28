@@ -23,6 +23,23 @@ func Parse(code string) (string, string, error) {
 	return parts[0], parts[1], nil
 }
 
+func Chart(codes []string) (bodylist, error) {
+	chart := bodylist{}
+	chart["COM"] = NewBody("", "COM")
+	for _, in := range codes {
+		c, id, err := Parse(in)
+		if err != nil {
+			return bodylist{}, err
+		}
+		chart[id] = NewBody(c, id)
+	}
+	for _, b := range chart {
+		b.orbiting = chart[b.orbits]
+	}
+
+	return chart, nil
+}
+
 func NewBody(orbits, id string) *body {
 	b := new(body)
 	b.id = id
