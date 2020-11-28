@@ -32,4 +32,11 @@ func main() {
 	}
 
 	fmt.Println("Found", steps, "steps")
+
+	steps, err = orbit.TransfersBetween(chart, "YOU", "SAN")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Found", steps-2, "transfers")
 }
