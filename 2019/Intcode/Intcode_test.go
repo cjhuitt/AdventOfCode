@@ -249,16 +249,30 @@ func TestJumpIfTrue(t *testing.T) {
 	tests := []struct {
 		program []int
 		want    []int
+		finish  bool
 	}{
-		{program: []int{5, 1, 8, 1101, 10, 20, 0, 99, 7}, want: []int{5, 1, 8, 1101, 10, 20, 0, 99, 7}},
-		{program: []int{5, 6, 8, 1101, 10, 20, 0, 99, 7}, want: []int{30, 6, 8, 1101, 10, 20, 0, 99, 7}},
+		{program: []int{5, 1, 8, 1101, 10, 20, 0, 99, 7}, want: []int{5, 1, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
+		{program: []int{5, 6, 8, 1101, 10, 20, 0, 99, 7}, want: []int{30, 6, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
+
+		// Out of range locations
+		{program: []int{5, -1, 8, 1101, 10, 20, 0, 99, 7}, want: []int{5, -1, 8, 1101, 10, 20, 0, 99, 7}, finish: false},
+		{program: []int{5, 9, 8, 1101, 10, 20, 0, 99, 7}, want: []int{5, 9, 8, 1101, 10, 20, 0, 99, 7}, finish: false},
+		{program: []int{5, 1, -1, 1101, 10, 20, 0, 99, 7}, want: []int{5, 1, -1, 1101, 10, 20, 0, 99, 7}, finish: false},
+		{program: []int{5, 1, 9, 1101, 10, 20, 0, 99, 7}, want: []int{5, 1, 9, 1101, 10, 20, 0, 99, 7}, finish: false},
+
+		// parameter mode
+		{program: []int{105, 0, 8, 1101, 10, 20, 0, 99, 7}, want: []int{30, 0, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
+		{program: []int{1105, 1, 7, 1101, 10, 20, 0, 99, 7}, want: []int{1105, 1, 7, 1101, 10, 20, 0, 99, 7}, finish: true},
+		{program: []int{1005, 6, 7, 1101, 10, 20, 0, 99, 7}, want: []int{30, 6, 7, 1101, 10, 20, 0, 99, 7}, finish: true},
 	}
 	for i, tc := range tests {
 		p := New(tc.program)
 		p = p.Execute()
 		got := p.Data()
-		if p.IsErrored() {
+		if tc.finish && p.IsErrored() {
 			t.Errorf("Expected executing %v to succeed, got %v (case %d)", tc.program, p, i)
+		} else if !tc.finish && !p.IsErrored() {
+			t.Errorf("Expected executing %v to error, got %v (case %d)", tc.program, p, i)
 		} else if !Equal(tc.want, got) {
 			t.Errorf("Expected executing %v to be %v, got %v (case %d)", tc.program, tc.want, got, i)
 		}
