@@ -37,6 +37,7 @@ func TestStepsTo(t *testing.T) {
 		{input: []string{"COM)B", "B)C"}, from: "C", to: "COM", want: 2},
 		{input: []string{"COM)B", "B)C"}, from: "C", to: "B", want: 1},
 		{input: []string{"COM)B", "B)C"}, from: "B", to: "C", want: -1},
+		{input: []string{"COM)B", "B)C"}, from: "D", to: "COM", want: -1},
 	}
 	for i, tc := range tests {
 		chart, err := Chart(tc.input)
