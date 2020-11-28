@@ -64,3 +64,21 @@ func (b *body) StepsTo(t *body) int {
 	}
 	return -1
 }
+
+func (b *body) StepsToCenter() int {
+	if b == nil {
+		return -1
+	}
+
+	i := 1
+	c := b.orbiting
+	for c != nil && c.id != "COM" {
+		i++
+		c = c.orbiting
+	}
+
+	if c != nil {
+		return i
+	}
+	return -1
+}

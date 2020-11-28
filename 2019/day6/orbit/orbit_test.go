@@ -51,3 +51,25 @@ func TestStepsTo(t *testing.T) {
 		}
 	}
 }
+
+func TestStepsToCenter(t *testing.T) {
+	tests := []struct {
+		input []string
+		from  string
+		want  int
+	}{
+		{input: []string{"COM)B", "B)C"}, from: "C", want: 2},
+		{input: []string{"COM)B", "B)C"}, from: "D", want: -1},
+	}
+	for i, tc := range tests {
+		chart, err := Chart(tc.input)
+		if err != nil {
+			t.Errorf("Error on input: %v (case %d)", err, i)
+		} else {
+			got := chart[tc.from].StepsToCenter()
+			if got != tc.want {
+				t.Errorf("Expected (%#v).StepsToCenter() to be %d, got %d (case %d)", tc.from, tc.want, got, i)
+			}
+		}
+	}
+}
