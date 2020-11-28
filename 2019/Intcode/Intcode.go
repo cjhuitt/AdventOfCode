@@ -20,6 +20,12 @@ const (
 	TERM  = 99
 )
 
+func dup(stack []int) []int {
+	temp := make([]int, len(stack))
+	copy(temp, stack)
+	return temp
+}
+
 func invalid(stack []int) program {
 	return program{stack, -1, nil, nil}
 }
@@ -151,7 +157,7 @@ func find_write(stack []int, opcode, pos, pnum int) *int {
 
 func add(stack []int, xp int) program {
 	opcode := stack[xp]
-	new_stack := stack
+	new_stack := dup(stack)
 
 	read1 := find_read(stack, opcode, xp, 1)
 	read2 := find_read(stack, opcode, xp, 2)
@@ -166,7 +172,7 @@ func add(stack []int, xp int) program {
 
 func mult(stack []int, xp int) program {
 	opcode := stack[xp]
-	new_stack := stack
+	new_stack := dup(stack)
 
 	read1 := find_read(stack, opcode, xp, 1)
 	read2 := find_read(stack, opcode, xp, 2)
@@ -192,7 +198,7 @@ func in(stack []int, xp int, input *int) program {
 		return program{stack, xp, nil, write}
 	}
 
-	new_stack := stack
+	new_stack := dup(stack)
 	write := find_write(new_stack, opcode, xp, 1)
 	if write == nil {
 		return invalid(stack)
