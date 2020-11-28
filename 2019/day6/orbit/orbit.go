@@ -81,6 +81,10 @@ func (b *body) StepsToCenter() int {
 		return -1
 	}
 
+	if b.steps > 0 {
+		return b.steps
+	}
+
 	c := b.orbiting.StepsToCenter()
 	if c >= 0 {
 		b.steps = c + 1
