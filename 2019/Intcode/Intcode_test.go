@@ -253,13 +253,14 @@ func TestJumpIfTrue(t *testing.T) {
 		{program: []int{5, 1, 7, 1101, 10, 20, 0, 8, 99}, want: []int{5, 1, 7, 1101, 10, 20, 0, 8, 99}},
 	}
 	for i, tc := range tests {
-		p := New(tc.program)
+		temp := make([]int, len(tc.program))
+		copy(temp, tc.program)
+		p := New(temp)
 		p = p.Execute()
 		got := p.Data()
 		if p.IsErrored() {
-			t.Errorf("Expected executing %v to succeed (case %d)", tc.program, i)
-		}
-		if !Equal(tc.want, got) {
+			t.Errorf("Expected executing %v to succeed, got %v (case %d)", tc.program, p, i)
+		} else if !Equal(tc.want, got) {
 			t.Errorf("Expected executing %v to be %v, got %v (case %d)", tc.program, tc.want, got, i)
 		}
 	}
