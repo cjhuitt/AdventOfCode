@@ -288,19 +288,34 @@ func TestJumps(t *testing.T) {
 	}
 }
 
-func TestEquality(t *testing.T) {
+func TestComparisons(t *testing.T) {
 	tests := []struct {
 		program []int
 		want    []int
+		finish  bool
 	}{
-		{program: []int{7, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}},
+		{program: []int{7, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
+		{program: []int{7, 5, 4, 0, 99, 98}, want: []int{1, 5, 4, 0, 99, 98}, finish: true},
+
+		// Out of range locations
+		{program: []int{7, -1, 5, 0, 99, 98}, want: []int{7, -1, 5, 0, 99, 98}, finish: false},
+		{program: []int{7, 6, 5, 0, 99, 98}, want: []int{7, 6, 5, 0, 99, 98}, finish: false},
+		{program: []int{7, 4, -1, 0, 99, 98}, want: []int{7, 4, -1, 0, 99, 98}, finish: false},
+		{program: []int{7, 4, 6, 0, 99, 98}, want: []int{7, 4, 6, 0, 99, 98}, finish: false},
+
+		// parameter mode
+		{program: []int{1107, 4, 5, 0, 99, 98}, want: []int{1, 4, 5, 0, 99, 98}, finish: true},
+		{program: []int{107, 4, 5, 0, 99, 98}, want: []int{1, 4, 5, 0, 99, 98}, finish: true},
+		{program: []int{1007, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
 	}
 	for i, tc := range tests {
 		p := New(tc.program)
 		p = p.Execute()
 		got := p.Data()
-		if p.IsErrored() {
+		if tc.finish && p.IsErrored() {
 			t.Errorf("Expected executing %v to succeed, got %v (case %d)", tc.program, p, i)
+		} else if !tc.finish && !p.IsErrored() {
+			t.Errorf("Expected executing %v to error, got %v (case %d)", tc.program, p, i)
 		} else if !Equal(tc.want, got) {
 			t.Errorf("Expected executing %v to be %v, got %v (case %d)", tc.program, tc.want, p, i)
 		}
