@@ -35,6 +35,10 @@ func (p program) IsEmpty() bool {
 	return len(p.stack) == 0
 }
 
+func (p program) IsErrored() bool {
+	return p.xp < 0
+}
+
 func (p program) IsDone() bool {
 	return p.xp < 0 || p.xp >= len(p.stack) ||
 		p.stack[p.xp] == TERM
@@ -76,7 +80,7 @@ func (p program) Step() program {
 // Execute the intcode program
 func (p program) Execute() program {
 	temp := p
-	for !temp.IsDone() {
+	for !temp.IsDone() && !temp.IsErrored() {
 		temp = temp.Step()
 		if temp.IsPaused() {
 			break

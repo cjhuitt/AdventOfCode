@@ -216,7 +216,7 @@ func TestInputOpCode(t *testing.T) {
 		p = p.Step().WithInput(&tc.input)
 		got := p.Step().Data()
 		if !Equal(tc.want, got) {
-			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.input, tc.want, got, i)
+			t.Errorf("Expected stepping %v to be %v, got %v (case %d)", tc.program, tc.want, got, i)
 		}
 	}
 }
@@ -241,6 +241,26 @@ func TestPausesAtInput(t *testing.T) {
 			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.program, i)
 		} else if got.IsDone() != tc.ended {
 			t.Errorf("Expected executing %v to not end, it does (case %d)", tc.program, i)
+		}
+	}
+}
+
+func TestJumpIfTrue(t *testing.T) {
+	tests := []struct {
+		program []int
+		want    []int
+	}{
+		{program: []int{5, 1, 7, 1101, 10, 20, 0, 8, 99}, want: []int{5, 1, 7, 1101, 10, 20, 0, 8, 99}},
+	}
+	for i, tc := range tests {
+		p := New(tc.program)
+		p = p.Execute()
+		got := p.Data()
+		if p.IsErrored() {
+			t.Errorf("Expected executing %v to succeed (case %d)", tc.program, i)
+		}
+		if !Equal(tc.want, got) {
+			t.Errorf("Expected executing %v to be %v, got %v (case %d)", tc.program, tc.want, got, i)
 		}
 	}
 }
