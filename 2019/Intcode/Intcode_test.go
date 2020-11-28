@@ -245,7 +245,7 @@ func TestPausesAtInput(t *testing.T) {
 	}
 }
 
-func TestJumpIfTrue(t *testing.T) {
+func TestJumps(t *testing.T) {
 	tests := []struct {
 		program []int
 		want    []int
@@ -253,17 +253,26 @@ func TestJumpIfTrue(t *testing.T) {
 	}{
 		{program: []int{5, 1, 8, 1101, 10, 20, 0, 99, 7}, want: []int{5, 1, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
 		{program: []int{5, 6, 8, 1101, 10, 20, 0, 99, 7}, want: []int{30, 6, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
+		{program: []int{6, 1, 8, 1101, 10, 20, 0, 99, 7}, want: []int{30, 1, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
+		{program: []int{6, 6, 8, 1101, 10, 20, 0, 99, 7}, want: []int{6, 6, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
 
 		// Out of range locations
 		{program: []int{5, -1, 8, 1101, 10, 20, 0, 99, 7}, want: []int{5, -1, 8, 1101, 10, 20, 0, 99, 7}, finish: false},
 		{program: []int{5, 9, 8, 1101, 10, 20, 0, 99, 7}, want: []int{5, 9, 8, 1101, 10, 20, 0, 99, 7}, finish: false},
 		{program: []int{5, 1, -1, 1101, 10, 20, 0, 99, 7}, want: []int{5, 1, -1, 1101, 10, 20, 0, 99, 7}, finish: false},
 		{program: []int{5, 1, 9, 1101, 10, 20, 0, 99, 7}, want: []int{5, 1, 9, 1101, 10, 20, 0, 99, 7}, finish: false},
+		{program: []int{6, -1, 8, 1101, 10, 20, 0, 99, 7}, want: []int{6, -1, 8, 1101, 10, 20, 0, 99, 7}, finish: false},
+		{program: []int{6, 9, 8, 1101, 10, 20, 0, 99, 7}, want: []int{6, 9, 8, 1101, 10, 20, 0, 99, 7}, finish: false},
+		{program: []int{6, 1, -1, 1101, 10, 20, 0, 99, 7}, want: []int{6, 1, -1, 1101, 10, 20, 0, 99, 7}, finish: false},
+		{program: []int{6, 1, 9, 1101, 10, 20, 0, 99, 7}, want: []int{6, 1, 9, 1101, 10, 20, 0, 99, 7}, finish: false},
 
 		// parameter mode
 		{program: []int{105, 0, 8, 1101, 10, 20, 0, 99, 7}, want: []int{30, 0, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
 		{program: []int{1105, 1, 7, 1101, 10, 20, 0, 99, 7}, want: []int{1105, 1, 7, 1101, 10, 20, 0, 99, 7}, finish: true},
 		{program: []int{1005, 6, 7, 1101, 10, 20, 0, 99, 7}, want: []int{30, 6, 7, 1101, 10, 20, 0, 99, 7}, finish: true},
+		{program: []int{106, 0, 8, 1101, 10, 20, 0, 99, 7}, want: []int{106, 0, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
+		{program: []int{1106, 1, 7, 1101, 10, 20, 0, 99, 7}, want: []int{30, 1, 7, 1101, 10, 20, 0, 99, 7}, finish: true},
+		{program: []int{1006, 6, 7, 1101, 10, 20, 0, 99, 7}, want: []int{1006, 6, 7, 1101, 10, 20, 0, 99, 7}, finish: true},
 	}
 	for i, tc := range tests {
 		p := New(tc.program)

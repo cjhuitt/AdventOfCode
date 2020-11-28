@@ -12,12 +12,13 @@ type program struct {
 }
 
 const (
-	ADD   = 1
-	MULT  = 2
-	INP   = 3
-	OUTP  = 4
-	JTRUE = 5
-	TERM  = 99
+	ADD    = 1
+	MULT   = 2
+	INP    = 3
+	OUTP   = 4
+	JTRUE  = 5
+	JFALSE = 6
+	TERM   = 99
 )
 
 func dup(stack []int) []int {
@@ -77,6 +78,8 @@ func (p program) Step() program {
 			return out(p.stack, p.xp)
 		case JTRUE:
 			return jumpIfTrue(p.stack, p.xp)
+		case JFALSE:
+			return jumpIfFalse(p.stack, p.xp)
 		case TERM:
 			break
 		default:
@@ -228,6 +231,25 @@ func jumpIfTrue(stack []int, xp int) program {
 	}
 
 	if *test_val == 0 {
+		return program{stack, xp + 3, nil, nil}
+	}
+	if *jump_loc < 0 || *jump_loc > len(stack) {
+		return invalid(stack)
+	}
+
+	return program{stack, *jump_loc, nil, nil}
+}
+
+func jumpIfFalse(stack []int, xp int) program {
+	opcode := stack[xp]
+
+	test_val := find_read(stack, opcode, xp, 1)
+	jump_loc := find_read(stack, opcode, xp, 2)
+	if test_val == nil || jump_loc == nil {
+		return invalid(stack)
+	}
+
+	if *test_val != 0 {
 		return program{stack, xp + 3, nil, nil}
 	}
 	if *jump_loc < 0 || *jump_loc > len(stack) {
