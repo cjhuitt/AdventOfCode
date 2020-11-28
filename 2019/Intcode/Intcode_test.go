@@ -250,12 +250,11 @@ func TestJumpIfTrue(t *testing.T) {
 		program []int
 		want    []int
 	}{
-		{program: []int{5, 1, 7, 1101, 10, 20, 0, 8, 99}, want: []int{5, 1, 7, 1101, 10, 20, 0, 8, 99}},
+		{program: []int{5, 1, 8, 1101, 10, 20, 0, 99, 7}, want: []int{5, 1, 8, 1101, 10, 20, 0, 99, 7}},
+		{program: []int{5, 6, 8, 1101, 10, 20, 0, 99, 7}, want: []int{30, 6, 8, 1101, 10, 20, 0, 99, 7}},
 	}
 	for i, tc := range tests {
-		temp := make([]int, len(tc.program))
-		copy(temp, tc.program)
-		p := New(temp)
+		p := New(tc.program)
 		p = p.Execute()
 		got := p.Data()
 		if p.IsErrored() {
