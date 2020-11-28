@@ -36,6 +36,7 @@ func TestStepsTo(t *testing.T) {
 	}{
 		{input: []string{"COM)B", "B)C"}, from: "C", to: "COM", want: 2},
 		{input: []string{"COM)B", "B)C"}, from: "C", to: "B", want: 1},
+		{input: []string{"COM)B", "B)C"}, from: "COM", to: "COM", want: 0},
 		{input: []string{"COM)B", "B)C"}, from: "B", to: "C", want: -1},
 		{input: []string{"COM)B", "B)C"}, from: "D", to: "COM", want: -1},
 	}
@@ -59,6 +60,7 @@ func TestStepsToCenter(t *testing.T) {
 		want  int
 	}{
 		{input: []string{"COM)B", "B)C"}, from: "C", want: 2},
+		{input: []string{"COM)B", "B)C"}, from: "COM", want: 0},
 		{input: []string{"COM)B", "B)C"}, from: "D", want: -1},
 	}
 	for i, tc := range tests {

@@ -52,16 +52,19 @@ func (b *body) StepsTo(t *body) int {
 		return -1
 	}
 
-	i := 1
-	c := b.orbiting
-	for c != nil && c != t {
-		i++
-		c = c.orbiting
+	if b == t {
+		return 0
 	}
 
-	if c == t {
-		return i
+	if b.orbiting == nil {
+		return -1
 	}
+
+	next := b.orbiting.StepsTo(t)
+	if next >= 0 {
+		return next + 1
+	}
+
 	return -1
 }
 
@@ -70,15 +73,18 @@ func (b *body) StepsToCenter() int {
 		return -1
 	}
 
-	i := 1
-	c := b.orbiting
-	for c != nil && c.id != "COM" {
-		i++
-		c = c.orbiting
+	if b.id == "COM" {
+		return 0
 	}
 
-	if c != nil {
-		return i
+	if b.orbiting == nil {
+		return -1
+	}
+
+	c := b.orbiting.StepsToCenter()
+	if c >= 0 {
+		b.steps = c + 1
+		return b.steps
 	}
 	return -1
 }
