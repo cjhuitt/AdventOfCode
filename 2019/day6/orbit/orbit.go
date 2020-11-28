@@ -25,13 +25,13 @@ func Parse(code string) (string, string, error) {
 
 func Chart(codes []string) (bodylist, error) {
 	chart := bodylist{}
-	chart["COM"] = NewBody("", "COM")
+	chart["COM"] = newBody("", "COM")
 	for _, in := range codes {
 		c, id, err := Parse(in)
 		if err != nil {
 			return bodylist{}, err
 		}
-		chart[id] = NewBody(c, id)
+		chart[id] = newBody(c, id)
 	}
 	for _, b := range chart {
 		b.orbiting = chart[b.orbits]
@@ -40,7 +40,7 @@ func Chart(codes []string) (bodylist, error) {
 	return chart, nil
 }
 
-func NewBody(orbits, id string) *body {
+func newBody(orbits, id string) *body {
 	b := new(body)
 	b.id = id
 	b.orbits = orbits
