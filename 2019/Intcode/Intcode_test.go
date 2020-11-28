@@ -157,7 +157,7 @@ func TestOutputOpCode(t *testing.T) {
 		{input: []int{4, -1, 99}, expected: false, want: 0}, // out of bounds
 		{input: []int{4, 3, 99}, expected: false, want: 0},  // out of bounds
 
-		// parameter mode
+		// immediate mode
 		{input: []int{104, 25, 99}, expected: true, want: 25},
 	}
 	for i, tc := range tests {
@@ -266,7 +266,7 @@ func TestJumps(t *testing.T) {
 		{program: []int{6, 1, -1, 1101, 10, 20, 0, 99, 7}, want: []int{6, 1, -1, 1101, 10, 20, 0, 99, 7}, finish: false},
 		{program: []int{6, 1, 9, 1101, 10, 20, 0, 99, 7}, want: []int{6, 1, 9, 1101, 10, 20, 0, 99, 7}, finish: false},
 
-		// parameter mode
+		// immediate mode
 		{program: []int{105, 0, 8, 1101, 10, 20, 0, 99, 7}, want: []int{30, 0, 8, 1101, 10, 20, 0, 99, 7}, finish: true},
 		{program: []int{1105, 1, 7, 1101, 10, 20, 0, 99, 7}, want: []int{1105, 1, 7, 1101, 10, 20, 0, 99, 7}, finish: true},
 		{program: []int{1005, 6, 7, 1101, 10, 20, 0, 99, 7}, want: []int{30, 6, 7, 1101, 10, 20, 0, 99, 7}, finish: true},
@@ -309,7 +309,7 @@ func TestComparisons(t *testing.T) {
 		{program: []int{8, 4, -1, 0, 99, 98}, want: []int{8, 4, -1, 0, 99, 98}, finish: false},
 		{program: []int{8, 4, 6, 0, 99, 98}, want: []int{8, 4, 6, 0, 99, 98}, finish: false},
 
-		// parameter mode
+		// immediate mode
 		{program: []int{1107, 4, 5, 0, 99, 98}, want: []int{1, 4, 5, 0, 99, 98}, finish: true},
 		{program: []int{107, 4, 5, 0, 99, 98}, want: []int{1, 4, 5, 0, 99, 98}, finish: true},
 		{program: []int{1007, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
