@@ -287,3 +287,22 @@ func TestJumps(t *testing.T) {
 		}
 	}
 }
+
+func TestEquality(t *testing.T) {
+	tests := []struct {
+		program []int
+		want    []int
+	}{
+		{program: []int{7, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}},
+	}
+	for i, tc := range tests {
+		p := New(tc.program)
+		p = p.Execute()
+		got := p.Data()
+		if p.IsErrored() {
+			t.Errorf("Expected executing %v to succeed, got %v (case %d)", tc.program, p, i)
+		} else if !Equal(tc.want, got) {
+			t.Errorf("Expected executing %v to be %v, got %v (case %d)", tc.program, tc.want, p, i)
+		}
+	}
+}

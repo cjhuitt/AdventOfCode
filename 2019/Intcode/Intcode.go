@@ -18,6 +18,7 @@ const (
 	OUTP   = 4
 	JTRUE  = 5
 	JFALSE = 6
+	LT     = 7
 	TERM   = 99
 )
 
@@ -80,6 +81,9 @@ func (p program) Step() program {
 			return jumpIfTrue(p.stack, p.xp)
 		case JFALSE:
 			return jumpIfFalse(p.stack, p.xp)
+		case LT:
+			return lesser(p.stack, p.xp)
+
 		case TERM:
 			break
 		default:
@@ -257,4 +261,24 @@ func jumpIfFalse(stack []int, xp int) program {
 	}
 
 	return program{stack, *jump_loc, nil, nil}
+}
+
+func lesser(stack []int, xp int) program {
+	opcode := stack[xp]
+	new_stack := dup(stack)
+
+	read1 := find_read(stack, opcode, xp, 1)
+	read2 := find_read(stack, opcode, xp, 2)
+	write := find_write(new_stack, opcode, xp, 3)
+	if read1 == nil || read2 == nil || write == nil {
+		return invalid(stack)
+	}
+
+	if *read1 < *read2 {
+		*write = 1
+	} else {
+		*write = 0
+	}
+
+	return program{new_stack, xp + 4, nil, nil}
 }
