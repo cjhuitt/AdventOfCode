@@ -31,5 +31,11 @@ func NewBody(orbits, id string) *body {
 }
 
 func (b *body) StepsTo(t *body) int {
-	return 0
+	i := 1
+	c := b.orbiting
+	for c != nil && c != t {
+		i++
+		c = c.orbiting
+	}
+	return i
 }

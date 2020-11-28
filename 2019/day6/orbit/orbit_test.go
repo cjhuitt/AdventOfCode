@@ -38,6 +38,7 @@ func TestStepsTo(t *testing.T) {
 	}
 	for i, tc := range tests {
 		chart := bodylist{}
+		chart["COM"] = NewBody("", "COM")
 		for _, in := range tc.input {
 			c, id, err := Parse(in)
 			if err != nil {
