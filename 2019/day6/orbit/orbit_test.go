@@ -90,3 +90,18 @@ func TestTotalSteps(t *testing.T) {
 		}
 	}
 }
+
+func TestTransfersBetween(t *testing.T) {
+	in := []string{"COM)B", "B)C", "C)D", "D)E", "E)F", "B)G", "G)H", "D)I", "E)J", "J)K", "K)L"}
+	chart, err := Chart(in)
+	if err != nil {
+		t.Errorf("Error on input: %v", err)
+	} else {
+		got, err := TransfersBetween(chart, "K", "I")
+		if err != nil {
+			t.Errorf("Expected TransfersBetween() to be 4, got error %v", err)
+		} else if got != 4 {
+			t.Errorf("Expected TransfersBetween() to be 4, got %d", got)
+		}
+	}
+}

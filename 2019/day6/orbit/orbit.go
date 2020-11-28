@@ -104,3 +104,47 @@ func TotalStepsIn(c bodylist) (int, error) {
 	}
 	return sum, nil
 }
+
+func (b *body) toCenter() ([]*body, error) {
+	r := []*body{}
+	last := b
+	for last != nil && last.id != "COM" {
+		r = append([]*body{last}, r...)
+		last = last.orbiting
+	}
+
+	if last != nil {
+		return r, nil
+	}
+
+	return []*body{}, errors.New("No route to center")
+}
+
+func TransfersBetween(c bodylist, from, to string) (int, error) {
+	f := c[from]
+	if f == nil {
+		return -1, errors.New(from + " (from) not in chart")
+	}
+
+	t := c[to]
+	if t == nil {
+		return -1, errors.New(to + " (to) not in chart")
+	}
+
+	ftoc, err := f.toCenter()
+	if err != nil {
+		return -1, err
+	}
+
+	ttoc, err := t.toCenter()
+	if err != nil {
+		return -1, err
+	}
+
+	for ftoc[0] == ttoc[0] {
+		ftoc = ftoc[1:]
+		ttoc = ttoc[1:]
+	}
+
+	return len(ftoc) + len(ttoc), nil
+}
