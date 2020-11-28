@@ -296,17 +296,26 @@ func TestComparisons(t *testing.T) {
 	}{
 		{program: []int{7, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
 		{program: []int{7, 5, 4, 0, 99, 98}, want: []int{1, 5, 4, 0, 99, 98}, finish: true},
+		{program: []int{8, 4, 5, 0, 99, 99}, want: []int{1, 4, 5, 0, 99, 99}, finish: true},
+		{program: []int{8, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
 
 		// Out of range locations
 		{program: []int{7, -1, 5, 0, 99, 98}, want: []int{7, -1, 5, 0, 99, 98}, finish: false},
 		{program: []int{7, 6, 5, 0, 99, 98}, want: []int{7, 6, 5, 0, 99, 98}, finish: false},
 		{program: []int{7, 4, -1, 0, 99, 98}, want: []int{7, 4, -1, 0, 99, 98}, finish: false},
 		{program: []int{7, 4, 6, 0, 99, 98}, want: []int{7, 4, 6, 0, 99, 98}, finish: false},
+		{program: []int{8, -1, 5, 0, 99, 98}, want: []int{8, -1, 5, 0, 99, 98}, finish: false},
+		{program: []int{8, 6, 5, 0, 99, 98}, want: []int{8, 6, 5, 0, 99, 98}, finish: false},
+		{program: []int{8, 4, -1, 0, 99, 98}, want: []int{8, 4, -1, 0, 99, 98}, finish: false},
+		{program: []int{8, 4, 6, 0, 99, 98}, want: []int{8, 4, 6, 0, 99, 98}, finish: false},
 
 		// parameter mode
 		{program: []int{1107, 4, 5, 0, 99, 98}, want: []int{1, 4, 5, 0, 99, 98}, finish: true},
 		{program: []int{107, 4, 5, 0, 99, 98}, want: []int{1, 4, 5, 0, 99, 98}, finish: true},
 		{program: []int{1007, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
+		{program: []int{1108, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
+		{program: []int{108, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
+		{program: []int{1008, 4, 5, 0, 99, 98}, want: []int{0, 4, 5, 0, 99, 98}, finish: true},
 	}
 	for i, tc := range tests {
 		p := New(tc.program)
