@@ -54,5 +54,8 @@ func (b *body) StepsTo(t *body) int {
 		i++
 		c = c.orbiting
 	}
-	return i
+	if c == t {
+		return i
+	}
+	return -1
 }
