@@ -2,13 +2,6 @@ package orbit
 
 import "testing"
 
-func TestErrorsParsingEmptyString(t *testing.T) {
-	c, id, err := Parse("")
-	if err == nil {
-		t.Errorf("Expected parsing %#v to error, got %#v, %#v", "", c, id)
-	}
-}
-
 func TestParsing(t *testing.T) {
 	tests := []struct {
 		input       string
@@ -16,6 +9,7 @@ func TestParsing(t *testing.T) {
 		want_id     string
 		errors      bool
 	}{
+		{input: "", want_center: "", want_id: "", errors: true},
 		{input: "COM)B", want_center: "COM", want_id: "B", errors: false},
 		{input: "B)C", want_center: "B", want_id: "C", errors: false},
 		{input: "D)I", want_center: "D", want_id: "I", errors: false},
