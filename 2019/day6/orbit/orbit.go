@@ -92,3 +92,15 @@ func (b *body) StepsToCenter() int {
 	}
 	return -1
 }
+
+func TotalStepsIn(c bodylist) (int, error) {
+	sum := 0
+	for _, b := range c {
+		s := b.StepsToCenter()
+		if s < 0 {
+			return -1, errors.New("No route from " + b.id + " to center")
+		}
+		sum += b.StepsToCenter()
+	}
+	return sum, nil
+}
