@@ -6,9 +6,13 @@ import (
 )
 
 type body struct {
-	steps  int
-	orbits *body
+	id       string
+	steps    int
+	orbits   string
+	orbiting *body
 }
+
+type bodylist = map[string]*body
 
 func Parse(code string) (string, string, error) {
 	parts := strings.Split(code, ")")
@@ -17,4 +21,15 @@ func Parse(code string) (string, string, error) {
 	}
 
 	return parts[0], parts[1], nil
+}
+
+func NewBody(orbits, id string) *body {
+	b := new(body)
+	b.id = id
+	b.orbits = orbits
+	return b
+}
+
+func (b *body) StepsTo(t *body) int {
+	return 0
 }

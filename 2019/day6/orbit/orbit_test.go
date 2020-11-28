@@ -26,3 +26,31 @@ func TestParsing(t *testing.T) {
 		}
 	}
 }
+
+func TestStepsTo(t *testing.T) {
+	tests := []struct {
+		input []string
+		from  string
+		to    string
+		want  int
+	}{
+		{input: []string{"COM)B", "B)C"}, from: "C", to: "COM", want: 2},
+	}
+	for i, tc := range tests {
+		chart := bodylist{}
+		for _, in := range tc.input {
+			c, id, err := Parse(in)
+			if err != nil {
+				t.Errorf("Error on input %#v (case %d)", in, i)
+			}
+			chart[id] = NewBody(c, id)
+		}
+		for _, b := range chart {
+			b.orbiting = chart[b.orbits]
+		}
+		got := chart[tc.from].StepsTo(chart[tc.to])
+		if got != tc.want {
+			t.Errorf("Expected (%#v).StepsTo(%#v) to be %d, got %d (case %d)", tc.from, tc.to, tc.want, got, i)
+		}
+	}
+}
