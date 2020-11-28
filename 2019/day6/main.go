@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"orbit"
 )
 
 func main() {
@@ -20,5 +22,14 @@ func main() {
 		specs = append(specs, scanner.Text())
 	}
 
-	fmt.Println("Found", len(specs), "specifications")
+	chart, err := orbit.Chart(specs)
+	if err != nil {
+		log.Fatal(err)
+	}
+	steps, err := orbit.TotalStepsIn(chart)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Found", steps, "steps")
 }
