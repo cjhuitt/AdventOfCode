@@ -37,7 +37,7 @@ func main() {
 	}
 
 	program := Intcode.New(stack)
-	input := 1
+	input := 5
 	for !program.IsDone() {
 		program = program.Execute()
 		if program.WantsInput() {
