@@ -37,18 +37,22 @@ func main() {
 
 	sort.Ints(entries)
 
-	i := 0
-	j := len(entries) - 1
-	for true {
-		val := entries[i] + entries[j]
-		if val == 2020 {
-			break
-		} else if val > 2020 {
-			j--
-		} else if val < 2020 {
-			i++
+	val := -1
+	i := -1
+	j := -1
+	k := -1
+done:
+	for i = 0; i < len(entries) && val != 2020; i++ {
+		for j = i + 1; j < len(entries) && val != 2020; j++ {
+			for k = j + 1; k < len(entries) && val != 2020; k++ {
+				val = entries[i] + entries[j] + entries[k]
+				if val == 2020 {
+					break done
+				}
+			}
 		}
 	}
 
-	fmt.Println(entries[i] * entries[j])
+	fmt.Println(i, j, k, entries[i], entries[j], entries[k])
+	fmt.Println(entries[i] * entries[j] * entries[k])
 }
