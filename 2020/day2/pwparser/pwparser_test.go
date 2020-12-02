@@ -3,7 +3,7 @@ package pwparser
 import "testing"
 
 func equalPair(a, b pair) bool {
-	return a.min == b.min && a.max == b.max
+	return a.first == b.first && a.second == b.second
 }
 
 func TestParseRange(t *testing.T) {
