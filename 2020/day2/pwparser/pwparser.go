@@ -41,7 +41,7 @@ func ParseRule(in string) (rule, error) {
 	return rule{s, strings.TrimSpace(parts[1])}, nil
 }
 
-func (r rule) Matches(pw string) bool {
+func (r rule) MatchesType1(pw string) bool {
 	c := strings.Count(pw, r.char)
 	return c >= r.allowed.min && c <= r.allowed.max
 }

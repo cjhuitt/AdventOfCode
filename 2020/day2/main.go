@@ -41,7 +41,7 @@ func main() {
 		}
 
 		pw := strings.TrimSpace(parts[1])
-		if r.Matches(pw) {
+		if r.MatchesType1(pw) {
 			match_count++
 		}
 	}

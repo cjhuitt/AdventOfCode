@@ -60,9 +60,9 @@ func TestRuleMatching(t *testing.T) {
 		{filter: rule{pair{2, 9}, "c"}, pw: "ccccccccc", want: true},
 	}
 	for i, tc := range tests {
-		got := tc.filter.Matches(tc.pw)
+		got := tc.filter.MatchesType1(tc.pw)
 		if got != tc.want {
-			t.Errorf("Expected rule{%v}.Matches(%v) to result in %v, received %v (case %d)", tc.filter, tc.pw, tc.want, got, i)
+			t.Errorf("Expected rule{%v}.MatchesType1(%v) to result in %v, received %v (case %d)", tc.filter, tc.pw, tc.want, got, i)
 		}
 	}
 }
