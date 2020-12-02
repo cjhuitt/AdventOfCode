@@ -49,7 +49,7 @@ func TestParseRule(t *testing.T) {
 	}
 }
 
-func TestRuleMatching(t *testing.T) {
+func TestRuleMatchingType1(t *testing.T) {
 	tests := []struct {
 		filter rule
 		pw     string
@@ -61,6 +61,24 @@ func TestRuleMatching(t *testing.T) {
 	}
 	for i, tc := range tests {
 		got := tc.filter.MatchesType1(tc.pw)
+		if got != tc.want {
+			t.Errorf("Expected rule{%v}.MatchesType1(%v) to result in %v, received %v (case %d)", tc.filter, tc.pw, tc.want, got, i)
+		}
+	}
+}
+
+func TestRuleMatchingType2(t *testing.T) {
+	tests := []struct {
+		filter rule
+		pw     string
+		want   bool
+	}{
+		{filter: rule{pair{1, 3}, "a"}, pw: "abcde", want: true},
+		{filter: rule{pair{1, 3}, "b"}, pw: "cdefg", want: false},
+		{filter: rule{pair{2, 9}, "c"}, pw: "ccccccccc", want: false},
+	}
+	for i, tc := range tests {
+		got := tc.filter.MatchesType2(tc.pw)
 		if got != tc.want {
 			t.Errorf("Expected rule{%v}.MatchesType1(%v) to result in %v, received %v (case %d)", tc.filter, tc.pw, tc.want, got, i)
 		}

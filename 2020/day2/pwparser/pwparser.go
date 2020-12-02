@@ -45,3 +45,9 @@ func (r rule) MatchesType1(pw string) bool {
 	c := strings.Count(pw, r.char)
 	return c >= r.allowed.first && c <= r.allowed.second
 }
+
+func (r rule) MatchesType2(pw string) bool {
+	a := string(pw[r.allowed.first-1])
+	b := string(pw[r.allowed.second-1])
+	return (a == r.char || b == r.char) && a != b
+}
