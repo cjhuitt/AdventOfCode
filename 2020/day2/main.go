@@ -29,6 +29,7 @@ func main() {
 	}
 
 	t1 := 0
+	t2 := 0
 	for _, c := range candidates {
 		parts := strings.Split(c, ":")
 		if len(parts) != 2 {
@@ -44,7 +45,11 @@ func main() {
 		if r.MatchesType1(pw) {
 			t1++
 		}
+		if r.MatchesType2(pw) {
+			t2++
+		}
 	}
 
 	fmt.Println("Found", t1, "type 1 matches")
+	fmt.Println("Found", t2, "type 2 matches")
 }
