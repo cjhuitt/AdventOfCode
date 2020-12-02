@@ -1,7 +1,5 @@
 package pwparser
 
-import "fmt"
-
-func main() {
-	fmt.Println("vim-go")
+func parseRange(in string) (int, int, error) {
+	return 1, 3, nil
 }
