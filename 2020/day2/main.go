@@ -28,7 +28,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	match_count := 0
+	t1 := 0
 	for _, c := range candidates {
 		parts := strings.Split(c, ":")
 		if len(parts) != 2 {
@@ -42,9 +42,9 @@ func main() {
 
 		pw := strings.TrimSpace(parts[1])
 		if r.MatchesType1(pw) {
-			match_count++
+			t1++
 		}
 	}
 
-	fmt.Println("Found", match_count, "matches")
+	fmt.Println("Found", t1, "type 1 matches")
 }
