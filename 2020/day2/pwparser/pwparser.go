@@ -23,3 +23,20 @@ func parseSpan(in string) (span, error) {
 	}
 	return span{min, max}, nil
 }
+
+type rule struct {
+	allowed span
+	char    string
+}
+
+func parseRule(in string) (rule, error) {
+	parts := strings.Split(in, ":")
+	if len(parts) != 2 {
+		return rule{}, errors.New("Invalid rule specification")
+	}
+	s, err := parseSpan(parts[0])
+	if err != nil {
+		return rule{}, err
+	}
+	return rule{s, strings.TrimSpace(parts[1])}, nil
+}
