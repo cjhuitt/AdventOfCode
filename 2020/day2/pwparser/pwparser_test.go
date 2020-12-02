@@ -11,7 +11,7 @@ func TestParseRange(t *testing.T) {
 		{input: "1-3", want: span{1, 3}, want_err: false},
 	}
 	for i, tc := range tests {
-		got, err := parseRange(tc.input)
+		got, err := parseSpan(tc.input)
 		if !tc.want_err && err != nil {
 			t.Errorf("Expected parse(%v) to work, received error %v (case %d)", tc.input, err, i)
 		} else if tc.want.min != got.min || tc.want.max != got.max {
