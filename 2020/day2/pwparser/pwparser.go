@@ -6,26 +6,26 @@ import (
 	"strings"
 )
 
-type span struct{ min, max int }
+type pair struct{ min, max int }
 
-func parseSpan(in string) (span, error) {
+func parsePair(in string) (pair, error) {
 	parts := strings.Split(in, "-")
 	if len(parts) != 2 {
-		return span{}, errors.New("Invalid range specification")
+		return pair{}, errors.New("Invalid range specification")
 	}
 	min, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return span{}, err
+		return pair{}, err
 	}
 	max, err := strconv.Atoi(parts[1])
 	if err != nil {
-		return span{}, err
+		return pair{}, err
 	}
-	return span{min, max}, nil
+	return pair{min, max}, nil
 }
 
 type rule struct {
-	allowed span
+	allowed pair
 	char    string
 }
 
@@ -34,7 +34,7 @@ func ParseRule(in string) (rule, error) {
 	if len(parts) != 2 {
 		return rule{}, errors.New("Invalid rule specification")
 	}
-	s, err := parseSpan(parts[0])
+	s, err := parsePair(parts[0])
 	if err != nil {
 		return rule{}, err
 	}
