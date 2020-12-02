@@ -35,9 +35,9 @@ func TestParseRule(t *testing.T) {
 		want     rule
 		want_err bool
 	}{
-		{input: "1-3: a", want: rule{span{1, 3}, "a"}, want_err: false},
-		{input: "1-3: b", want: rule{span{1, 3}, "b"}, want_err: false},
-		{input: "2-9: c", want: rule{span{2, 9}, "c"}, want_err: false},
+		{input: "1-3 a", want: rule{span{1, 3}, "a"}, want_err: false},
+		{input: "1-3 b", want: rule{span{1, 3}, "b"}, want_err: false},
+		{input: "2-9 c", want: rule{span{2, 9}, "c"}, want_err: false},
 	}
 	for i, tc := range tests {
 		got, err := parseRule(tc.input)
