@@ -40,7 +40,7 @@ func TestParseRule(t *testing.T) {
 		{input: "2-9 c", want: rule{span{2, 9}, "c"}, want_err: false},
 	}
 	for i, tc := range tests {
-		got, err := parseRule(tc.input)
+		got, err := ParseRule(tc.input)
 		if !tc.want_err && err != nil {
 			t.Errorf("Expected parse(%v) to work, received error %v (case %d)", tc.input, err, i)
 		} else if !equalRule(tc.want, got) {

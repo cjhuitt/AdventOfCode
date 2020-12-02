@@ -29,7 +29,7 @@ type rule struct {
 	char    string
 }
 
-func parseRule(in string) (rule, error) {
+func ParseRule(in string) (rule, error) {
 	parts := strings.Split(in, " ")
 	if len(parts) != 2 {
 		return rule{}, errors.New("Invalid rule specification")
