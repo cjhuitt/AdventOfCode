@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
+
+	"pwparser"
 )
 
 func main() {
@@ -25,5 +28,23 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Candidates:", len(candidates))
+	match_count := 0
+	for _, c := range candidates {
+		parts := strings.Split(c, ":")
+		if len(parts) != 2 {
+			log.Fatal("Bad pw entry")
+		}
+
+		r, err := pwparser.ParseRule(parts[0])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		pw := strings.TrimSpace(parts[1])
+		if r.Matches(pw) {
+			match_count++
+		}
+	}
+
+	fmt.Println("Found", match_count, "matches")
 }
