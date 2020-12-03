@@ -14,15 +14,21 @@ func main() {
 	}
 	defer file.Close()
 
-	lines := 0
+	trees := 0
+	pos := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines++
+		line := scanner.Text()
+		pos = pos % len(line)
+		if line[pos] == '#' {
+			trees++
+		}
+		pos += 3
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Read", lines, "lines")
+	fmt.Println("Encountered", trees, "trees")
 }
