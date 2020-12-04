@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"passports"
 )
 
 func main() {
@@ -14,15 +16,34 @@ func main() {
 	}
 	defer file.Close()
 
-	count := 0
+	total := 0
+	valid := 0
+	item := ""
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		count++
+		line := scanner.Text()
+		if line != "" {
+			item += " " + line
+		} else {
+			if passports.Parse(item).IsValid() {
+				valid++
+			}
+			item = ""
+			total++
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(count, "lines")
+	if item != "" {
+		if passports.Parse(item).IsValid() {
+			valid++
+		}
+		item = ""
+		total++
+	}
+
+	fmt.Println(valid, "of", total, "are valid")
 }
