@@ -116,3 +116,31 @@ func TestExpirationYearValidity(t *testing.T) {
 		}
 	}
 }
+
+func TestHeightValidity(t *testing.T) {
+	tests := []struct {
+		input string
+		want  bool
+	}{
+		// empty
+		{input: "", want: false},
+
+		{input: "185", want: false},
+
+		{input: "149cm", want: false},
+		{input: "150cm", want: true},
+		{input: "193cm", want: true},
+		{input: "194cm", want: false},
+
+		{input: "58in", want: false},
+		{input: "59in", want: true},
+		{input: "76in", want: true},
+		{input: "77in", want: false},
+	}
+	for i, tc := range tests {
+		got := isHgtValid(tc.input)
+		if got != tc.want {
+			t.Errorf("Expected isHgtValid(%v) to be %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
