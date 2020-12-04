@@ -42,7 +42,7 @@ func Parse(in string) passport {
 }
 
 func (pp passport) IsValid() bool {
-	return isByrValid(pp.byr) && isIyrValid(pp.iyr) && pp.eyr != "" &&
+	return isByrValid(pp.byr) && isIyrValid(pp.iyr) && isEyrValid(pp.eyr) &&
 		pp.hgt != "" && pp.hcl != "" && pp.ecl != "" && pp.pid != ""
 }
 
@@ -68,4 +68,16 @@ func isIyrValid(in string) bool {
 		return false
 	}
 	return i >= 2010 && i <= 2020
+}
+
+func isEyrValid(in string) bool {
+	matched, err := regexp.MatchString(`20\d\d`, in)
+	if err != nil || !matched {
+		return false
+	}
+	i, err := strconv.Atoi(in)
+	if err != nil {
+		return false
+	}
+	return i >= 2020 && i <= 2030
 }
