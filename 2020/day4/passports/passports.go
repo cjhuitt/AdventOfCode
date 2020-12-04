@@ -42,7 +42,7 @@ func Parse(in string) passport {
 }
 
 func (pp passport) IsValid() bool {
-	return pp.byr != "" && pp.iyr != "" && pp.eyr != "" &&
+	return isByrValid(pp.byr) && pp.iyr != "" && pp.eyr != "" &&
 		pp.hgt != "" && pp.hcl != "" && pp.ecl != "" && pp.pid != ""
 }
 
