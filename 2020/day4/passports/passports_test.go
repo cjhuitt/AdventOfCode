@@ -11,7 +11,14 @@ func TestParseInfoString(t *testing.T) {
 		{input: "", want: passport{}},
 
 		// Individual items
-		{input: "iyr:2013", want: passport{iyr: "2013"}},
+		{input: "byr:1937", want: passport{byr: "1937"}},
+		{input: "iyr:2017", want: passport{iyr: "2017"}},
+		{input: "eyr:2020", want: passport{eyr: "2020"}},
+		{input: "hgt:183cm", want: passport{hgt: "183cm"}},
+		{input: "hcl:#fffffd", want: passport{hcl: "#fffffd"}},
+		{input: "ecl:gry", want: passport{ecl: "gry"}},
+		{input: "pid:860033327", want: passport{pid: "860033327"}},
+		{input: "cid:147", want: passport{cid: "147"}},
 
 		// combination
 	}

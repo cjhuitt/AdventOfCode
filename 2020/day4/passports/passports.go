@@ -14,8 +14,22 @@ func Parse(in string) passport {
 
 	pp := passport{}
 	switch parts[0] {
+	case "byr":
+		pp.byr = parts[1]
 	case "iyr":
 		pp.iyr = parts[1]
+	case "eyr":
+		pp.eyr = parts[1]
+	case "hgt":
+		pp.hgt = parts[1]
+	case "hcl":
+		pp.hcl = parts[1]
+	case "ecl":
+		pp.ecl = parts[1]
+	case "pid":
+		pp.pid = parts[1]
+	case "cid":
+		pp.cid = parts[1]
 	}
 
 	return pp
