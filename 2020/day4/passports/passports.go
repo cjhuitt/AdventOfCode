@@ -1,6 +1,10 @@
 package passports
 
-import "strings"
+import (
+	"regexp"
+	"strconv"
+	"strings"
+)
 
 type passport struct {
 	byr, iyr, eyr, hgt, hcl, ecl, pid, cid string
@@ -40,4 +44,16 @@ func Parse(in string) passport {
 func (pp passport) IsValid() bool {
 	return pp.byr != "" && pp.iyr != "" && pp.eyr != "" &&
 		pp.hgt != "" && pp.hcl != "" && pp.ecl != "" && pp.pid != ""
+}
+
+func isByrValid(in string) bool {
+	matched, err := regexp.MatchString(`\d\d\d\d`, in)
+	if err != nil || !matched {
+		return false
+	}
+	i, err := strconv.Atoi(in)
+	if err != nil {
+		return false
+	}
+	return i >= 1920 && i <= 2002
 }

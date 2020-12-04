@@ -53,3 +53,24 @@ func TestValidity(t *testing.T) {
 		}
 	}
 }
+
+func TestBirthYearValidity(t *testing.T) {
+	tests := []struct {
+		input string
+		want  bool
+	}{
+		// empty
+		{input: "", want: false},
+
+		{input: "1919", want: false},
+		{input: "1920", want: true},
+		{input: "2002", want: true},
+		{input: "2003", want: false},
+	}
+	for i, tc := range tests {
+		got := isByrValid(tc.input)
+		if got != tc.want {
+			t.Errorf("Expected IsByrValid(%v) to be %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
