@@ -7,7 +7,13 @@ func TestParseInfoString(t *testing.T) {
 		input string
 		want  passport
 	}{
+		// empty
 		{input: "", want: passport{}},
+
+		// Individual items
+		{input: "iyr:2013", want: passport{iyr: "2013"}},
+
+		// combination
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
