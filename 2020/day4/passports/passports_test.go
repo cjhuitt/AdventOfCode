@@ -32,3 +32,21 @@ func TestParseInfoString(t *testing.T) {
 		}
 	}
 }
+
+func TestValidity(t *testing.T) {
+	tests := []struct {
+		input string
+		want  bool
+	}{
+		// empty
+		{input: "", want: false},
+
+		{input: "iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884 hcl:#cfa07d byr:1929", want: false},
+	}
+	for i, tc := range tests {
+		got := Parse(tc.input).IsValid()
+		if got != tc.want {
+			t.Errorf("Expected Parse(%v).IsValid() to be %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}

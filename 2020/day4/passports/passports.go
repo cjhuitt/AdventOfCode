@@ -36,3 +36,7 @@ func Parse(in string) passport {
 
 	return pp
 }
+
+func (pp passport) IsValid() bool {
+	return false
+}
