@@ -21,6 +21,7 @@ func TestParseInfoString(t *testing.T) {
 		{input: "cid:147", want: passport{cid: "147"}},
 
 		// combination
+		{input: "ecl:gry cid:147", want: passport{ecl: "gry", cid: "147"}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
