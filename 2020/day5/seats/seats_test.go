@@ -9,6 +9,9 @@ func TestFindRow(t *testing.T) {
 	}{
 		{input: "", want: -1},
 		{input: "FBFBBFF", want: 44},
+		{input: "BFFFBBF", want: 70},
+		{input: "FFFBBBF", want: 14},
+		{input: "BBFFBBF", want: 102},
 	}
 	for i, tc := range tests {
 		got := findRow(tc.input)
