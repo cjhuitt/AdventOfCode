@@ -10,7 +10,7 @@ func getSeat(r, c int) seat {
 	if r < 0 || c < 0 {
 		return invalid()
 	}
-	return seat{r, c, r*8 + c}
+	return seat{r, c, r<<3 + c}
 }
 
 func findRow(in string) int {
@@ -19,13 +19,13 @@ func findRow(in string) int {
 	}
 
 	row := 0
-	half := 64
 	for _, c := range in {
+		row = row << 1
 		if c == 'B' {
-			row += half
+			row += 1
 		}
-		half /= 2
 	}
+
 	return row
 }
 
@@ -35,13 +35,13 @@ func findCol(in string) int {
 	}
 
 	col := 0
-	half := 4
 	for _, c := range in {
+		col = col << 1
 		if c == 'R' {
-			col += half
+			col += 1
 		}
-		half /= 2
 	}
+
 	return col
 }
 
@@ -61,5 +61,5 @@ func (s seat) IsValid() bool {
 }
 
 func (s seat) isEqualTo(other seat) bool {
-	return s.row == other.row && s.col == other.col
+	return s.id == other.id
 }
