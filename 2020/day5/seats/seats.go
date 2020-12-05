@@ -15,3 +15,19 @@ func findRow(in string) int {
 	}
 	return row
 }
+
+func findCol(in string) int {
+	if len(in) != 3 {
+		return -1
+	}
+
+	col := 0
+	half := 4
+	for _, c := range in {
+		if c == 'R' {
+			col += half
+		}
+		half /= 2
+	}
+	return col
+}
