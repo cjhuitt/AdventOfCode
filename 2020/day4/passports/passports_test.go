@@ -194,3 +194,29 @@ func TestEyeColorValidity(t *testing.T) {
 		}
 	}
 }
+
+func TestPassportIdValidity(t *testing.T) {
+	tests := []struct {
+		input string
+		want  bool
+	}{
+		// empty
+		{input: "", want: false},
+
+		{input: "12345678", want: false},
+		{input: "0123456789", want: false},
+		{input: "a00000001", want: false},
+		{input: "OOOOOOOO1", want: false},
+		{input: "        1", want: false},
+
+		{input: "000000001", want: true},
+		{input: "123456789", want: true},
+		{input: "999999999", want: true},
+	}
+	for i, tc := range tests {
+		got := isPidValid(tc.input)
+		if got != tc.want {
+			t.Errorf("Expected isPidValid(%v) to be %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}

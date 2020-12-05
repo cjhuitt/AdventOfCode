@@ -43,7 +43,8 @@ func Parse(in string) passport {
 
 func (pp passport) IsValid() bool {
 	return isByrValid(pp.byr) && isIyrValid(pp.iyr) && isEyrValid(pp.eyr) &&
-		isHgtValid(pp.hgt) && isHclValid(pp.hcl) && isEclValid(pp.ecl) && pp.pid != ""
+		isHgtValid(pp.hgt) && isHclValid(pp.hcl) && isEclValid(pp.ecl) &&
+		isPidValid(pp.pid)
 }
 
 func isByrValid(in string) bool {
@@ -117,4 +118,9 @@ func isEclValid(in string) bool {
 		return true
 	}
 	return false
+}
+
+func isPidValid(in string) bool {
+	matched, err := regexp.MatchString(`^\d{9}$`, in)
+	return err == nil && matched
 }
