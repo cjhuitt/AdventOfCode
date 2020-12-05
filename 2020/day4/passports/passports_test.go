@@ -167,3 +167,30 @@ func TestHairColorValidity(t *testing.T) {
 		}
 	}
 }
+
+func TestEyeColorValidity(t *testing.T) {
+	tests := []struct {
+		input string
+		want  bool
+	}{
+		// empty
+		{input: "", want: false},
+
+		{input: "abc", want: false},
+		{input: "wat", want: false},
+
+		{input: "amb", want: true},
+		{input: "blu", want: true},
+		{input: "brn", want: true},
+		{input: "gry", want: true},
+		{input: "grn", want: true},
+		{input: "hzl", want: true},
+		{input: "oth", want: true},
+	}
+	for i, tc := range tests {
+		got := isEclValid(tc.input)
+		if got != tc.want {
+			t.Errorf("Expected isEclValid(%v) to be %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
