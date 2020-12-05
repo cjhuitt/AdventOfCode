@@ -41,15 +41,19 @@ func TestFindCol(t *testing.T) {
 
 func TestFind(t *testing.T) {
 	tests := []struct {
-		input string
-		want  seat
+		input      string
+		want_valid bool
+		want_id    int
 	}{
-		{input: "", want: invalid()},
+		{input: "", want_valid: false, want_id: -1},
 	}
 	for i, tc := range tests {
 		got := Find(tc.input)
-		if !got.isEqualTo(tc.want) {
-			t.Errorf("Expected Find(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+		if got.IsValid() != tc.want_valid {
+			t.Errorf("Expected Find(%v).IsValid() to result in %v, received %v (case %d)", tc.input, tc.want_valid, got.IsValid(), i)
+		}
+		if got.Id() != tc.want_id {
+			t.Errorf("Expected Find(%v).Id() to result in %v, received %v (case %d)", tc.input, tc.want_id, got.Id(), i)
 		}
 	}
 }

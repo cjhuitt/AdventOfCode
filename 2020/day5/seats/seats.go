@@ -6,6 +6,10 @@ func invalid() seat {
 	return seat{-1, -1, -1}
 }
 
+func getSeat(r, c int) seat {
+	return seat{r, c, r * c}
+}
+
 func findRow(in string) int {
 	if len(in) != 7 {
 		return -1
@@ -40,6 +44,14 @@ func findCol(in string) int {
 
 func Find(in string) seat {
 	return invalid()
+}
+
+func (s seat) Id() int {
+	return s.id
+}
+
+func (s seat) IsValid() bool {
+	return s.id != -1
 }
 
 func (s seat) isEqualTo(other seat) bool {
