@@ -7,7 +7,10 @@ func invalid() seat {
 }
 
 func getSeat(r, c int) seat {
-	return seat{r, c, r * c}
+	if r < 0 || c < 0 {
+		return invalid()
+	}
+	return seat{r, c, r*8 + c}
 }
 
 func findRow(in string) int {
@@ -43,7 +46,10 @@ func findCol(in string) int {
 }
 
 func Find(in string) seat {
-	return invalid()
+	if len(in) != 10 {
+		return invalid()
+	}
+	return getSeat(findRow(in[0:7]), findCol(in[7:10]))
 }
 
 func (s seat) Id() int {

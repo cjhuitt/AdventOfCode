@@ -46,13 +46,16 @@ func TestFind(t *testing.T) {
 		want_id    int
 	}{
 		{input: "", want_valid: false, want_id: -1},
+		{input: "FBFBBFFRLR", want_valid: true, want_id: 357},
+		{input: "BFFFBBFRRR", want_valid: true, want_id: 567},
+		{input: "FFFBBBFRRR", want_valid: true, want_id: 119},
+		{input: "BBFFBBFRLL", want_valid: true, want_id: 820},
 	}
 	for i, tc := range tests {
 		got := Find(tc.input)
 		if got.IsValid() != tc.want_valid {
 			t.Errorf("Expected Find(%v).IsValid() to result in %v, received %v (case %d)", tc.input, tc.want_valid, got.IsValid(), i)
-		}
-		if got.Id() != tc.want_id {
+		} else if got.Id() != tc.want_id {
 			t.Errorf("Expected Find(%v).Id() to result in %v, received %v (case %d)", tc.input, tc.want_id, got.Id(), i)
 		}
 	}
