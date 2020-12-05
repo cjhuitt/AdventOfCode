@@ -1,5 +1,11 @@
 package seats
 
+type seat struct{ row, col, id int }
+
+func invalid() seat {
+	return seat{-1, -1, -1}
+}
+
 func findRow(in string) int {
 	if len(in) != 7 {
 		return -1
@@ -30,4 +36,12 @@ func findCol(in string) int {
 		half /= 2
 	}
 	return col
+}
+
+func Find(in string) seat {
+	return invalid()
+}
+
+func (s seat) isEqualTo(other seat) bool {
+	return s.row == other.row && s.col == other.col
 }

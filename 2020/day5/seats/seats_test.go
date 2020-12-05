@@ -38,3 +38,18 @@ func TestFindCol(t *testing.T) {
 		}
 	}
 }
+
+func TestFind(t *testing.T) {
+	tests := []struct {
+		input string
+		want  seat
+	}{
+		{input: "", want: invalid()},
+	}
+	for i, tc := range tests {
+		got := Find(tc.input)
+		if !got.isEqualTo(tc.want) {
+			t.Errorf("Expected Find(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
