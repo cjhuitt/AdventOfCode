@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"seats"
 )
 
 func main() {
@@ -14,15 +16,18 @@ func main() {
 	}
 	defer file.Close()
 
-	total := 0
+	max := -1
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		total += 1
+		id := seats.Find(scanner.Text()).Id()
+		if id > max {
+			max = id
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(total, "lines")
+	fmt.Println("Max id:", max)
 }
