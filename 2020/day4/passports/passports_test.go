@@ -144,3 +144,26 @@ func TestHeightValidity(t *testing.T) {
 		}
 	}
 }
+
+func TestHairColorValidity(t *testing.T) {
+	tests := []struct {
+		input string
+		want  bool
+	}{
+		// empty
+		{input: "", want: false},
+
+		{input: "123abc", want: false},
+
+		{input: "#12345", want: false},
+		{input: "#1234567", want: false},
+		{input: "#123abc", want: true},
+		{input: "#123abz", want: false},
+	}
+	for i, tc := range tests {
+		got := isHclValid(tc.input)
+		if got != tc.want {
+			t.Errorf("Expected isHclValid(%v) to be %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}

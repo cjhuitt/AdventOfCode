@@ -43,7 +43,7 @@ func Parse(in string) passport {
 
 func (pp passport) IsValid() bool {
 	return isByrValid(pp.byr) && isIyrValid(pp.iyr) && isEyrValid(pp.eyr) &&
-		isHgtValid(pp.hgt) && pp.hcl != "" && pp.ecl != "" && pp.pid != ""
+		isHgtValid(pp.hgt) && isHclValid(pp.hcl) && pp.ecl != "" && pp.pid != ""
 }
 
 func isByrValid(in string) bool {
@@ -104,4 +104,9 @@ func isHgtValid(in string) bool {
 		return inches >= 59 && inches <= 76
 	}
 	return false
+}
+
+func isHclValid(in string) bool {
+	matched, err := regexp.MatchString(`#[0-9a-f]{6}$`, in)
+	return err == nil && matched
 }
