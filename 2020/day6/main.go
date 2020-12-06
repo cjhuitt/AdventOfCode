@@ -14,19 +14,28 @@ func main() {
 	}
 	defer file.Close()
 
-	unique_answers := make(map[rune]int)
+	answers := make(map[rune]int)
 
-	count := 0
+	any_count := 0
+	all_count := 0
+	members := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "" {
-			count += len(unique_answers)
-			unique_answers = make(map[rune]int)
+			for _, c := range answers {
+				if c == members {
+					all_count++
+				}
+				any_count++
+			}
+			answers = make(map[rune]int)
+			members = 0
 		} else {
 			for _, c := range scanner.Text() {
-				unique_answers[c] += 1
+				answers[c] += 1
 			}
+			members++
 		}
 	}
 
@@ -34,5 +43,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Part 1:", count+len(unique_answers), "unique group yes answers")
+	fmt.Println("Part 1:", any_count, "unique group yes answers")
+	fmt.Println("Part 1:", all_count, "complete group yes answers")
 }
