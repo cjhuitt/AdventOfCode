@@ -34,5 +34,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(count+len(answers), "unique answers")
+	fmt.Println("Part 1:", count+len(answers), "unique group yes answers")
 }
