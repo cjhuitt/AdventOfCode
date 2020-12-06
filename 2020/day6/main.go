@@ -14,15 +14,25 @@ func main() {
 	}
 	defer file.Close()
 
+	answers := make(map[rune]int)
+
 	count := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		count++
+		line := scanner.Text()
+		if line == "" {
+			count += len(answers)
+			answers = make(map[rune]int)
+		} else {
+			for _, c := range scanner.Text() {
+				answers[c] += 1
+			}
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(count, "lines")
+	fmt.Println(count+len(answers), "unique answers")
 }
