@@ -75,10 +75,6 @@ func (p program) Execute() (bool, program) {
 	return true, p
 }
 
-func (p program) Position() int {
-	return p.pos
-}
-
 func (p program) Accumulator() int {
 	return p.acc
 }
