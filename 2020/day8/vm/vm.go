@@ -47,6 +47,12 @@ func (p program) Step() program {
 		return p
 	}
 
-	p.pos++
+	op := p.code[p.pos]
+	switch op.op {
+	case "jmp":
+		p.pos += op.val
+	default:
+		p.pos++
+	}
 	return p
 }
