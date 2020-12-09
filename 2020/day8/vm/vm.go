@@ -66,13 +66,13 @@ func (p program) Execute() (bool, program) {
 	i := p.pos
 	for i >= 0 {
 		if trace[i] > 0 {
-			break
+			return false, p
 		}
 		trace[i] += 1
 		p = p.Step()
 		i = p.pos
 	}
-	return false, p
+	return true, p
 }
 
 func (p program) Position() int {

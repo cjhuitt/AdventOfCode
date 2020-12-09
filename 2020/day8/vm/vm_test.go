@@ -91,7 +91,9 @@ func TestExecute(t *testing.T) {
 		input   []string
 		success bool
 	}{
-		{input: []string{""}, success: false},
+		{input: []string{""}, success: true},
+		{input: []string{"nop +1", "acc +2", "jmp -2"}, success: false},
+		{input: []string{"nop +1", "acc +2", "jmp +2"}, success: true},
 	}
 	for i, tc := range tests {
 		good, _ := Parse(tc.input).Execute()
