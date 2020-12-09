@@ -9,6 +9,7 @@ func TestParseOp(t *testing.T) {
 		want_val int
 	}{
 		{input: "", want_op: "", want_val: -1},
+		{input: "nop +0", want_op: "nop", want_val: 0},
 	}
 	for i, tc := range tests {
 		got_op, got_val := parseOp(tc.input)
