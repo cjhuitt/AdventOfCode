@@ -48,6 +48,7 @@ func TestStep(t *testing.T) {
 		want_pos int
 	}{
 		{input: []string{""}, steps: 1, want_pos: -1},
+		{input: []string{"nop +1", "acc +2", "jmp +3"}, steps: 1, want_pos: 1},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)

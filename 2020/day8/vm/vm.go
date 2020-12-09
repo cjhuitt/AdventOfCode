@@ -44,6 +44,9 @@ func Parse(in []string) program {
 func (p program) Step() program {
 	if p.pos < 0 || p.pos >= len(p.code) {
 		p.pos = -1
+		return p
 	}
+
+	p.pos++
 	return p
 }
