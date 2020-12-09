@@ -30,12 +30,17 @@ func parseContents(in string) map[string]int {
 		return map[string]int{}
 	}
 
-	style, count, err := parseContent(in)
-	if err != nil {
-		return map[string]int{}
+	contents := make(map[string]int)
+	for _, s := range strings.Split(in, ", ") {
+		style, count, err := parseContent(s)
+		if err != nil {
+			return map[string]int{}
+		}
+
+		contents[style] = count
 	}
 
-	return map[string]int{style: count}
+	return contents
 }
 
 func Parse(in string) bag {
