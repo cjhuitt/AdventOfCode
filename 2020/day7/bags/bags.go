@@ -14,18 +14,27 @@ func parseStyle(in string) string {
 	return strings.TrimSuffix(in, " bags")
 }
 
+func parseContent(in string) (string, int, error) {
+	parts := strings.Fields(in)
+	count, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return "", -1, err
+	}
+
+	style := strings.Join(parts[1:len(parts)-1], " ")
+	return style, count, nil
+}
+
 func parseContents(in string) map[string]int {
 	if strings.Contains(in, " no ") {
 		return map[string]int{}
 	}
 
-	parts := strings.Fields(in)
-	count, err := strconv.Atoi(parts[0])
+	style, count, err := parseContent(in)
 	if err != nil {
 		return map[string]int{}
 	}
 
-	style := strings.Join(parts[1:len(parts)-1], " ")
 	return map[string]int{style: count}
 }
 
