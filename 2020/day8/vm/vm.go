@@ -78,3 +78,34 @@ func (p program) Execute() (bool, program) {
 func (p program) Accumulator() int {
 	return p.acc
 }
+
+func (p program) dup() program {
+	r := program{}
+	r.code = make([]opcode, len(p.code))
+	_ = copy(r.code, p.code)
+	r.pos = p.pos
+	r.acc = p.acc
+	return r
+}
+
+func (p program) FixNextNop(start int) (int, program, bool) {
+	for i := start; i < len(p.code); i++ {
+		if p.code[i].op == "nop" {
+			r := p.dup()
+			r.code[i].op = "jmp"
+			return i, r, true
+		}
+	}
+	return -1, p, false
+}
+
+func (p program) FixNextJmp(start int) (int, program, bool) {
+	for i := start; i < len(p.code); i++ {
+		if p.code[i].op == "jmp" {
+			r := p.dup()
+			r.code[i].op = "nop"
+			return i, r, true
+		}
+	}
+	return -1, p, false
+}
