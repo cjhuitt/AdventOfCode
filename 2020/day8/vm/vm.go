@@ -12,6 +12,7 @@ type opcode struct {
 
 type program struct {
 	code []opcode
+	pos  int
 }
 
 func parseOp(in string) opcode {
@@ -37,5 +38,12 @@ func Parse(in []string) program {
 		}
 	}
 
+	return p
+}
+
+func (p program) Step() program {
+	if p.pos < 0 || p.pos >= len(p.code) {
+		p.pos = -1
+	}
 	return p
 }

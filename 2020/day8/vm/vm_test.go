@@ -26,17 +26,36 @@ func TestParse(t *testing.T) {
 		want  program
 	}{
 		{input: []string{""}, want: program{}},
-		{input: []string{"nop +10"}, want: program{[]opcode{opcode{"nop", 10}}}},
-		{input: []string{"acc -3"}, want: program{[]opcode{opcode{"acc", -3}}}},
-		{input: []string{"jmp +5"}, want: program{[]opcode{opcode{"jmp", 5}}}},
+		{input: []string{"nop +10"}, want: program{[]opcode{opcode{"nop", 10}}, 0}},
+		{input: []string{"acc -3"}, want: program{[]opcode{opcode{"acc", -3}}, 0}},
+		{input: []string{"jmp +5"}, want: program{[]opcode{opcode{"jmp", 5}}, 0}},
 
 		{input: []string{"nop +1", "acc +2", "jmp +3"},
-			want: program{[]opcode{opcode{"nop", 1}, opcode{"acc", 2}, opcode{"jmp", 3}}}},
+			want: program{[]opcode{opcode{"nop", 1}, opcode{"acc", 2}, opcode{"jmp", 3}}, 0}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
 		if len(got.code) != len(tc.want.code) {
 			t.Errorf("Expected Parse(%v) to result in (%v), received (%v) (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
+
+func TestStep(t *testing.T) {
+	tests := []struct {
+		input    []string
+		steps    int
+		want_pos int
+	}{
+		{input: []string{""}, steps: 1, want_pos: -1},
+	}
+	for i, tc := range tests {
+		got := Parse(tc.input)
+		for i := 0; i < tc.steps; i++ {
+			got = got.Step()
+		}
+		if got.pos != tc.want_pos {
+			t.Errorf("Expected Parse(%v).Step() x %d to end at %d, received %d (case %d)", tc.input, tc.steps, tc.want_pos, got.pos, i)
 		}
 	}
 }
