@@ -5,24 +5,34 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"bags"
 )
 
 func main() {
-	file, err := os.Open("input.txt")
+	file, err := os.Open("test_input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
-	lines := 0
+	lines := []string{}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines++
+		lines = append(lines, scanner.Text())
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Lines read:", lines)
+	specs := bags.ParseSpecs(lines)
+	total := 0
+	for _, spec := range specs {
+		if spec.TotalAllowed("shiny gold", specs) > 0 {
+			total++
+		}
+	}
+
+	fmt.Println("Total allowing shiny gold:", total)
 }

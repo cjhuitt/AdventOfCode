@@ -10,15 +10,6 @@ type parsedBag struct {
 	contents map[string]int
 }
 
-type bag struct {
-	style    string
-	contents map[*bag]int
-}
-
-type bagSpecList struct {
-	contents map[string]*bag
-}
-
 func parseStyle(in string) string {
 	return strings.TrimSuffix(in, " bags")
 }
@@ -61,6 +52,18 @@ func ParseConstraint(in string) parsedBag {
 	return parsedBag{style: parseStyle(parts[0]), contents: parseContents(parts[1])}
 }
 
+func ParseSpecs(specs []string) map[string]parsedBag {
+	list := make(map[string]parsedBag, len(specs))
+	for _, spec := range specs {
+		b := ParseConstraint(spec)
+		if b.style != "" {
+			list[b.style] = b
+		}
+	}
+
+	return list
+}
+
 func (b parsedBag) isEqualTo(other parsedBag) bool {
 	if b.style != other.style || len(b.contents) != len(other.contents) {
 		return false
@@ -72,4 +75,16 @@ func (b parsedBag) isEqualTo(other parsedBag) bool {
 		}
 	}
 	return true
+}
+
+func (b parsedBag) TotalAllowed(in string, specs map[string]parsedBag) int {
+	total := 0
+	for style, count := range b.contents {
+		if style == in {
+			total += count
+		} else {
+			total += specs[style].TotalAllowed(in, specs) * count
+		}
+	}
+	return total
 }
