@@ -13,13 +13,20 @@ func parseStyle(in string) string {
 	return strings.TrimSuffix(in, " bags")
 }
 
+func parseContents(in string) map[string]int {
+	if strings.Contains(in, " no ") {
+		return map[string]int{}
+	}
+	return map[string]int{}
+}
+
 func Parse(in string) bag {
 	parts := strings.Split(in, " contain ")
 	if len(parts) != 2 {
 		return bag{}
 	}
 
-	return bag{style: parseStyle(parts[0])}
+	return bag{style: parseStyle(parts[0]), contents: parseContents(parts[1])}
 }
 
 func (b bag) isEqualTo(other bag) bool {
