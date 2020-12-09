@@ -62,6 +62,16 @@ func (p program) Step() program {
 }
 
 func (p program) Execute() (bool, program) {
+	trace := map[int]int{}
+	instruction := p.Position()
+	for instruction >= 0 {
+		if trace[instruction] > 0 {
+			break
+		}
+		trace[instruction] += 1
+		p = p.Step()
+		instruction = p.Position()
+	}
 	return false, p
 }
 

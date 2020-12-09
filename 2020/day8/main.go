@@ -26,17 +26,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	trace := map[int]int{}
-	program := vm.Parse(source)
-	instruction := program.Position()
-	for instruction >= 0 {
-		if trace[instruction] > 0 {
-			break
-		}
-		trace[instruction] += 1
-		program = program.Step()
-		instruction = program.Position()
-	}
+	_, program := vm.Parse(source).Execute()
 
 	fmt.Println("Accumulator at first repeat instruction is", program.Accumulator())
 }
