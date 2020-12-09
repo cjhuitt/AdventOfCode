@@ -1,6 +1,7 @@
 package bags
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -17,7 +18,15 @@ func parseContents(in string) map[string]int {
 	if strings.Contains(in, " no ") {
 		return map[string]int{}
 	}
-	return map[string]int{}
+
+	parts := strings.Fields(in)
+	count, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return map[string]int{}
+	}
+
+	style := strings.Join(parts[1:len(parts)-1], " ")
+	return map[string]int{style: count}
 }
 
 func Parse(in string) bag {

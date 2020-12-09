@@ -8,7 +8,10 @@ func TestParseConstraint(t *testing.T) {
 		want  bag
 	}{
 		{input: "", want: bag{}},
-		{input: "faded blue bags contain no other bags", want: bag{style: "faded blue", contents: map[string]int{}}},
+		{input: "faded blue bags contain no other bags.",
+			want: bag{style: "faded blue", contents: map[string]int{}}},
+		{input: "bright white bags contain 1 shiny gold bag.",
+			want: bag{style: "bright white", contents: map[string]int{"shiny gold": 1}}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
