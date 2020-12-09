@@ -61,8 +61,8 @@ func (p program) Step() program {
 	return p
 }
 
-func (p program) Execute() bool {
-	return false
+func (p program) Execute() (bool, program) {
+	return false, p
 }
 
 func (p program) Position() int {

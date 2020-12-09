@@ -94,9 +94,9 @@ func TestExecute(t *testing.T) {
 		{input: []string{""}, success: false},
 	}
 	for i, tc := range tests {
-		got := Parse(tc.input).Execute()
-		if got != tc.success {
-			t.Errorf("Expected Parse(%v).Execute() to return %v, received %v (case %d)", tc.input, tc.success, got, i)
+		good, _ := Parse(tc.input).Execute()
+		if good != tc.success {
+			t.Errorf("Expected Parse(%v).Execute() to return %v, received %v (case %d)", tc.input, tc.success, good, i)
 		}
 	}
 }
