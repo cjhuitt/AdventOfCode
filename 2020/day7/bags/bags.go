@@ -5,9 +5,18 @@ import (
 	"strings"
 )
 
-type bag struct {
+type parsedBag struct {
 	style    string
 	contents map[string]int
+}
+
+type bag struct {
+	style    string
+	contents map[*bag]int
+}
+
+type bagSpecList struct {
+	contents map[string]*bag
 }
 
 func parseStyle(in string) string {
@@ -43,16 +52,16 @@ func parseContents(in string) map[string]int {
 	return contents
 }
 
-func Parse(in string) bag {
+func ParseConstraint(in string) parsedBag {
 	parts := strings.Split(in, " contain ")
 	if len(parts) != 2 {
-		return bag{}
+		return parsedBag{}
 	}
 
-	return bag{style: parseStyle(parts[0]), contents: parseContents(parts[1])}
+	return parsedBag{style: parseStyle(parts[0]), contents: parseContents(parts[1])}
 }
 
-func (b bag) isEqualTo(other bag) bool {
+func (b parsedBag) isEqualTo(other parsedBag) bool {
 	if b.style != other.style || len(b.contents) != len(other.contents) {
 		return false
 	}
