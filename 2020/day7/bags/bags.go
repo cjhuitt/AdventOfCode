@@ -88,3 +88,11 @@ func (b parsedBag) TotalAllowed(in string, specs map[string]parsedBag) int {
 	}
 	return total
 }
+
+func (b parsedBag) TotalContained(specs map[string]parsedBag) int {
+	total := 0
+	for style, count := range b.contents {
+		total += (1 + specs[style].TotalContained(specs)) * count
+	}
+	return total
+}

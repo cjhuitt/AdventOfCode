@@ -35,4 +35,7 @@ func main() {
 	}
 
 	fmt.Println("Total that may contain shiny gold:", may_contain)
+
+	g := specs["shiny gold"]
+	fmt.Println("Total bags necessary in shiny gold:", g.TotalContained(specs))
 }
