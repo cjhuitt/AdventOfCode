@@ -27,12 +27,12 @@ func main() {
 	}
 
 	specs := bags.ParseSpecs(lines)
-	total := 0
+	may_contain := 0
 	for _, spec := range specs {
 		if spec.TotalAllowed("shiny gold", specs) > 0 {
-			total++
+			may_contain++
 		}
 	}
 
-	fmt.Println("Total allowing shiny gold:", total)
+	fmt.Println("Total that may contain shiny gold:", may_contain)
 }
