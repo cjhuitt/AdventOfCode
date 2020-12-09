@@ -60,3 +60,11 @@ func (p program) Step() program {
 	}
 	return p
 }
+
+func (p program) Position() int {
+	return p.pos
+}
+
+func (p program) Accumulator() int {
+	return p.acc
+}
