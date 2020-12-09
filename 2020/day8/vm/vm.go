@@ -10,6 +10,10 @@ type opcode struct {
 	val int
 }
 
+type program struct {
+	code []opcode
+}
+
 func parseOp(in string) opcode {
 	parts := strings.Fields(in)
 	if len(parts) != 2 {
@@ -22,4 +26,16 @@ func parseOp(in string) opcode {
 	}
 
 	return opcode{parts[0], i}
+}
+
+func Parse(in []string) program {
+	p := program{}
+	for _, line := range in {
+		op := parseOp(line)
+		if op.op != "" {
+			p.code = append(p.code, op)
+		}
+	}
+
+	return p
 }

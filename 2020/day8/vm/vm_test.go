@@ -19,3 +19,18 @@ func TestParseOp(t *testing.T) {
 		}
 	}
 }
+
+func TestParse(t *testing.T) {
+	tests := []struct {
+		input []string
+		want  program
+	}{
+		{input: []string{""}, want: program{}},
+	}
+	for i, tc := range tests {
+		got := Parse(tc.input)
+		if len(got.code) != len(tc.want.code) {
+			t.Errorf("Expected Parse(%v) to result in (%v), received (%v) (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
