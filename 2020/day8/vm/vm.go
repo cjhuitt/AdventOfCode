@@ -13,6 +13,7 @@ type opcode struct {
 type program struct {
 	code []opcode
 	pos  int
+	acc  int
 }
 
 func parseOp(in string) opcode {
@@ -51,6 +52,9 @@ func (p program) Step() program {
 	switch op.op {
 	case "jmp":
 		p.pos += op.val
+	case "acc":
+		p.acc += op.val
+		p.pos++
 	default:
 		p.pos++
 	}

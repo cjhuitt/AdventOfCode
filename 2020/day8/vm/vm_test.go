@@ -26,12 +26,12 @@ func TestParse(t *testing.T) {
 		want  program
 	}{
 		{input: []string{""}, want: program{}},
-		{input: []string{"nop +10"}, want: program{[]opcode{opcode{"nop", 10}}, 0}},
-		{input: []string{"acc -3"}, want: program{[]opcode{opcode{"acc", -3}}, 0}},
-		{input: []string{"jmp +5"}, want: program{[]opcode{opcode{"jmp", 5}}, 0}},
+		{input: []string{"nop +10"}, want: program{[]opcode{opcode{"nop", 10}}, 0, 0}},
+		{input: []string{"acc -3"}, want: program{[]opcode{opcode{"acc", -3}}, 0, 0}},
+		{input: []string{"jmp +5"}, want: program{[]opcode{opcode{"jmp", 5}}, 0, 0}},
 
 		{input: []string{"nop +1", "acc +2", "jmp +3"},
-			want: program{[]opcode{opcode{"nop", 1}, opcode{"acc", 2}, opcode{"jmp", 3}}, 0}},
+			want: program{[]opcode{opcode{"nop", 1}, opcode{"acc", 2}, opcode{"jmp", 3}}, 0, 0}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
@@ -59,6 +59,29 @@ func TestStep(t *testing.T) {
 		}
 		if got.pos != tc.want_pos {
 			t.Errorf("Expected Parse(%v).Step() x %d to end at %d, received %d (case %d)", tc.input, tc.steps, tc.want_pos, got.pos, i)
+		}
+	}
+}
+
+func TestAccumulator(t *testing.T) {
+	tests := []struct {
+		input    []string
+		steps    int
+		want_acc int
+	}{
+		{input: []string{""}, steps: 1, want_acc: 0},
+		{input: []string{"nop +1", "acc +2", "jmp -2"}, steps: 1, want_acc: 0},
+		{input: []string{"nop +1", "acc +2", "jmp -2"}, steps: 2, want_acc: 2},
+		{input: []string{"nop +1", "acc +2", "jmp -2"}, steps: 3, want_acc: 2},
+		{input: []string{"nop +1", "acc +2", "jmp -2"}, steps: 5, want_acc: 4},
+	}
+	for i, tc := range tests {
+		got := Parse(tc.input)
+		for i := 0; i < tc.steps; i++ {
+			got = got.Step()
+		}
+		if got.acc != tc.want_acc {
+			t.Errorf("Expected Parse(%v).Step() x %d to accumulate %d, received %d (case %d)", tc.input, tc.steps, tc.want_acc, got.acc, i)
 		}
 	}
 }
