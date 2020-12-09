@@ -5,16 +5,21 @@ import (
 	"strings"
 )
 
-func parseOp(in string) (string, int) {
+type opcode struct {
+	op  string
+	val int
+}
+
+func parseOp(in string) opcode {
 	parts := strings.Fields(in)
 	if len(parts) != 2 {
-		return "", -1
+		return opcode{}
 	}
 
 	i, err := strconv.Atoi(parts[1])
 	if err != nil {
-		return "", -1
+		return opcode{}
 	}
 
-	return parts[0], i
+	return opcode{parts[0], i}
 }
