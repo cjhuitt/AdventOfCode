@@ -61,6 +61,10 @@ func (p program) Step() program {
 	return p
 }
 
+func (p program) Execute() bool {
+	return false
+}
+
 func (p program) Position() int {
 	return p.pos
 }

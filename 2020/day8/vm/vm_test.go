@@ -85,3 +85,18 @@ func TestAccumulator(t *testing.T) {
 		}
 	}
 }
+
+func TestExecute(t *testing.T) {
+	tests := []struct {
+		input   []string
+		success bool
+	}{
+		{input: []string{""}, success: false},
+	}
+	for i, tc := range tests {
+		got := Parse(tc.input).Execute()
+		if got != tc.success {
+			t.Errorf("Expected Parse(%v).Execute() to return %v, received %v (case %d)", tc.input, tc.success, got, i)
+		}
+	}
+}
