@@ -26,6 +26,9 @@ func TestParse(t *testing.T) {
 		want  program
 	}{
 		{input: []string{""}, want: program{}},
+		{input: []string{"nop +10"}, want: program{[]opcode{opcode{"nop", 10}}}},
+		{input: []string{"acc -3"}, want: program{[]opcode{opcode{"acc", -3}}}},
+		{input: []string{"jmp +5"}, want: program{[]opcode{opcode{"jmp", 5}}}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
