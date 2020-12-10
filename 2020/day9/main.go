@@ -29,4 +29,5 @@ func run(infile string) {
 
 func main() {
 	run("test_input.txt")
+	run("input.txt")
 }
