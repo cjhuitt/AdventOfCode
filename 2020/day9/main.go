@@ -7,8 +7,8 @@ import (
 	"os"
 )
 
-func main() {
-	file, err := os.Open("test_input.txt")
+func run(infile string) {
+	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,5 +24,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(lines, "lines read")
+	fmt.Println(infile, ":", lines, "lines read")
+}
+
+func main() {
+	run("test_input.txt")
 }
