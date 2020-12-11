@@ -112,8 +112,18 @@ func findWeakness(infile string, preamble int, target int) {
 	defer file.Close()
 
 	buffer := readTo(infile, target)
-	i, j := findSumRange(buffer, target)
-	fmt.Println(infile, ":", buffer[i], "through", buffer[j], "give weakness:", buffer[i]+buffer[j])
+	start, end := findSumRange(buffer, target)
+	min := buffer[start]
+	max := buffer[start]
+	for i := start + 1; i <= end; i++ {
+		if buffer[i] < min {
+			min = buffer[i]
+		}
+		if buffer[i] > max {
+			max = buffer[i]
+		}
+	}
+	fmt.Println(infile, ":", buffer[start], "through", buffer[end], "give weakness:", min+max)
 }
 
 func main() {
