@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func run(infile string) {
+func run(infile string, preamble int) {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
@@ -28,6 +28,6 @@ func run(infile string) {
 }
 
 func main() {
-	run("test_input.txt")
-	run("input.txt")
+	run("test_input.txt", 5)
+	run("input.txt", 25)
 }
