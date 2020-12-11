@@ -87,7 +87,24 @@ func readTo(infile string, target int) []int {
 	return buffer
 }
 
-func findSumSequence(infile string, preamble int, target int) {
+func findSumRange(buffer []int, target int) (int, int) {
+	size := len(buffer)
+	for i := 0; i < size; i++ {
+		curr := buffer[i]
+		for j := i + 1; j < size; j++ {
+			curr += buffer[j]
+			if curr == target {
+				return i, j
+			} else if curr > target {
+				break
+			}
+		}
+	}
+
+	return -1, -1
+}
+
+func findWeakness(infile string, preamble int, target int) {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
@@ -95,15 +112,15 @@ func findSumSequence(infile string, preamble int, target int) {
 	defer file.Close()
 
 	buffer := readTo(infile, target)
-
-	fmt.Println(infile, ":", len(buffer), "lines to target")
+	i, j := findSumRange(buffer, target)
+	fmt.Println(infile, ":", buffer[i], "through", buffer[j], "give weakness:", buffer[i]+buffer[j])
 }
 
 func main() {
 	invalid := findInvalid("test_input.txt", 5)
-	findSumSequence("test_input.txt", 5, invalid)
+	findWeakness("test_input.txt", 5, invalid)
 
 	invalid = findInvalid("input.txt", 25)
-	findSumSequence("input.txt", 25, invalid)
+	findWeakness("input.txt", 25, invalid)
 
 }
