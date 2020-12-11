@@ -59,7 +59,39 @@ func findInvalid(infile string, preamble int) int {
 	return -1
 }
 
+func findSumSequence(infile string, preamble int, target int) {
+	file, err := os.Open(infile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	buffer := []int{}
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		i, err := strconv.Atoi(scanner.Text())
+		if err != nil {
+			log.Fatal(err)
+		}
+		if !valueAllowed(buffer, i, preamble) {
+			fmt.Println(infile, ":", i, "not allowed")
+			return
+		}
+		buffer = addValue(buffer, i, preamble)
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(infile, ": No invalid values")
+}
+
 func main() {
-	_ = findInvalid("test_input.txt", 5)
-	_ = findInvalid("input.txt", 25)
+	invalid := findInvalid("test_input.txt", 5)
+	findSumSequence("test_input.txt", 5, invalid)
+
+	invalid = findInvalid("input.txt", 25)
+	findSumSequence("input.txt", 25, invalid)
+
 }
