@@ -59,7 +59,7 @@ func findInvalid(infile string, preamble int) int {
 	return -1
 }
 
-func findSumSequence(infile string, preamble int, target int) {
+func readTo(infile string, target int) []int {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
@@ -73,18 +73,30 @@ func findSumSequence(infile string, preamble int, target int) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if !valueAllowed(buffer, i, preamble) {
-			fmt.Println(infile, ":", i, "not allowed")
-			return
+		if i == target {
+			return buffer
 		}
-		buffer = addValue(buffer, i, preamble)
+
+		buffer = append(buffer, i)
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ": No invalid values")
+	return buffer
+}
+
+func findSumSequence(infile string, preamble int, target int) {
+	file, err := os.Open(infile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	buffer := readTo(infile, target)
+
+	fmt.Println(infile, ":", len(buffer), "lines to target")
 }
 
 func main() {
