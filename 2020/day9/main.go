@@ -16,6 +16,20 @@ func addValue(buffer []int, value int, max_size int) []int {
 	return append(buffer, value)
 }
 
+func valueAllowed(buffer []int, value int, max_size int) bool {
+	if len(buffer) < max_size {
+		return true
+	}
+	for i := 0; i < max_size; i++ {
+		for j := i + 1; j < max_size; j++ {
+			if buffer[i]+buffer[j] == value {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func run(infile string, preamble int) {
 	file, err := os.Open(infile)
 	if err != nil {
@@ -24,14 +38,16 @@ func run(infile string, preamble int) {
 	defer file.Close()
 
 	buffer := []int{}
-	lines := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i, err := strconv.Atoi(scanner.Text())
 		if err != nil {
 			log.Fatal(err)
 		}
-		lines++
+		if !valueAllowed(buffer, i, preamble) {
+			fmt.Println(infile, ":", i, "not allowed")
+			return
+		}
 		buffer = addValue(buffer, i, preamble)
 	}
 
@@ -39,7 +55,7 @@ func run(infile string, preamble int) {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ":", lines, "lines read")
+	fmt.Println(infile, ": No invalid values")
 }
 
 func main() {
