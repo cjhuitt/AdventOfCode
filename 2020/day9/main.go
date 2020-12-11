@@ -30,7 +30,7 @@ func valueAllowed(buffer []int, value int, max_size int) bool {
 	return false
 }
 
-func run(infile string, preamble int) {
+func findInvalid(infile string, preamble int) int {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
@@ -46,7 +46,7 @@ func run(infile string, preamble int) {
 		}
 		if !valueAllowed(buffer, i, preamble) {
 			fmt.Println(infile, ":", i, "not allowed")
-			return
+			return i
 		}
 		buffer = addValue(buffer, i, preamble)
 	}
@@ -56,9 +56,10 @@ func run(infile string, preamble int) {
 	}
 
 	fmt.Println(infile, ": No invalid values")
+	return -1
 }
 
 func main() {
-	run("test_input.txt", 5)
-	run("input.txt", 25)
+	_ = findInvalid("test_input.txt", 5)
+	_ = findInvalid("input.txt", 25)
 }
