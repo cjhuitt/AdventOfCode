@@ -47,7 +47,7 @@ func arrange(in []int) []int {
 }
 
 func countSteps(in []int) []int {
-	steps := make([]int, 3)
+	steps := make([]int, 4)
 	for i := 1; i < len(in); i++ {
 		diff := in[i] - in[i-1]
 		if diff <= 3 {
@@ -59,11 +59,15 @@ func countSteps(in []int) []int {
 }
 
 func analyze(infile string) {
-	input := readFrom(infile)
-	fmt.Println(infile, ":", len(input), "lines read")
+	data := readFrom(infile)
+	steps := countSteps(arrange(data))
+	fmt.Println(infile, ":", len(data), "lines read")
+	fmt.Println(infile, ":", steps[1], "1-jolt steps,", steps[3], "3-jolt steps")
+	fmt.Println(infile, "result:", steps[1]*steps[3])
 }
 
 func main() {
 	analyze("test_input.txt")
+	fmt.Println()
 	analyze("input.txt")
 }
