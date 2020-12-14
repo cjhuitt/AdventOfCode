@@ -58,9 +58,12 @@ func countSteps(in []int) []int {
 	return steps
 }
 
+func analyze(infile string) {
+	input := readFrom(infile)
+	fmt.Println(infile, ":", len(input), "lines read")
+}
+
 func main() {
-	input := readFrom("test_input.txt")
-	fmt.Println("test_input.txt:", len(input), "lines read")
-	input = readFrom("input.txt")
-	fmt.Println("input.txt:", len(input), "lines read")
+	analyze("test_input.txt")
+	analyze("input.txt")
 }
