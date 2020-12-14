@@ -5,29 +5,36 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 )
 
-func countLines(infile string) {
+func readFrom(infile string) []int {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
-	lines := 0
+	in := []int{}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines++
+		i, err := strconv.Atoi(scanner.Text())
+		if err != nil {
+			log.Fatal(err)
+		}
+		in = append(in, i)
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ":", lines, "lines read")
+	return in
 }
 
 func main() {
-	countLines("test_input.txt")
-	countLines("input.txt")
+	input := readFrom("test_input.txt")
+	fmt.Println("test_input.txt:", len(input), "lines read")
+	input = readFrom("input.txt")
+	fmt.Println("input.txt:", len(input), "lines read")
 }
