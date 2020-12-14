@@ -32,6 +32,32 @@ func readFrom(infile string) []int {
 	return in
 }
 
+func arrange(in []int) []int {
+	out := make([]int, len(in))
+	copy(out, in)
+	for i := 0; i < len(out); i++ {
+		for j := i; j < len(out); j++ {
+			if out[i] > out[j] {
+				out[i], out[j] = out[j], out[i]
+			}
+		}
+	}
+
+	return out
+}
+
+func countSteps(in []int) []int {
+	steps := make([]int, 3)
+	for i := 1; i < len(in); i++ {
+		diff := in[i] - in[i-1]
+		if diff <= 3 {
+			steps[diff] += 1
+		}
+	}
+
+	return steps
+}
+
 func main() {
 	input := readFrom("test_input.txt")
 	fmt.Println("test_input.txt:", len(input), "lines read")
