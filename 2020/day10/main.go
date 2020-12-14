@@ -62,6 +62,24 @@ func countSteps(in []int) []int {
 	return steps
 }
 
+func countVariations(in []int, start int, cache map[int]int) int {
+	v := 0
+	if len(in)-start <= 2 {
+		return 1
+	}
+	for i := start + 1; i < len(in); i++ {
+		if in[i] <= in[start]+3 {
+			if cache[i] < 1 {
+				cache[i] = countVariations(in, i, cache)
+			}
+			v += cache[i]
+		} else {
+			break
+		}
+	}
+	return v
+}
+
 func analyze(infile string) {
 	data := readFrom(infile)
 	data = arrange(data)
@@ -70,6 +88,9 @@ func analyze(infile string) {
 	fmt.Println(infile, ":", len(data), "lines read")
 	fmt.Println(infile, ":", steps[1], "1-jolt steps,", steps[3], "3-jolt steps")
 	fmt.Println(infile, "result:", steps[1]*steps[3])
+
+	cache := map[int]int{}
+	fmt.Println(infile, "variations:", countVariations(data, 0, cache))
 }
 
 func main() {
