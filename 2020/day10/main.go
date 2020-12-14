@@ -46,6 +46,10 @@ func arrange(in []int) []int {
 	return out
 }
 
+func addDeviceAndPort(in []int) []int {
+	return append([]int{0}, append(in, in[len(in)-1]+3)...)
+}
+
 func countSteps(in []int) []int {
 	steps := make([]int, 4)
 	for i := 1; i < len(in); i++ {
@@ -60,7 +64,9 @@ func countSteps(in []int) []int {
 
 func analyze(infile string) {
 	data := readFrom(infile)
-	steps := countSteps(arrange(data))
+	data = arrange(data)
+	data = addDeviceAndPort(data)
+	steps := countSteps(data)
 	fmt.Println(infile, ":", len(data), "lines read")
 	fmt.Println(infile, ":", steps[1], "1-jolt steps,", steps[3], "3-jolt steps")
 	fmt.Println(infile, "result:", steps[1]*steps[3])
