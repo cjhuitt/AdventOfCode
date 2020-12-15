@@ -7,7 +7,12 @@ type seat struct {
 func readRow(in string) []seat {
 	row := []seat{}
 	for _, r := range in {
-		row = append(row, seat{r})
+		switch r {
+		case 'L', '.':
+			row = append(row, seat{r})
+		default:
+			return []seat{}
+		}
 	}
 	return row
 }
