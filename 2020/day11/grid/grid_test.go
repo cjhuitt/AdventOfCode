@@ -8,9 +8,9 @@ func TestReadRow(t *testing.T) {
 		want  []seat
 	}{
 		{input: "", want: []seat{}},
-		{input: "L", want: []seat{seat{'L'}}},
-		{input: ".", want: []seat{seat{'.'}}},
-		{input: "L.L", want: []seat{seat{'L'}, seat{'.'}, seat{'L'}}},
+		{input: "L", want: []seat{newSeat('L')}},
+		{input: ".", want: []seat{newSeat('.')}},
+		{input: "L.L", want: []seat{newSeat('L'), newSeat('.'), newSeat('L')}},
 		{input: "#.L", want: []seat{}},
 	}
 	for i, tc := range tests {
@@ -28,8 +28,8 @@ func TestReadSeating(t *testing.T) {
 	}{
 		{input: []string{}, want: state{}},
 		{input: []string{"L", "L"}, want: state{[][]seat{
-			[]seat{seat{'L'}},
-			[]seat{seat{'L'}}}}},
+			[]seat{newSeat('L')},
+			[]seat{newSeat('L')}}}},
 		{input: []string{"L", "G"}, want: state{}},
 		{input: []string{"L", "L."}, want: state{}},
 	}

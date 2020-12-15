@@ -8,12 +8,16 @@ type state struct {
 	seats [][]seat
 }
 
+func newSeat(state rune) seat {
+	return seat{state}
+}
+
 func readRow(in string) []seat {
 	row := []seat{}
 	for _, r := range in {
 		switch r {
 		case 'L', '.':
-			row = append(row, seat{r})
+			row = append(row, newSeat(r))
 		default:
 			return []seat{}
 		}
