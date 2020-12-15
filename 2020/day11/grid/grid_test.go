@@ -30,6 +30,7 @@ func TestReadSeating(t *testing.T) {
 		{input: []string{"L", "L"}, want: state{[][]seat{
 			[]seat{seat{'L'}},
 			[]seat{seat{'L'}}}}},
+		{input: []string{"L", "G"}, want: state{}},
 	}
 	for i, tc := range tests {
 		got := readSeating(tc.input)

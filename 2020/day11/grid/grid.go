@@ -35,8 +35,12 @@ func seatSlicesEqual(a, b []seat) bool {
 
 func readSeating(in []string) state {
 	s := state{}
-	for _, r := range in {
-		s.seats = append(s.seats, readRow(r))
+	for _, i := range in {
+		r := readRow(i)
+		if len(r) == 0 {
+			return state{}
+		}
+		s.seats = append(s.seats, r)
 	}
 	return s
 }
