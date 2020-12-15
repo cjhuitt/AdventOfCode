@@ -5,7 +5,7 @@ type seat struct {
 	neighbors []*seat
 }
 
-type state struct {
+type deck struct {
 	seats [][]seat
 }
 
@@ -42,22 +42,22 @@ func seatSlicesEqual(a, b []seat) bool {
 	return true
 }
 
-func readSeating(in []string) state {
-	s := state{}
+func readSeating(in []string) deck {
+	s := deck{}
 	l := 0
 	for _, i := range in {
 		r := readRow(i)
 		if l == 0 {
 			l = len(r)
 		} else if len(r) != l {
-			return state{}
+			return deck{}
 		}
 		s.seats = append(s.seats, r)
 	}
 	return s
 }
 
-func (s state) isEqualTo(other state) bool {
+func (s deck) isEqualTo(other deck) bool {
 	if len(s.seats) != len(other.seats) {
 		return false
 	}
@@ -69,6 +69,7 @@ func (s state) isEqualTo(other state) bool {
 	return true
 }
 
-func Parse(in []string) state {
-	return readSeating(in)
+func Parse(in []string) deck {
+	init := readSeating(in)
+	return init
 }

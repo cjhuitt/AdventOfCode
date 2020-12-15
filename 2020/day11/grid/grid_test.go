@@ -24,14 +24,14 @@ func TestReadRow(t *testing.T) {
 func TestReadSeating(t *testing.T) {
 	tests := []struct {
 		input []string
-		want  state
+		want  deck
 	}{
-		{input: []string{}, want: state{}},
-		{input: []string{"L", "L"}, want: state{[][]seat{
+		{input: []string{}, want: deck{}},
+		{input: []string{"L", "L"}, want: deck{[][]seat{
 			[]seat{newSeat('L')},
 			[]seat{newSeat('L')}}}},
-		{input: []string{"L", "G"}, want: state{}},
-		{input: []string{"L", "L."}, want: state{}},
+		{input: []string{"L", "G"}, want: deck{}},
+		{input: []string{"L", "L."}, want: deck{}},
 	}
 	for i, tc := range tests {
 		got := readSeating(tc.input)
@@ -44,9 +44,9 @@ func TestReadSeating(t *testing.T) {
 func TestParse(t *testing.T) {
 	tests := []struct {
 		input []string
-		want  state
+		want  deck
 	}{
-		{input: []string{}, want: state{}},
+		{input: []string{}, want: deck{}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
