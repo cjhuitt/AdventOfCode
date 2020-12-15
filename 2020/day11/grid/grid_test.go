@@ -20,3 +20,18 @@ func TestReadRow(t *testing.T) {
 		}
 	}
 }
+
+func TestReadSeating(t *testing.T) {
+	tests := []struct {
+		input []string
+		want  state
+	}{
+		{input: []string{""}, want: state{}},
+	}
+	for i, tc := range tests {
+		got := readSeating(tc.input)
+		if !got.isEqualTo(tc.want) {
+			t.Errorf("Expected readSeating(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}

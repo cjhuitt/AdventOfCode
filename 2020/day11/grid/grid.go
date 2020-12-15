@@ -4,6 +4,10 @@ type seat struct {
 	state rune
 }
 
+type state struct {
+	seats [][]seat
+}
+
 func readRow(in string) []seat {
 	row := []seat{}
 	for _, r := range in {
@@ -26,5 +30,13 @@ func seatSlicesEqual(a, b []seat) bool {
 			return false
 		}
 	}
+	return true
+}
+
+func readSeating(in []string) state {
+	return state{}
+}
+
+func (s state) isEqualTo(other state) bool {
 	return true
 }
