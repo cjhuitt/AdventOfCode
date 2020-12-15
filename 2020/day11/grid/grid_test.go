@@ -62,15 +62,17 @@ func TestParse(t *testing.T) {
 func TestStep(t *testing.T) {
 	tests := []struct {
 		input []string
-		want  []string
+		want  string
 	}{
-		{input: []string{}, want: []string{}},
+		{input: []string{}, want: ""},
+		{input: []string{"L"}, want: "#"},
 	}
 	for i, tc := range tests {
-		got := Parse(tc.input)
-		got.Step()
-		if !got.isEqualTo(Parse(tc.want)) {
-			t.Errorf("Expected stepping %v to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+		d := Parse(tc.input)
+		d.Step()
+		got := d.Printable()
+		if got != tc.want {
+			t.Errorf("Expected stepping %v to result in %#v, received %#v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
 }

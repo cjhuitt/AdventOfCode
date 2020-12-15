@@ -1,8 +1,11 @@
 package grid
 
+import "strings"
+
 type seat struct {
-	state     rune
-	neighbors []*seat
+	state      rune
+	neighbors  []*seat
+	next_state rune
 }
 
 type deck struct {
@@ -11,7 +14,7 @@ type deck struct {
 }
 
 func newSeat(state rune) seat {
-	return seat{state, []*seat{}}
+	return seat{state, []*seat{}, '.'}
 }
 
 func readRow(in string) []seat {
@@ -25,6 +28,34 @@ func readRow(in string) []seat {
 		}
 	}
 	return row
+}
+
+func (s seat) isOccupied() bool {
+	return s.state == '#'
+}
+
+func (s seat) calculateNext() {
+	occupied := 0
+	if s.state == '.' {
+		s.next_state = '.'
+		return
+	}
+
+	for _, n := range s.neighbors {
+		if n.isOccupied() {
+			occupied++
+		}
+	}
+
+	if s.state == 'L' && occupied == 0 {
+		s.next_state = '#'
+	} else if s.state == '#' && occupied >= 4 {
+		s.next_state = 'L'
+	}
+}
+
+func (s seat) step() {
+	s.state = s.next_state
 }
 
 func (s seat) isEqualTo(other seat) bool {
@@ -176,7 +207,7 @@ func Parse(in []string) deck {
 	init := readSeating(in)
 
 	for i := 0; i < init.width; i++ {
-		for j := 0; j < init.width; j++ {
+		for j := 0; j < init.height; j++ {
 			init.seats[i][j].neighbors = init.neighborsOf(i, j)
 		}
 	}
@@ -185,4 +216,27 @@ func Parse(in []string) deck {
 }
 
 func (d deck) Step() {
+	for i := 0; i < d.width; i++ {
+		for j := 0; j < d.height; j++ {
+			d.seats[i][j].calculateNext()
+		}
+	}
+
+	for i := 0; i < d.width; i++ {
+		for j := 0; j < d.height; j++ {
+			d.seats[i][j].step()
+		}
+	}
+}
+
+func (d deck) Printable() string {
+	var l strings.Builder
+	for i := 0; i < d.width; i++ {
+		for j := 0; j < d.height; j++ {
+			l.WriteRune(d.seats[i][j].state)
+		}
+		l.WriteRune('\n')
+	}
+
+	return l.String()
 }
