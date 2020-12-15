@@ -52,3 +52,7 @@ func (s state) isEqualTo(other state) bool {
 	}
 	return true
 }
+
+func Parse(in []string) state {
+	return readSeating(in)
+}
