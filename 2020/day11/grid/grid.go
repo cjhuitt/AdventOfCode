@@ -18,7 +18,7 @@ func readRow(in string) []seat {
 	row := []seat{}
 	for _, r := range in {
 		switch r {
-		case 'L', '.':
+		case 'L', '.', '#':
 			row = append(row, newSeat(r))
 		default:
 			return []seat{}
@@ -174,10 +174,12 @@ func (d deck) neighborsOf(i, j int) []*seat {
 
 func Parse(in []string) deck {
 	init := readSeating(in)
+
 	for i := 0; i < init.width; i++ {
 		for j := 0; j < init.width; j++ {
 			init.seats[i][j].neighbors = init.neighborsOf(i, j)
 		}
 	}
+
 	return init
 }
