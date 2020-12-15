@@ -8,6 +8,7 @@ func TestReadRow(t *testing.T) {
 		want  []seat
 	}{
 		{input: "", want: []seat{}},
+		{input: "L", want: []seat{seat{'L'}}},
 	}
 	for i, tc := range tests {
 		got := readRow(tc.input)
