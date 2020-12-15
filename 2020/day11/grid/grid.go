@@ -1,7 +1,8 @@
 package grid
 
 type seat struct {
-	state rune
+	state     rune
+	neighbors []*seat
 }
 
 type state struct {
@@ -9,7 +10,7 @@ type state struct {
 }
 
 func newSeat(state rune) seat {
-	return seat{state}
+	return seat{state, []*seat{}}
 }
 
 func readRow(in string) []seat {
@@ -25,12 +26,16 @@ func readRow(in string) []seat {
 	return row
 }
 
+func (s seat) isEqualTo(other seat) bool {
+	return s.state == other.state
+}
+
 func seatSlicesEqual(a, b []seat) bool {
 	if len(a) != len(b) {
 		return false
 	}
 	for i := 0; i < len(a); i++ {
-		if a[i] != b[i] {
+		if !a[i].isEqualTo(b[i]) {
 			return false
 		}
 	}
