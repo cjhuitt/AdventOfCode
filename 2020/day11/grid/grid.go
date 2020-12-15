@@ -38,5 +38,13 @@ func readSeating(in []string) state {
 }
 
 func (s state) isEqualTo(other state) bool {
+	if len(s.seats) != len(other.seats) {
+		return false
+	}
+	for i := 0; i < len(s.seats); i++ {
+		if !seatSlicesEqual(s.seats[i], other.seats[i]) {
+			return false
+		}
+	}
 	return true
 }
