@@ -5,14 +5,14 @@ import "testing"
 func TestReadRow(t *testing.T) {
 	tests := []struct {
 		input string
-		want  []seat
+		want  []*seat
 	}{
-		{input: "", want: []seat{}},
-		{input: "L", want: []seat{newSeat('L')}},
-		{input: ".", want: []seat{newSeat('.')}},
-		{input: "L.L", want: []seat{newSeat('L'), newSeat('.'), newSeat('L')}},
-		{input: "#.L", want: []seat{newSeat('#'), newSeat('.'), newSeat('L')}},
-		{input: "G.L", want: []seat{}},
+		{input: "", want: []*seat{}},
+		{input: "L", want: []*seat{newSeat('L')}},
+		{input: ".", want: []*seat{newSeat('.')}},
+		{input: "L.L", want: []*seat{newSeat('L'), newSeat('.'), newSeat('L')}},
+		{input: "#.L", want: []*seat{newSeat('#'), newSeat('.'), newSeat('L')}},
+		{input: "G.L", want: []*seat{}},
 	}
 	for i, tc := range tests {
 		got := readRow(tc.input)
@@ -28,9 +28,9 @@ func TestReadSeating(t *testing.T) {
 		want  deck
 	}{
 		{input: []string{}, want: deck{}},
-		{input: []string{"L", "L"}, want: deck{[][]seat{
-			[]seat{newSeat('L')},
-			[]seat{newSeat('L')}}, 1, 2}},
+		{input: []string{"L", "L"}, want: deck{[][]*seat{
+			[]*seat{newSeat('L')},
+			[]*seat{newSeat('L')}}, 1, 2}},
 		{input: []string{"L", "G"}, want: deck{}},
 		{input: []string{"L", "L."}, want: deck{}},
 	}
@@ -48,8 +48,8 @@ func TestParse(t *testing.T) {
 		want  deck
 	}{
 		{input: []string{}, want: deck{}},
-		{input: []string{"L"}, want: deck{[][]seat{
-			[]seat{newSeat('L')}}, 1, 1}},
+		{input: []string{"L"}, want: deck{[][]*seat{
+			[]*seat{newSeat('L')}}, 1, 1}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
@@ -65,7 +65,7 @@ func TestStep(t *testing.T) {
 		want  string
 	}{
 		{input: []string{}, want: ""},
-		{input: []string{"L"}, want: "#"},
+		{input: []string{"L"}, want: "#\n"},
 	}
 	for i, tc := range tests {
 		d := Parse(tc.input)

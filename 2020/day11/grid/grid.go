@@ -9,32 +9,34 @@ type seat struct {
 }
 
 type deck struct {
-	seats         [][]seat
+	seats         [][]*seat
 	width, height int
 }
 
-func newSeat(state rune) seat {
-	return seat{state, []*seat{}, '.'}
+func newSeat(state rune) *seat {
+	s := new(seat)
+	s.state = state
+	return s
 }
 
-func readRow(in string) []seat {
-	row := []seat{}
+func readRow(in string) []*seat {
+	row := []*seat{}
 	for _, r := range in {
 		switch r {
 		case 'L', '.', '#':
 			row = append(row, newSeat(r))
 		default:
-			return []seat{}
+			return []*seat{}
 		}
 	}
 	return row
 }
 
-func (s seat) isOccupied() bool {
+func (s *seat) isOccupied() bool {
 	return s.state == '#'
 }
 
-func (s seat) calculateNext() {
+func (s *seat) calculateNext() {
 	occupied := 0
 	if s.state == '.' {
 		s.next_state = '.'
@@ -54,7 +56,7 @@ func (s seat) calculateNext() {
 	}
 }
 
-func (s seat) step() {
+func (s *seat) step() {
 	s.state = s.next_state
 }
 
@@ -62,12 +64,12 @@ func (s seat) isEqualTo(other seat) bool {
 	return s.state == other.state
 }
 
-func seatSlicesEqual(a, b []seat) bool {
+func seatSlicesEqual(a, b []*seat) bool {
 	if len(a) != len(b) {
 		return false
 	}
 	for i := 0; i < len(a); i++ {
-		if !a[i].isEqualTo(b[i]) {
+		if !a[i].isEqualTo(*b[i]) {
 			return false
 		}
 	}
@@ -105,56 +107,56 @@ func (d deck) northwestOf(i, j int) *seat {
 	if i <= 0 || j <= 0 {
 		return nil
 	}
-	return &d.seats[i-1][j-1]
+	return d.seats[i-1][j-1]
 }
 
 func (d deck) northOf(i, j int) *seat {
 	if j <= 0 {
 		return nil
 	}
-	return &d.seats[i][j-1]
+	return d.seats[i][j-1]
 }
 
 func (d deck) northeastOf(i, j int) *seat {
 	if i >= d.width-1 || j <= 0 {
 		return nil
 	}
-	return &d.seats[i+1][j-1]
+	return d.seats[i+1][j-1]
 }
 
 func (d deck) eastOf(i, j int) *seat {
 	if i >= d.width-1 {
 		return nil
 	}
-	return &d.seats[i+1][j]
+	return d.seats[i+1][j]
 }
 
 func (d deck) southeastOf(i, j int) *seat {
 	if i >= d.width-1 || j >= d.height-1 {
 		return nil
 	}
-	return &d.seats[i+1][j+1]
+	return d.seats[i+1][j+1]
 }
 
 func (d deck) southOf(i, j int) *seat {
 	if j >= d.height-1 {
 		return nil
 	}
-	return &d.seats[i][j+1]
+	return d.seats[i][j+1]
 }
 
 func (d deck) southwestOf(i, j int) *seat {
 	if i <= 0 || j >= d.height-1 {
 		return nil
 	}
-	return &d.seats[i-1][j+1]
+	return d.seats[i-1][j+1]
 }
 
 func (d deck) westOf(i, j int) *seat {
 	if i <= 0 {
 		return nil
 	}
-	return &d.seats[i-1][j]
+	return d.seats[i-1][j]
 }
 
 func (d deck) neighborsOf(i, j int) []*seat {
