@@ -48,6 +48,8 @@ func TestParse(t *testing.T) {
 		want  deck
 	}{
 		{input: []string{}, want: deck{}},
+		{input: []string{"L"}, want: deck{[][]seat{
+			[]seat{newSeat('L')}}, 1, 1}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)

@@ -71,56 +71,56 @@ func (d deck) isEqualTo(other deck) bool {
 }
 
 func (d deck) northwestOf(i, j int) *seat {
-	if i < 0 || j < 0 {
+	if i <= 0 || j <= 0 {
 		return nil
 	}
 	return &d.seats[i-1][j-1]
 }
 
 func (d deck) northOf(i, j int) *seat {
-	if j < 0 {
+	if j <= 0 {
 		return nil
 	}
 	return &d.seats[i][j-1]
 }
 
 func (d deck) northeastOf(i, j int) *seat {
-	if i >= d.width || j < 0 {
+	if i >= d.width-1 || j <= 0 {
 		return nil
 	}
 	return &d.seats[i+1][j-1]
 }
 
 func (d deck) eastOf(i, j int) *seat {
-	if i >= d.width {
+	if i >= d.width-1 {
 		return nil
 	}
 	return &d.seats[i+1][j]
 }
 
 func (d deck) southeastOf(i, j int) *seat {
-	if i >= d.width || j >= d.height {
+	if i >= d.width-1 || j >= d.height-1 {
 		return nil
 	}
 	return &d.seats[i+1][j+1]
 }
 
 func (d deck) southOf(i, j int) *seat {
-	if j >= d.height {
+	if j >= d.height-1 {
 		return nil
 	}
 	return &d.seats[i][j+1]
 }
 
 func (d deck) southwestOf(i, j int) *seat {
-	if i < 0 || j >= d.height {
+	if i <= 0 || j >= d.height-1 {
 		return nil
 	}
 	return &d.seats[i-1][j+1]
 }
 
 func (d deck) westOf(i, j int) *seat {
-	if i < 0 {
+	if i <= 0 {
 		return nil
 	}
 	return &d.seats[i-1][j]
