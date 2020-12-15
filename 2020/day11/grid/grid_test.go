@@ -52,7 +52,23 @@ func TestParse(t *testing.T) {
 	for i, tc := range tests {
 		got := Parse(tc.input)
 		if !got.isEqualTo(tc.want) {
-			t.Errorf("Expected readSeating(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+			t.Errorf("Expected Parse(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
+
+func TestStep(t *testing.T) {
+	tests := []struct {
+		input []string
+		want  []string
+	}{
+		{input: []string{}, want: []string{}},
+	}
+	for i, tc := range tests {
+		got := Parse(tc.input)
+		got.Step()
+		if !got.isEqualTo(Parse(tc.want)) {
+			t.Errorf("Expected stepping %v to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
 }

@@ -183,3 +183,6 @@ func Parse(in []string) deck {
 
 	return init
 }
+
+func (d deck) Step() {
+}
