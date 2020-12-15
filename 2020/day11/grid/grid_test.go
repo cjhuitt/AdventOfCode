@@ -29,7 +29,7 @@ func TestReadSeating(t *testing.T) {
 		{input: []string{}, want: deck{}},
 		{input: []string{"L", "L"}, want: deck{[][]seat{
 			[]seat{newSeat('L')},
-			[]seat{newSeat('L')}}}},
+			[]seat{newSeat('L')}}, 1, 2}},
 		{input: []string{"L", "G"}, want: deck{}},
 		{input: []string{"L", "L."}, want: deck{}},
 	}

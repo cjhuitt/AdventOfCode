@@ -6,7 +6,8 @@ type seat struct {
 }
 
 type deck struct {
-	seats [][]seat
+	seats         [][]seat
+	width, height int
 }
 
 func newSeat(state rune) seat {
@@ -44,16 +45,16 @@ func seatSlicesEqual(a, b []seat) bool {
 
 func readSeating(in []string) deck {
 	s := deck{}
-	l := 0
 	for _, i := range in {
 		r := readRow(i)
-		if l == 0 {
-			l = len(r)
-		} else if len(r) != l {
+		if s.width == 0 {
+			s.width = len(r)
+		} else if len(r) != s.width {
 			return deck{}
 		}
 		s.seats = append(s.seats, r)
 	}
+	s.height = len(in)
 	return s
 }
 
