@@ -33,7 +33,7 @@ func findStasisOccupation(infile string) {
 	lines := read(infile)
 
 	d := grid.Parse(lines)
-	iters := d.Stabilize(100)
+	iters := d.Stabilize(1000)
 
 	fmt.Println(infile, ": Stabilized in", iters)
 	fmt.Println(d.Printable())
