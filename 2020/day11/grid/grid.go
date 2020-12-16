@@ -52,7 +52,7 @@ func (s *seat) calculateNext() {
 
 	if s.state == 'L' && occupied == 0 {
 		s.next_state = '#'
-	} else if s.state == '#' && occupied >= 4 {
+	} else if s.state == '#' && occupied >= 5 {
 		s.next_state = 'L'
 	} else {
 		s.next_state = s.state
