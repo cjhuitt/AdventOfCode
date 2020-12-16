@@ -1,5 +1,6 @@
 package grid
 
+import "fmt"
 import "strings"
 
 type seat struct {
@@ -102,109 +103,110 @@ func (d *deck) isEqualTo(other deck) bool {
 	if len(d.seats) != len(other.seats) {
 		return false
 	}
-	for i := 0; i < len(d.seats); i++ {
-		if !seatSlicesEqual(d.seats[i], other.seats[i]) {
+	for row := 0; row < len(d.seats); row++ {
+		if !seatSlicesEqual(d.seats[row], other.seats[row]) {
 			return false
 		}
 	}
 	return true
 }
 
-func (d *deck) northwestOf(i, j int) *seat {
-	if i <= 0 || j <= 0 {
+func (d *deck) northwestOf(row, col int) *seat {
+	if row <= 0 || col <= 0 {
 		return nil
 	}
-	return d.seats[i-1][j-1]
+	return d.seats[row-1][col-1]
 }
 
-func (d *deck) northOf(i, j int) *seat {
-	if j <= 0 {
+func (d *deck) northOf(row, col int) *seat {
+	if col <= 0 {
 		return nil
 	}
-	return d.seats[i][j-1]
+	return d.seats[row][col-1]
 }
 
-func (d *deck) northeastOf(i, j int) *seat {
-	if i >= d.width-1 || j <= 0 {
+func (d *deck) northeastOf(row, col int) *seat {
+	if row >= d.width-1 || col <= 0 {
 		return nil
 	}
-	return d.seats[i+1][j-1]
+	return d.seats[row+1][col-1]
 }
 
-func (d *deck) eastOf(i, j int) *seat {
-	if i >= d.width-1 {
+func (d *deck) eastOf(row, col int) *seat {
+	if row >= d.width-1 {
 		return nil
 	}
-	return d.seats[i+1][j]
+	fmt.Println("Eastof:", row, col, d.width, d.height)
+	return d.seats[row+1][col]
 }
 
-func (d *deck) southeastOf(i, j int) *seat {
-	if i >= d.width-1 || j >= d.height-1 {
+func (d *deck) southeastOf(row, col int) *seat {
+	if row >= d.width-1 || col >= d.height-1 {
 		return nil
 	}
-	return d.seats[i+1][j+1]
+	return d.seats[row+1][col+1]
 }
 
-func (d *deck) southOf(i, j int) *seat {
-	if j >= d.height-1 {
+func (d *deck) southOf(row, col int) *seat {
+	if col >= d.height-1 {
 		return nil
 	}
-	return d.seats[i][j+1]
+	return d.seats[row][col+1]
 }
 
-func (d *deck) southwestOf(i, j int) *seat {
-	if i <= 0 || j >= d.height-1 {
+func (d *deck) southwestOf(row, col int) *seat {
+	if row <= 0 || col >= d.height-1 {
 		return nil
 	}
-	return d.seats[i-1][j+1]
+	return d.seats[row-1][col+1]
 }
 
-func (d *deck) westOf(i, j int) *seat {
-	if i <= 0 {
+func (d *deck) westOf(row, col int) *seat {
+	if row <= 0 {
 		return nil
 	}
-	return d.seats[i-1][j]
+	return d.seats[row-1][col]
 }
 
-func (d *deck) neighborsOf(i, j int) []*seat {
+func (d *deck) neighborsOf(row, col int) []*seat {
 	r := []*seat{}
 
-	n := d.northwestOf(i, j)
+	n := d.northwestOf(row, col)
 	if n != nil {
 		r = append(r, n)
 	}
 
-	n = d.northOf(i, j)
+	n = d.northOf(row, col)
 	if n != nil {
 		r = append(r, n)
 	}
 
-	n = d.northeastOf(i, j)
+	n = d.northeastOf(row, col)
 	if n != nil {
 		r = append(r, n)
 	}
 
-	n = d.eastOf(i, j)
+	n = d.eastOf(row, col)
 	if n != nil {
 		r = append(r, n)
 	}
 
-	n = d.southeastOf(i, j)
+	n = d.southeastOf(row, col)
 	if n != nil {
 		r = append(r, n)
 	}
 
-	n = d.southOf(i, j)
+	n = d.southOf(row, col)
 	if n != nil {
 		r = append(r, n)
 	}
 
-	n = d.southwestOf(i, j)
+	n = d.southwestOf(row, col)
 	if n != nil {
 		r = append(r, n)
 	}
 
-	n = d.westOf(i, j)
+	n = d.westOf(row, col)
 	if n != nil {
 		r = append(r, n)
 	}
@@ -216,9 +218,9 @@ func Parse(in []string) deck {
 	init := readSeating(in)
 	init.changed = true
 
-	for i := 0; i < init.width; i++ {
-		for j := 0; j < init.height; j++ {
-			init.seats[i][j].neighbors = init.neighborsOf(i, j)
+	for row := 0; row < init.width; row++ {
+		for col := 0; col < init.height; col++ {
+			init.seats[row][col].neighbors = init.neighborsOf(row, col)
 		}
 	}
 
@@ -226,31 +228,31 @@ func Parse(in []string) deck {
 }
 
 func (d *deck) Step() {
-	for i := 0; i < d.width; i++ {
-		for j := 0; j < d.height; j++ {
-			d.seats[i][j].calculateNext()
+	for row := 0; row < d.width; row++ {
+		for col := 0; col < d.height; col++ {
+			d.seats[row][col].calculateNext()
 		}
 	}
 
 	d.changed = false
-	for i := 0; i < d.width && !d.changed; i++ {
-		for j := 0; j < d.height && !d.changed; j++ {
-			d.changed = d.seats[i][j].willChange()
+	for row := 0; row < d.width && !d.changed; row++ {
+		for col := 0; col < d.height && !d.changed; col++ {
+			d.changed = d.seats[row][col].willChange()
 		}
 	}
 
-	for i := 0; i < d.width; i++ {
-		for j := 0; j < d.height; j++ {
-			d.seats[i][j].step()
+	for row := 0; row < d.width; row++ {
+		for col := 0; col < d.height; col++ {
+			d.seats[row][col].step()
 		}
 	}
 }
 
 func (d *deck) Printable() string {
 	var l strings.Builder
-	for i := 0; i < d.width; i++ {
-		for j := 0; j < d.height; j++ {
-			l.WriteRune(d.seats[i][j].state)
+	for row := 0; row < d.width; row++ {
+		for col := 0; col < d.height; col++ {
+			l.WriteRune(d.seats[row][col].state)
 		}
 		l.WriteRune('\n')
 	}
