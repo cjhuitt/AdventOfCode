@@ -261,3 +261,14 @@ func (d *deck) Printable() string {
 func (d *deck) Changed() bool {
 	return d.changed
 }
+
+func (d *deck) Stabilize(max_iters int) int {
+	for i := 0; i < max_iters; i++ {
+		d.Step()
+		if !d.Changed() {
+			return i
+		}
+	}
+
+	return max_iters
+}
