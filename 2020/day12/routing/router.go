@@ -25,9 +25,7 @@ func (s ship) Moved(in string) ship {
 	r := s
 	switch a {
 	case 'N':
-		for i := 0; i < v; i++ {
-			r.pos = r.pos.North(1)
-		}
+		r.pos = r.pos.North(v)
 	}
 	return r
 }
