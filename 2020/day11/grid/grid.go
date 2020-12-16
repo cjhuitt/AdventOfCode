@@ -91,7 +91,7 @@ func readSeating(in []string) deck {
 	return s
 }
 
-func (d deck) isEqualTo(other deck) bool {
+func (d *deck) isEqualTo(other deck) bool {
 	if len(d.seats) != len(other.seats) {
 		return false
 	}
@@ -103,63 +103,63 @@ func (d deck) isEqualTo(other deck) bool {
 	return true
 }
 
-func (d deck) northwestOf(i, j int) *seat {
+func (d *deck) northwestOf(i, j int) *seat {
 	if i <= 0 || j <= 0 {
 		return nil
 	}
 	return d.seats[i-1][j-1]
 }
 
-func (d deck) northOf(i, j int) *seat {
+func (d *deck) northOf(i, j int) *seat {
 	if j <= 0 {
 		return nil
 	}
 	return d.seats[i][j-1]
 }
 
-func (d deck) northeastOf(i, j int) *seat {
+func (d *deck) northeastOf(i, j int) *seat {
 	if i >= d.width-1 || j <= 0 {
 		return nil
 	}
 	return d.seats[i+1][j-1]
 }
 
-func (d deck) eastOf(i, j int) *seat {
+func (d *deck) eastOf(i, j int) *seat {
 	if i >= d.width-1 {
 		return nil
 	}
 	return d.seats[i+1][j]
 }
 
-func (d deck) southeastOf(i, j int) *seat {
+func (d *deck) southeastOf(i, j int) *seat {
 	if i >= d.width-1 || j >= d.height-1 {
 		return nil
 	}
 	return d.seats[i+1][j+1]
 }
 
-func (d deck) southOf(i, j int) *seat {
+func (d *deck) southOf(i, j int) *seat {
 	if j >= d.height-1 {
 		return nil
 	}
 	return d.seats[i][j+1]
 }
 
-func (d deck) southwestOf(i, j int) *seat {
+func (d *deck) southwestOf(i, j int) *seat {
 	if i <= 0 || j >= d.height-1 {
 		return nil
 	}
 	return d.seats[i-1][j+1]
 }
 
-func (d deck) westOf(i, j int) *seat {
+func (d *deck) westOf(i, j int) *seat {
 	if i <= 0 {
 		return nil
 	}
 	return d.seats[i-1][j]
 }
 
-func (d deck) neighborsOf(i, j int) []*seat {
+func (d *deck) neighborsOf(i, j int) []*seat {
 	r := []*seat{}
 
 	n := d.northwestOf(i, j)
@@ -217,7 +217,7 @@ func Parse(in []string) deck {
 	return init
 }
 
-func (d deck) Step() {
+func (d *deck) Step() {
 	for i := 0; i < d.width; i++ {
 		for j := 0; j < d.height; j++ {
 			d.seats[i][j].calculateNext()
@@ -231,7 +231,7 @@ func (d deck) Step() {
 	}
 }
 
-func (d deck) Printable() string {
+func (d *deck) Printable() string {
 	var l strings.Builder
 	for i := 0; i < d.width; i++ {
 		for j := 0; j < d.height; j++ {
