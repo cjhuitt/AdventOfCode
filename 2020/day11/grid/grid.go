@@ -125,7 +125,7 @@ func (d *deck) northOf(row, col int) *seat {
 }
 
 func (d *deck) northeastOf(row, col int) *seat {
-	if row <= 0 || col <= d.width-1 {
+	if row <= 0 || col >= d.width-1 {
 		return nil
 	}
 	return d.seats[row-1][col+1]
