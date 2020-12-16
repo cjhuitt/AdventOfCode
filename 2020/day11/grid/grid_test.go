@@ -50,6 +50,10 @@ func TestParse(t *testing.T) {
 		{input: []string{}, want: deck{}},
 		{input: []string{"L"}, want: deck{[][]*seat{
 			[]*seat{newSeat('L')}}, 1, 1, true}},
+		{input: []string{"L", "L"}, want: deck{[][]*seat{
+			[]*seat{newSeat('L')}, []*seat{newSeat('L')}}, 1, 1, true}},
+		{input: []string{"LL"}, want: deck{[][]*seat{
+			[]*seat{newSeat('L'), newSeat('L')}}, 1, 1, true}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
