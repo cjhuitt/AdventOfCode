@@ -27,8 +27,12 @@ func countLines(infile string) {
 	fmt.Println(infile, ":", lines, "lines found")
 }
 
+func findStasisOccupation(infile string) {
+	countLines(infile)
+}
+
 func main() {
-	countLines("test_input.txt")
-	countLines("input.txt")
+	findStasisOccupation("test_input.txt")
+	findStasisOccupation("input.txt")
 
 }
