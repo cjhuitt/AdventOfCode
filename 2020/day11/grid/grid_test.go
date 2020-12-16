@@ -1,6 +1,5 @@
 package grid
 
-import "fmt"
 import "testing"
 
 func TestReadRow(t *testing.T) {
@@ -81,8 +80,6 @@ func TestStep(t *testing.T) {
 			want: "#..L..#\n.......\n.......\nL..L..L\n.......\n.......\n#..L..#\n", changed: true},
 	}
 	for i, tc := range tests {
-		fmt.Println()
-		fmt.Println(i)
 		d := Parse(tc.input)
 		d.Step()
 		got := d.Printable()

@@ -1,6 +1,5 @@
 package grid
 
-import "fmt"
 import "strings"
 
 type seat struct {
@@ -250,7 +249,6 @@ func (d *deck) neighborsOf(row, col int) []*seat {
 		r = append(r, n)
 	}
 
-	fmt.Println("(", row, col, ") neighbor count:", len(r))
 	return r
 }
 
