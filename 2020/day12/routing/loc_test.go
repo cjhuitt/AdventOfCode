@@ -27,16 +27,17 @@ func TestManhattanLengths(t *testing.T) {
 func TestEastGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
-		move  int
+		steps int
 		want  loc
 	}{
-		{start: Loc(0, 0), move: 1, want: Loc(1, 0)},
-		{start: Loc(1, 0), move: 1, want: Loc(2, 0)},
-		{start: Loc(-1, 0), move: 1, want: Loc(0, 0)},
-		{start: Loc(-10, 0), move: 1, want: Loc(-9, 0)},
+		{start: Loc(0, 0), steps: 1, want: Loc(1, 0)},
+		{start: Loc(1, 0), steps: 1, want: Loc(2, 0)},
+		{start: Loc(-1, 0), steps: 1, want: Loc(0, 0)},
+		{start: Loc(-10, 0), steps: 1, want: Loc(-9, 0)},
+		{start: Loc(0, 0), steps: 5, want: Loc(5, 0)},
 	}
 	for i, tc := range tests {
-		got := tc.start.East()
+		got := tc.start.East(tc.steps)
 		if !(tc.want == got) {
 			t.Errorf("%v.East() want %v, got %v (case %d)", tc.start, tc.want, got, i)
 		}
@@ -46,16 +47,17 @@ func TestEastGenerator(t *testing.T) {
 func TestWestGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
-		move  int
+		steps int
 		want  loc
 	}{
-		{start: Loc(0, 0), move: 1, want: Loc(-1, 0)},
-		{start: Loc(1, 0), move: 1, want: Loc(0, 0)},
-		{start: Loc(-1, 0), move: 1, want: Loc(-2, 0)},
-		{start: Loc(10, 0), move: 1, want: Loc(9, 0)},
+		{start: Loc(0, 0), steps: 1, want: Loc(-1, 0)},
+		{start: Loc(1, 0), steps: 1, want: Loc(0, 0)},
+		{start: Loc(-1, 0), steps: 1, want: Loc(-2, 0)},
+		{start: Loc(10, 0), steps: 1, want: Loc(9, 0)},
+		{start: Loc(0, 0), steps: 5, want: Loc(-5, 0)},
 	}
 	for i, tc := range tests {
-		got := tc.start.West()
+		got := tc.start.West(tc.steps)
 		if !(tc.want == got) {
 			t.Errorf("%v.West() want %v, got %v (case %d)", tc.start, tc.want, got, i)
 		}
@@ -65,16 +67,17 @@ func TestWestGenerator(t *testing.T) {
 func TestNorthGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
-		move  int
+		steps int
 		want  loc
 	}{
-		{start: Loc(0, 0), move: 1, want: Loc(0, 1)},
-		{start: Loc(0, 1), move: 1, want: Loc(0, 2)},
-		{start: Loc(0, -1), move: 1, want: Loc(0, 0)},
-		{start: Loc(0, -10), move: 1, want: Loc(0, -9)},
+		{start: Loc(0, 0), steps: 1, want: Loc(0, 1)},
+		{start: Loc(0, 1), steps: 1, want: Loc(0, 2)},
+		{start: Loc(0, -1), steps: 1, want: Loc(0, 0)},
+		{start: Loc(0, -10), steps: 1, want: Loc(0, -9)},
+		{start: Loc(0, 0), steps: 5, want: Loc(0, 5)},
 	}
 	for i, tc := range tests {
-		got := tc.start.North()
+		got := tc.start.North(tc.steps)
 		if !(tc.want == got) {
 			t.Errorf("%v.North() want %v, got %v (case %d)", tc.start, tc.want, got, i)
 		}
@@ -84,16 +87,17 @@ func TestNorthGenerator(t *testing.T) {
 func TestSouthGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
-		move  int
+		steps int
 		want  loc
 	}{
-		{start: Loc(0, 0), move: 1, want: Loc(0, -1)},
-		{start: Loc(0, 1), move: 1, want: Loc(0, 0)},
-		{start: Loc(0, -1), move: 1, want: Loc(0, -2)},
-		{start: Loc(0, 10), move: 1, want: Loc(0, 9)},
+		{start: Loc(0, 0), steps: 1, want: Loc(0, -1)},
+		{start: Loc(0, 1), steps: 1, want: Loc(0, 0)},
+		{start: Loc(0, -1), steps: 1, want: Loc(0, -2)},
+		{start: Loc(0, 10), steps: 1, want: Loc(0, 9)},
+		{start: Loc(0, 0), steps: 5, want: Loc(0, -5)},
 	}
 	for i, tc := range tests {
-		got := tc.start.South()
+		got := tc.start.South(tc.steps)
 		if !(tc.want == got) {
 			t.Errorf("%v.South() want %v, got %v (case %d)", tc.start, tc.want, got, i)
 		}
