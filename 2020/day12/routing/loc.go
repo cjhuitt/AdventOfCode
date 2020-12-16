@@ -17,18 +17,18 @@ func (n loc) ManhattanLength() int {
 	return abs(n.x) + abs(n.y)
 }
 
-func (n loc) Right() loc {
+func (n loc) East() loc {
 	return loc{n.x + 1, n.y}
 }
 
-func (n loc) Left() loc {
+func (n loc) West() loc {
 	return loc{n.x - 1, n.y}
 }
 
-func (n loc) Up() loc {
+func (n loc) North() loc {
 	return loc{n.x, n.y + 1}
 }
 
-func (n loc) Down() loc {
+func (n loc) South() loc {
 	return loc{n.x, n.y - 1}
 }

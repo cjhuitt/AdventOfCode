@@ -24,7 +24,7 @@ func TestManhattanLengths(t *testing.T) {
 	}
 }
 
-func TestRightGenerator(t *testing.T) {
+func TestEastGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
 		want  loc
@@ -35,14 +35,14 @@ func TestRightGenerator(t *testing.T) {
 		{start: Loc(-10, 0), want: Loc(-9, 0)},
 	}
 	for i, tc := range tests {
-		got := tc.start.Right()
+		got := tc.start.East()
 		if !(tc.want == got) {
-			t.Errorf("%v.Right() want %v, got %v (case %d)", tc.start, tc.want, got, i)
+			t.Errorf("%v.East() want %v, got %v (case %d)", tc.start, tc.want, got, i)
 		}
 	}
 }
 
-func TestLeftGenerator(t *testing.T) {
+func TestWestGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
 		want  loc
@@ -53,14 +53,14 @@ func TestLeftGenerator(t *testing.T) {
 		{start: Loc(10, 0), want: Loc(9, 0)},
 	}
 	for i, tc := range tests {
-		got := tc.start.Left()
+		got := tc.start.West()
 		if !(tc.want == got) {
-			t.Errorf("%v.Left() want %v, got %v (case %d)", tc.start, tc.want, got, i)
+			t.Errorf("%v.West() want %v, got %v (case %d)", tc.start, tc.want, got, i)
 		}
 	}
 }
 
-func TestUpGenerator(t *testing.T) {
+func TestNorthGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
 		want  loc
@@ -71,14 +71,14 @@ func TestUpGenerator(t *testing.T) {
 		{start: Loc(0, -10), want: Loc(0, -9)},
 	}
 	for i, tc := range tests {
-		got := tc.start.Up()
+		got := tc.start.North()
 		if !(tc.want == got) {
-			t.Errorf("%v.Up() want %v, got %v (case %d)", tc.start, tc.want, got, i)
+			t.Errorf("%v.North() want %v, got %v (case %d)", tc.start, tc.want, got, i)
 		}
 	}
 }
 
-func TestDownGenerator(t *testing.T) {
+func TestSouthGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
 		want  loc
@@ -89,9 +89,9 @@ func TestDownGenerator(t *testing.T) {
 		{start: Loc(0, 10), want: Loc(0, 9)},
 	}
 	for i, tc := range tests {
-		got := tc.start.Down()
+		got := tc.start.South()
 		if !(tc.want == got) {
-			t.Errorf("%v.Down() want %v, got %v (case %d)", tc.start, tc.want, got, i)
+			t.Errorf("%v.South() want %v, got %v (case %d)", tc.start, tc.want, got, i)
 		}
 	}
 }
