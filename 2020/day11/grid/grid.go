@@ -1,5 +1,6 @@
 package grid
 
+import "fmt"
 import "strings"
 
 type seat struct {
@@ -114,7 +115,11 @@ func (d *deck) northwestOf(row, col int) *seat {
 	row--
 	col--
 	for row >= 0 && col >= 0 {
-		return d.seats[row][col]
+		if d.seats[row][col].state != '.' {
+			return d.seats[row][col]
+		}
+		row--
+		col--
 	}
 	return nil
 }
@@ -122,7 +127,10 @@ func (d *deck) northwestOf(row, col int) *seat {
 func (d *deck) northOf(row, col int) *seat {
 	row--
 	for row >= 0 {
-		return d.seats[row][col]
+		if d.seats[row][col].state != '.' {
+			return d.seats[row][col]
+		}
+		row--
 	}
 	return nil
 }
@@ -131,7 +139,11 @@ func (d *deck) northeastOf(row, col int) *seat {
 	row--
 	col++
 	for row >= 0 && col <= d.width-1 {
-		return d.seats[row][col]
+		if d.seats[row][col].state != '.' {
+			return d.seats[row][col]
+		}
+		row--
+		col++
 	}
 	return nil
 }
@@ -139,7 +151,10 @@ func (d *deck) northeastOf(row, col int) *seat {
 func (d *deck) eastOf(row, col int) *seat {
 	col++
 	for col <= d.width-1 {
-		return d.seats[row][col]
+		if d.seats[row][col].state != '.' {
+			return d.seats[row][col]
+		}
+		col++
 	}
 	return nil
 }
@@ -148,7 +163,11 @@ func (d *deck) southeastOf(row, col int) *seat {
 	row++
 	col++
 	for row <= d.height-1 && col <= d.width-1 {
-		return d.seats[row][col]
+		if d.seats[row][col].state != '.' {
+			return d.seats[row][col]
+		}
+		row++
+		col++
 	}
 	return nil
 }
@@ -156,7 +175,10 @@ func (d *deck) southeastOf(row, col int) *seat {
 func (d *deck) southOf(row, col int) *seat {
 	row++
 	for row <= d.height-1 {
-		return d.seats[row][col]
+		if d.seats[row][col].state != '.' {
+			return d.seats[row][col]
+		}
+		row++
 	}
 	return nil
 }
@@ -165,7 +187,11 @@ func (d *deck) southwestOf(row, col int) *seat {
 	row++
 	col--
 	for row <= d.height-1 && col >= 0 {
-		return d.seats[row][col]
+		if d.seats[row][col].state != '.' {
+			return d.seats[row][col]
+		}
+		row++
+		col--
 	}
 	return nil
 }
@@ -173,7 +199,10 @@ func (d *deck) southwestOf(row, col int) *seat {
 func (d *deck) westOf(row, col int) *seat {
 	col--
 	for col >= 0 {
-		return d.seats[row][col]
+		if d.seats[row][col].state != '.' {
+			return d.seats[row][col]
+		}
+		col--
 	}
 	return nil
 }
@@ -221,6 +250,7 @@ func (d *deck) neighborsOf(row, col int) []*seat {
 		r = append(r, n)
 	}
 
+	fmt.Println("(", row, col, ") neighbor count:", len(r))
 	return r
 }
 
