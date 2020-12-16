@@ -111,59 +111,71 @@ func (d *deck) isEqualTo(other deck) bool {
 }
 
 func (d *deck) northwestOf(row, col int) *seat {
-	if row <= 0 || col <= 0 {
-		return nil
+	row--
+	col--
+	for row >= 0 && col >= 0 {
+		return d.seats[row][col]
 	}
-	return d.seats[row-1][col-1]
+	return nil
 }
 
 func (d *deck) northOf(row, col int) *seat {
-	if row <= 0 {
-		return nil
+	row--
+	for row >= 0 {
+		return d.seats[row][col]
 	}
-	return d.seats[row-1][col]
+	return nil
 }
 
 func (d *deck) northeastOf(row, col int) *seat {
-	if row <= 0 || col >= d.width-1 {
-		return nil
+	row--
+	col++
+	for row >= 0 && col <= d.width-1 {
+		return d.seats[row][col]
 	}
-	return d.seats[row-1][col+1]
+	return nil
 }
 
 func (d *deck) eastOf(row, col int) *seat {
-	if col >= d.width-1 {
-		return nil
+	col++
+	for col <= d.width-1 {
+		return d.seats[row][col]
 	}
-	return d.seats[row][col+1]
+	return nil
 }
 
 func (d *deck) southeastOf(row, col int) *seat {
-	if row >= d.height-1 || col >= d.width-1 {
-		return nil
+	row++
+	col++
+	for row <= d.height-1 && col <= d.width-1 {
+		return d.seats[row][col]
 	}
-	return d.seats[row+1][col+1]
+	return nil
 }
 
 func (d *deck) southOf(row, col int) *seat {
-	if row >= d.height-1 {
-		return nil
+	row++
+	for row <= d.height-1 {
+		return d.seats[row][col]
 	}
-	return d.seats[row+1][col]
+	return nil
 }
 
 func (d *deck) southwestOf(row, col int) *seat {
-	if row >= d.height-1 || col <= 0 {
-		return nil
+	row++
+	col--
+	for row <= d.height-1 && col >= 0 {
+		return d.seats[row][col]
 	}
-	return d.seats[row+1][col-1]
+	return nil
 }
 
 func (d *deck) westOf(row, col int) *seat {
-	if col <= 0 {
-		return nil
+	col--
+	for col >= 0 {
+		return d.seats[row][col]
 	}
-	return d.seats[row][col-1]
+	return nil
 }
 
 func (d *deck) neighborsOf(row, col int) []*seat {
