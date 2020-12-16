@@ -266,9 +266,22 @@ func (d *deck) Stabilize(max_iters int) int {
 	for i := 0; i < max_iters; i++ {
 		d.Step()
 		if !d.Changed() {
-			return i
+			return i + 1
 		}
 	}
 
-	return max_iters
+	return max_iters + 1
+}
+
+func (d *deck) CountOccupied() int {
+	o := 0
+	for row := 0; row < d.height; row++ {
+		for col := 0; col < d.width; col++ {
+			if d.seats[row][col].isOccupied() {
+				o++
+			}
+		}
+	}
+
+	return o
 }

@@ -36,6 +36,8 @@ func findStasisOccupation(infile string) {
 	iters := d.Stabilize(100)
 
 	fmt.Println(infile, ": Stabilized in", iters)
+	fmt.Println(d.Printable())
+	fmt.Println(infile, ":", d.CountOccupied(), "occupied seats")
 }
 
 func main() {
