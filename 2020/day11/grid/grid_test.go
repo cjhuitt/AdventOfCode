@@ -67,6 +67,7 @@ func TestStep(t *testing.T) {
 		{input: []string{}, want: ""},
 		{input: []string{"L"}, want: "#\n"},
 		{input: []string{"#"}, want: "#\n"},
+		{input: []string{"."}, want: ".\n"},
 	}
 	for i, tc := range tests {
 		d := Parse(tc.input)
