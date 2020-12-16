@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"grid"
 )
 
 func read(infile string) []string {
@@ -30,7 +32,10 @@ func read(infile string) []string {
 func findStasisOccupation(infile string) {
 	lines := read(infile)
 
-	fmt.Println(infile, ":", len(lines), "lines found")
+	d := grid.Parse(lines)
+
+	fmt.Println(infile, ":")
+	fmt.Println(d.Printable())
 }
 
 func main() {
