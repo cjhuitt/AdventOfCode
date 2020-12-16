@@ -53,6 +53,8 @@ func (s *seat) calculateNext() {
 		s.next_state = '#'
 	} else if s.state == '#' && occupied >= 4 {
 		s.next_state = 'L'
+	} else {
+		s.next_state = s.state
 	}
 }
 
