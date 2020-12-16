@@ -27,12 +27,13 @@ func TestManhattanLengths(t *testing.T) {
 func TestEastGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
+		move  int
 		want  loc
 	}{
-		{start: Loc(0, 0), want: Loc(1, 0)},
-		{start: Loc(1, 0), want: Loc(2, 0)},
-		{start: Loc(-1, 0), want: Loc(0, 0)},
-		{start: Loc(-10, 0), want: Loc(-9, 0)},
+		{start: Loc(0, 0), move: 1, want: Loc(1, 0)},
+		{start: Loc(1, 0), move: 1, want: Loc(2, 0)},
+		{start: Loc(-1, 0), move: 1, want: Loc(0, 0)},
+		{start: Loc(-10, 0), move: 1, want: Loc(-9, 0)},
 	}
 	for i, tc := range tests {
 		got := tc.start.East()
@@ -45,12 +46,13 @@ func TestEastGenerator(t *testing.T) {
 func TestWestGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
+		move  int
 		want  loc
 	}{
-		{start: Loc(0, 0), want: Loc(-1, 0)},
-		{start: Loc(1, 0), want: Loc(0, 0)},
-		{start: Loc(-1, 0), want: Loc(-2, 0)},
-		{start: Loc(10, 0), want: Loc(9, 0)},
+		{start: Loc(0, 0), move: 1, want: Loc(-1, 0)},
+		{start: Loc(1, 0), move: 1, want: Loc(0, 0)},
+		{start: Loc(-1, 0), move: 1, want: Loc(-2, 0)},
+		{start: Loc(10, 0), move: 1, want: Loc(9, 0)},
 	}
 	for i, tc := range tests {
 		got := tc.start.West()
@@ -63,12 +65,13 @@ func TestWestGenerator(t *testing.T) {
 func TestNorthGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
+		move  int
 		want  loc
 	}{
-		{start: Loc(0, 0), want: Loc(0, 1)},
-		{start: Loc(0, 1), want: Loc(0, 2)},
-		{start: Loc(0, -1), want: Loc(0, 0)},
-		{start: Loc(0, -10), want: Loc(0, -9)},
+		{start: Loc(0, 0), move: 1, want: Loc(0, 1)},
+		{start: Loc(0, 1), move: 1, want: Loc(0, 2)},
+		{start: Loc(0, -1), move: 1, want: Loc(0, 0)},
+		{start: Loc(0, -10), move: 1, want: Loc(0, -9)},
 	}
 	for i, tc := range tests {
 		got := tc.start.North()
@@ -81,12 +84,13 @@ func TestNorthGenerator(t *testing.T) {
 func TestSouthGenerator(t *testing.T) {
 	tests := []struct {
 		start loc
+		move  int
 		want  loc
 	}{
-		{start: Loc(0, 0), want: Loc(0, -1)},
-		{start: Loc(0, 1), want: Loc(0, 0)},
-		{start: Loc(0, -1), want: Loc(0, -2)},
-		{start: Loc(0, 10), want: Loc(0, 9)},
+		{start: Loc(0, 0), move: 1, want: Loc(0, -1)},
+		{start: Loc(0, 1), move: 1, want: Loc(0, 0)},
+		{start: Loc(0, -1), move: 1, want: Loc(0, -2)},
+		{start: Loc(0, 10), move: 1, want: Loc(0, 9)},
 	}
 	for i, tc := range tests {
 		got := tc.start.South()
