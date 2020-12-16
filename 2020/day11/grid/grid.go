@@ -11,6 +11,7 @@ type seat struct {
 type deck struct {
 	seats         [][]*seat
 	width, height int
+	changed       bool
 }
 
 func newSeat(state rune) *seat {
@@ -56,6 +57,10 @@ func (s *seat) calculateNext() {
 	} else {
 		s.next_state = s.state
 	}
+}
+
+func (s *seat) willChange() bool {
+	return s.state != s.next_state
 }
 
 func (s *seat) step() {
@@ -209,6 +214,7 @@ func (d *deck) neighborsOf(i, j int) []*seat {
 
 func Parse(in []string) deck {
 	init := readSeating(in)
+	init.changed = true
 
 	for i := 0; i < init.width; i++ {
 		for j := 0; j < init.height; j++ {
@@ -223,6 +229,13 @@ func (d *deck) Step() {
 	for i := 0; i < d.width; i++ {
 		for j := 0; j < d.height; j++ {
 			d.seats[i][j].calculateNext()
+		}
+	}
+
+	d.changed = false
+	for i := 0; i < d.width && !d.changed; i++ {
+		for j := 0; j < d.height && !d.changed; j++ {
+			d.changed = d.seats[i][j].willChange()
 		}
 	}
 
@@ -243,4 +256,8 @@ func (d *deck) Printable() string {
 	}
 
 	return l.String()
+}
+
+func (d *deck) Changed() bool {
+	return d.changed
 }

@@ -30,7 +30,7 @@ func TestReadSeating(t *testing.T) {
 		{input: []string{}, want: deck{}},
 		{input: []string{"L", "L"}, want: deck{[][]*seat{
 			[]*seat{newSeat('L')},
-			[]*seat{newSeat('L')}}, 1, 2}},
+			[]*seat{newSeat('L')}}, 1, 2, true}},
 		{input: []string{"L", "G"}, want: deck{}},
 		{input: []string{"L", "L."}, want: deck{}},
 	}
@@ -49,7 +49,7 @@ func TestParse(t *testing.T) {
 	}{
 		{input: []string{}, want: deck{}},
 		{input: []string{"L"}, want: deck{[][]*seat{
-			[]*seat{newSeat('L')}}, 1, 1}},
+			[]*seat{newSeat('L')}}, 1, 1, true}},
 	}
 	for i, tc := range tests {
 		got := Parse(tc.input)
@@ -61,20 +61,23 @@ func TestParse(t *testing.T) {
 
 func TestStep(t *testing.T) {
 	tests := []struct {
-		input []string
-		want  string
+		input   []string
+		want    string
+		changed bool
 	}{
-		{input: []string{}, want: ""},
-		{input: []string{"L"}, want: "#\n"},
-		{input: []string{"#"}, want: "#\n"},
-		{input: []string{"."}, want: ".\n"},
-		{input: []string{"###", "###", "###"}, want: "#L#\nLLL\n#L#\n"},
+		{input: []string{}, want: "", changed: false},
+		{input: []string{"L"}, want: "#\n", changed: true},
+		{input: []string{"#"}, want: "#\n", changed: false},
+		{input: []string{"."}, want: ".\n", changed: false},
+		{input: []string{"###", "###", "###"}, want: "#L#\nLLL\n#L#\n", changed: true},
 	}
 	for i, tc := range tests {
 		d := Parse(tc.input)
 		d.Step()
 		got := d.Printable()
-		if got != tc.want {
+		if d.Changed() != tc.changed {
+			t.Errorf("Expected stepping %v to show %v change, received %#v (case %d)", tc.input, tc.changed, d.Changed(), i)
+		} else if got != tc.want {
 			t.Errorf("Expected stepping %v to result in %#v, received %#v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
