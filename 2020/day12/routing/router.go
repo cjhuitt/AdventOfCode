@@ -4,11 +4,12 @@ import "strconv"
 
 type ship struct {
 	pos    loc
+	way    loc
 	orient byte
 }
 
 func Ship() ship {
-	return ship{loc{}, 'E'}
+	return ship{loc{}, loc{10, 0}, 'E'}
 }
 
 func (s ship) newPos(dir byte, steps int) loc {
