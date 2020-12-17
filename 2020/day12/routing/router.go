@@ -26,6 +26,12 @@ func (s ship) Moved(in string) ship {
 	switch a {
 	case 'N':
 		r.pos = r.pos.North(v)
+	case 'E':
+		r.pos = r.pos.East(v)
+	case 'W':
+		r.pos = r.pos.West(v)
+	case 'S':
+		r.pos = r.pos.South(v)
 	}
 	return r
 }
