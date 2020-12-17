@@ -32,6 +32,32 @@ func (s ship) Moved(in string) ship {
 		r.pos = r.pos.West(v)
 	case 'S':
 		r.pos = r.pos.South(v)
+	case 'R':
+		for i := 0; i < v/90; i++ {
+			switch r.orient {
+			case 'N':
+				r.orient = 'E'
+			case 'E':
+				r.orient = 'S'
+			case 'S':
+				r.orient = 'W'
+			case 'W':
+				r.orient = 'N'
+			}
+		}
+	case 'L':
+		for i := 0; i < v/90; i++ {
+			switch r.orient {
+			case 'N':
+				r.orient = 'W'
+			case 'E':
+				r.orient = 'N'
+			case 'S':
+				r.orient = 'E'
+			case 'W':
+				r.orient = 'S'
+			}
+		}
 	}
 	return r
 }
