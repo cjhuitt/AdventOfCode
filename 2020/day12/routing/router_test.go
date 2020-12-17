@@ -16,6 +16,7 @@ func TestMove(t *testing.T) {
 		{move: "R180", want: ship{loc{0, 0}, 'W'}},
 		{move: "R270", want: ship{loc{0, 0}, 'N'}},
 		{move: "L90", want: ship{loc{0, 0}, 'N'}},
+		{move: "F1", want: ship{loc{1, 0}, 'E'}},
 	}
 	for i, tc := range tests {
 		got := Ship().Moved(tc.move)
