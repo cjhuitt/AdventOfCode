@@ -1,5 +1,7 @@
 package routing
 
+import "fmt"
+
 type loc struct{ x, y int }
 
 func Loc(x int, y int) loc {
@@ -31,4 +33,16 @@ func (n loc) North(steps int) loc {
 
 func (n loc) South(steps int) loc {
 	return loc{n.x, n.y - steps}
+}
+
+func (n loc) String() string {
+	lat := "E"
+	if n.x < 0 {
+		lat = "W"
+	}
+	lon := "N"
+	if n.y < 0 {
+		lon = "S"
+	}
+	return fmt.Sprintf("(%s%d, %s%d)", lat, abs(n.x), lon, abs(n.y))
 }
