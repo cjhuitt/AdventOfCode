@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"routing"
 )
 
 func read(infile string) []string {
@@ -28,8 +30,8 @@ func read(infile string) []string {
 }
 
 func countLines(infile string) {
-	lines := read(infile)
-	fmt.Println(infile, ":", len(lines), "lines found")
+	s := routing.Ship().Moved(read(infile))
+	fmt.Println(infile, ":", s.Position(), "ends", s.Position().ManhattanLength(), "away")
 }
 
 func main() {

@@ -83,3 +83,15 @@ func (s ship) Stepped(in string) ship {
 	}
 	return r
 }
+
+func (s ship) Moved(actions []string) ship {
+	r := s
+	for _, a := range actions {
+		r = r.Stepped(a)
+	}
+	return r
+}
+
+func (s ship) Position() loc {
+	return s.pos
+}
