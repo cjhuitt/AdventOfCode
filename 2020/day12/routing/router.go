@@ -55,7 +55,7 @@ func leftFrom(orient byte) byte {
 	return orient
 }
 
-func (s ship) Moved(in string) ship {
+func (s ship) Stepped(in string) ship {
 	if len(in) < 2 {
 		return s
 	}
