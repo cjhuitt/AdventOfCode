@@ -56,6 +56,14 @@ func leftFrom(orient byte) byte {
 	return orient
 }
 
+func rotateCw(way loc) loc {
+	return loc{way.y, -way.x}
+}
+
+func rotateCcw(way loc) loc {
+	return loc{-way.y, way.x}
+}
+
 func (s ship) Stepped(in string) ship {
 	if len(in) < 2 {
 		return s
@@ -76,10 +84,12 @@ func (s ship) Stepped(in string) ship {
 	case 'R':
 		for i := 0; i < v/90; i++ {
 			r.orient = rightFrom(r.orient)
+			r.way = rotateCw(r.way)
 		}
 	case 'L':
 		for i := 0; i < v/90; i++ {
 			r.orient = leftFrom(r.orient)
+			r.way = rotateCcw(r.way)
 		}
 	}
 	return r
