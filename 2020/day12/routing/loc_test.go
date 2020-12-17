@@ -103,3 +103,19 @@ func TestSouthGenerator(t *testing.T) {
 		}
 	}
 }
+
+func TestMultiplied(t *testing.T) {
+	tests := []struct {
+		start loc
+		mult  int
+		want  loc
+	}{
+		{start: loc{0, 0}, mult: 10, want: loc{0, 0}},
+	}
+	for i, tc := range tests {
+		got := tc.start.Multiplied(tc.mult)
+		if tc.want != got {
+			t.Errorf("%v.Multiplied(%v) want %v, got %v (case %d)", tc.start, tc.mult, tc.want, got, i)
+		}
+	}
+}

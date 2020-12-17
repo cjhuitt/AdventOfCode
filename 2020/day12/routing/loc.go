@@ -46,3 +46,7 @@ func (n loc) String() string {
 	}
 	return fmt.Sprintf("(%s%d, %s%d)", lat, abs(n.x), lon, abs(n.y))
 }
+
+func (n loc) Multiplied(mult int) loc {
+	return n
+}
