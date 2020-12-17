@@ -4,11 +4,25 @@ import "strconv"
 
 type ship struct {
 	pos    loc
-	orient rune
+	orient byte
 }
 
 func Ship() ship {
 	return ship{loc{}, 'E'}
+}
+
+func (s ship) newPos(dir byte, steps int) loc {
+	switch dir {
+	case 'N':
+		return s.pos.North(steps)
+	case 'E':
+		return s.pos.East(steps)
+	case 'W':
+		return s.pos.West(steps)
+	case 'S':
+		return s.pos.South(steps)
+	}
+	return s.pos
 }
 
 func (s ship) Moved(in string) ship {
@@ -24,14 +38,10 @@ func (s ship) Moved(in string) ship {
 
 	r := s
 	switch a {
-	case 'N':
-		r.pos = r.pos.North(v)
-	case 'E':
-		r.pos = r.pos.East(v)
-	case 'W':
-		r.pos = r.pos.West(v)
-	case 'S':
-		r.pos = r.pos.South(v)
+	case 'N', 'E', 'W', 'S':
+		r.pos = s.newPos(a, v)
+	case 'F':
+		r.pos = s.newPos(r.orient, v)
 	case 'R':
 		for i := 0; i < v/90; i++ {
 			switch r.orient {
@@ -57,17 +67,6 @@ func (s ship) Moved(in string) ship {
 			case 'W':
 				r.orient = 'S'
 			}
-		}
-	case 'F':
-		switch r.orient {
-		case 'N':
-			r.pos = r.pos.North(v)
-		case 'E':
-			r.pos = r.pos.East(v)
-		case 'W':
-			r.pos = r.pos.West(v)
-		case 'S':
-			r.pos = r.pos.South(v)
 		}
 	}
 	return r
