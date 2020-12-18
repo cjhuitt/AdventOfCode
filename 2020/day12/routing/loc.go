@@ -50,3 +50,7 @@ func (n loc) String() string {
 func (n loc) Multiplied(mult int) loc {
 	return loc{n.x * mult, n.y * mult}
 }
+
+func (n loc) AddedTo(other loc) loc {
+	return loc{n.x + other.x, n.y + other.y}
+}

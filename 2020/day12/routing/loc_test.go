@@ -122,3 +122,19 @@ func TestMultiplied(t *testing.T) {
 		}
 	}
 }
+
+func TestAdded(t *testing.T) {
+	tests := []struct {
+		a, b loc
+		want loc
+	}{
+		{a: loc{0, 0}, b: loc{0, 0}, want: loc{0, 0}},
+		{a: loc{1, -1}, b: loc{-1, 1}, want: loc{0, 0}},
+	}
+	for i, tc := range tests {
+		got := tc.a.AddedTo(tc.b)
+		if tc.want != got {
+			t.Errorf("%v.AddedTo(%v) want %v, got %v (case %d)", tc.a, tc.b, tc.want, got, i)
+		}
+	}
+}
