@@ -3,13 +3,12 @@ package routing
 import "strconv"
 
 type ship struct {
-	pos    loc
-	way    loc
-	orient byte
+	pos loc
+	way loc
 }
 
 func Ship() ship {
-	return ship{loc{}, loc{10, 0}, 'E'}
+	return ship{loc{}, loc{10, 0}}
 }
 
 func (s ship) newPos(dir byte, steps int) loc {
@@ -24,36 +23,6 @@ func (s ship) newPos(dir byte, steps int) loc {
 		return s.pos.South(steps)
 	}
 	return s.pos
-}
-
-func rightFrom(orient byte) byte {
-	switch orient {
-	case 'N':
-		return 'E'
-	case 'E':
-		return 'S'
-	case 'S':
-		return 'W'
-	case 'W':
-		return 'N'
-	}
-
-	return orient
-}
-
-func leftFrom(orient byte) byte {
-	switch orient {
-	case 'N':
-		return 'W'
-	case 'E':
-		return 'N'
-	case 'S':
-		return 'E'
-	case 'W':
-		return 'S'
-	}
-
-	return orient
 }
 
 func rotateCw(way loc) loc {
@@ -83,12 +52,10 @@ func (s ship) Stepped(in string) ship {
 		r.pos = s.pos.AddedTo(s.way.Multiplied(v))
 	case 'R':
 		for i := 0; i < v/90; i++ {
-			r.orient = rightFrom(r.orient)
 			r.way = rotateCw(r.way)
 		}
 	case 'L':
 		for i := 0; i < v/90; i++ {
-			r.orient = leftFrom(r.orient)
 			r.way = rotateCcw(r.way)
 		}
 	}
