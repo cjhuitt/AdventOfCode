@@ -78,6 +78,30 @@ func largestId(routes map[int]int) int {
 	return largest
 }
 
+func timestampWorks(ts int64, routes map[int]int) bool {
+	for id, offset := range routes {
+		t := ts + int64(offset)
+		if t%int64(id) != int64(0) {
+			return false
+		}
+	}
+	return true
+}
+
+func findMagicTimestamp(routes map[int]int) int64 {
+	largest := largestId(routes)
+	i := int64(1)
+	for true {
+		val := int64(largest) * i
+		ts := val - int64(routes[largest])
+		if timestampWorks(ts, routes) {
+			return ts
+		}
+		i++
+	}
+	return -1
+}
+
 func countLines(infile string) {
 	lines := read(infile)
 	threshold, routes := parse(lines)
@@ -92,7 +116,7 @@ func countLines(infile string) {
 	fmt.Println(infile, ": After", threshold, "the earliest bus route is", id,
 		"after waiting", wait, "(", id*wait, ")")
 
-	fmt.Println(infile, ": Largest ID is", largestId(routes))
+	fmt.Println(infile, ": Magic timestamp is", findMagicTimestamp(routes))
 }
 
 func main() {
