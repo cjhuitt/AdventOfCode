@@ -80,7 +80,7 @@ func (s ship) Stepped(in string) ship {
 	case 'N', 'E', 'W', 'S':
 		r.pos = s.newPos(a, v)
 	case 'F':
-		r.pos = s.newPos(r.orient, v)
+		r.pos = s.pos.AddedTo(s.way.Multiplied(v))
 	case 'R':
 		for i := 0; i < v/90; i++ {
 			r.orient = rightFrom(r.orient)
