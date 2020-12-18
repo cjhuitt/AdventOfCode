@@ -8,16 +8,16 @@ func TestStepped(t *testing.T) {
 		move  string
 		want  ship
 	}{
-		{start: Ship(), move: "", want: ship{loc{0, 0}, loc{10, 0}}},
-		{start: Ship(), move: "N1", want: ship{loc{0, 1}, loc{10, 0}}},
-		{start: Ship(), move: "E1", want: ship{loc{1, 0}, loc{10, 0}}},
-		{start: Ship(), move: "W1", want: ship{loc{-1, 0}, loc{10, 0}}},
-		{start: Ship(), move: "S1", want: ship{loc{0, -1}, loc{10, 0}}},
-		{start: Ship(), move: "R90", want: ship{loc{0, 0}, loc{0, -10}}},
-		{start: Ship(), move: "R180", want: ship{loc{0, 0}, loc{-10, 0}}},
-		{start: Ship(), move: "R270", want: ship{loc{0, 0}, loc{0, 10}}},
-		{start: Ship(), move: "L90", want: ship{loc{0, 0}, loc{0, 10}}},
-		{start: Ship(), move: "F1", want: ship{loc{10, 0}, loc{10, 0}}},
+		{start: Ship(), move: "", want: ship{loc{0, 0}, loc{10, 1}}},
+		{start: Ship(), move: "N1", want: ship{loc{0, 1}, loc{10, 1}}},
+		{start: Ship(), move: "E1", want: ship{loc{1, 0}, loc{10, 1}}},
+		{start: Ship(), move: "W1", want: ship{loc{-1, 0}, loc{10, 1}}},
+		{start: Ship(), move: "S1", want: ship{loc{0, -1}, loc{10, 1}}},
+		{start: Ship(), move: "R90", want: ship{loc{0, 0}, loc{1, -10}}},
+		{start: Ship(), move: "R180", want: ship{loc{0, 0}, loc{-10, -1}}},
+		{start: Ship(), move: "R270", want: ship{loc{0, 0}, loc{-1, 10}}},
+		{start: Ship(), move: "L90", want: ship{loc{0, 0}, loc{-1, 10}}},
+		{start: Ship(), move: "F1", want: ship{loc{10, 1}, loc{10, 1}}},
 	}
 	for i, tc := range tests {
 		got := tc.start.Stepped(tc.move)

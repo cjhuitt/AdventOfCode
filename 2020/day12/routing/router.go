@@ -8,7 +8,7 @@ type ship struct {
 }
 
 func Ship() ship {
-	return ship{loc{}, loc{10, 0}}
+	return ship{loc{}, loc{10, 1}}
 }
 
 func (s ship) newPos(dir byte, steps int) loc {
