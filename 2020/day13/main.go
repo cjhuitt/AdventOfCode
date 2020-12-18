@@ -68,6 +68,16 @@ func findSoonestAfter(earliest int, frequencies []int) (int, int) {
 	return freq, wait
 }
 
+func largestId(routes map[int]int) int {
+	largest := 0
+	for id := range routes {
+		if id > largest {
+			largest = id
+		}
+	}
+	return largest
+}
+
 func countLines(infile string) {
 	lines := read(infile)
 	threshold, routes := parse(lines)
@@ -81,6 +91,8 @@ func countLines(infile string) {
 	id, wait := findSoonestAfter(threshold, frequencies)
 	fmt.Println(infile, ": After", threshold, "the earliest bus route is", id,
 		"after waiting", wait, "(", id*wait, ")")
+
+	fmt.Println(infile, ": Largest ID is", largestId(routes))
 }
 
 func main() {
