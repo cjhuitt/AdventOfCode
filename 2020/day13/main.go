@@ -49,10 +49,29 @@ func parse(input []string) (int, []int) {
 	return th, ids
 }
 
+func findSoonestAfter(earliest int, frequencies []int) (int, int) {
+	if len(frequencies) < 1 {
+		return -1, -1
+	}
+	freq := frequencies[0]
+	wait := earliest % freq
+	for _, f := range frequencies {
+		w := earliest % f
+		if w < wait {
+			freq = f
+			wait = w
+		}
+	}
+
+	return freq, wait
+}
+
 func countLines(infile string) {
 	lines := read(infile)
 	threshold, routes := parse(lines)
-	fmt.Println(infile, ": At time", threshold, "the bus routes are", routes)
+	id, wait := findSoonestAfter(threshold, routes)
+	fmt.Println(infile, ": After", threshold, "the earliest bus route is", id,
+		"after waiting", wait, "(", id*wait, ")")
 }
 
 func main() {
