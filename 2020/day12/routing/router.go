@@ -11,16 +11,16 @@ func Ship() ship {
 	return ship{loc{}, loc{10, 1}}
 }
 
-func (s ship) newPos(dir byte, steps int) loc {
+func (s ship) newWayPos(dir byte, steps int) loc {
 	switch dir {
 	case 'N':
-		return s.pos.North(steps)
+		return s.way.North(steps)
 	case 'E':
-		return s.pos.East(steps)
+		return s.way.East(steps)
 	case 'W':
-		return s.pos.West(steps)
+		return s.way.West(steps)
 	case 'S':
-		return s.pos.South(steps)
+		return s.way.South(steps)
 	}
 	return s.pos
 }
@@ -47,7 +47,7 @@ func (s ship) Stepped(in string) ship {
 	r := s
 	switch a {
 	case 'N', 'E', 'W', 'S':
-		r.pos = s.newPos(a, v)
+		r.way = s.newWayPos(a, v)
 	case 'F':
 		r.pos = s.pos.AddedTo(s.way.Multiplied(v))
 	case 'R':
