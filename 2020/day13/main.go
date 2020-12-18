@@ -54,9 +54,11 @@ func findSoonestAfter(earliest int, frequencies []int) (int, int) {
 		return -1, -1
 	}
 	freq := frequencies[0]
-	wait := earliest % freq
+	m := earliest % freq
+	wait := freq - m
 	for _, f := range frequencies {
-		w := earliest % f
+		m = earliest % f
+		w := f - m
 		if w < wait {
 			freq = f
 			wait = w
