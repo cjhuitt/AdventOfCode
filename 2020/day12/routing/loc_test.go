@@ -111,6 +111,9 @@ func TestMultiplied(t *testing.T) {
 		want  loc
 	}{
 		{start: loc{0, 0}, mult: 10, want: loc{0, 0}},
+		{start: loc{5, 6}, mult: 0, want: loc{0, 0}},
+		{start: loc{5, 6}, mult: 10, want: loc{50, 60}},
+		{start: loc{5, 6}, mult: -10, want: loc{-50, -60}},
 	}
 	for i, tc := range tests {
 		got := tc.start.Multiplied(tc.mult)

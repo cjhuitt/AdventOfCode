@@ -48,5 +48,5 @@ func (n loc) String() string {
 }
 
 func (n loc) Multiplied(mult int) loc {
-	return n
+	return loc{n.x * mult, n.y * mult}
 }
