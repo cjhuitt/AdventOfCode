@@ -100,16 +100,6 @@ func largestId(routes map[int]int) int {
 	return max
 }
 
-func twoLargestIds(routes map[int]int) (int, int) {
-	keys := []int{}
-	for id, _ := range routes {
-		keys = append(keys, id)
-	}
-
-	keys = reverseSort(keys)
-	return keys[0], keys[1]
-}
-
 func findFirstMatchMultiplier(a, b, offa, offb int) int {
 	for i := 0; i <= b; i++ {
 		t := a*i + offa - offb
