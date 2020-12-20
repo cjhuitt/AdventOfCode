@@ -132,13 +132,8 @@ func offsetsFor(ref int, offsets map[int]int) map[int]int {
 	return r
 }
 
-func findMagicTimestamp(routes map[int]int) int64 {
-	fmt.Println(routes)
-
-	largest, other := twoLargestIds(routes)
-	offsets := offsetsFor(largest, routes)
-
-	mult := offsets[other]
+func findMultiple(id int, offsets map[int]int) int {
+	mult := offsets[id]
 	for true {
 		if testMultiple(mult, offsets) {
 			break
@@ -146,8 +141,19 @@ func findMagicTimestamp(routes map[int]int) int64 {
 		if mult < 0 {
 			return -1
 		}
-		mult += other
+		mult += id
 	}
+
+	return mult
+}
+
+func findMagicTimestamp(routes map[int]int) int64 {
+	fmt.Println(routes)
+
+	largest, other := twoLargestIds(routes)
+	offsets := offsetsFor(largest, routes)
+
+	mult := findMultiple(other, offsets)
 
 	ts := int64(largest) * int64(mult)
 	ts -= int64(routes[largest])
