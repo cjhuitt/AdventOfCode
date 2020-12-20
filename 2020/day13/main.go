@@ -68,16 +68,6 @@ func findSoonestAfter(earliest int, frequencies []int) (int, int) {
 	return freq, wait
 }
 
-func largestId(routes map[int]int) int {
-	largest := 0
-	for id := range routes {
-		if id > largest {
-			largest = id
-		}
-	}
-	return largest
-}
-
 func timestampWorks(ts int64, routes map[int]int) bool {
 	for id, offset := range routes {
 		t := ts + int64(offset)
@@ -88,18 +78,80 @@ func timestampWorks(ts int64, routes map[int]int) bool {
 	return true
 }
 
-func findMagicTimestamp(routes map[int]int) int64 {
-	largest := largestId(routes)
-	i := int64(1)
-	for true {
-		val := int64(largest) * i
-		ts := val - int64(routes[largest])
-		if timestampWorks(ts, routes) {
-			return ts
+func reverseSort(keys []int) []int {
+	for i := 0; i < len(keys); i++ {
+		for j := i + 1; j < len(keys); j++ {
+			if keys[i] < keys[j] {
+				keys[i], keys[j] = keys[j], keys[i]
+			}
 		}
-		i++
 	}
+	return keys
+}
+
+func twoLargestIds(routes map[int]int) (int, int) {
+	keys := []int{}
+	for id, _ := range routes {
+		keys = append(keys, id)
+	}
+
+	keys = reverseSort(keys)
+	return keys[0], keys[1]
+}
+
+func findFirstMatchMultiplier(largest, other, large_offset, other_offset int) int {
+	for i := 0; i <= other; i++ {
+		t := largest*i - large_offset + other_offset
+		if t%other == 0 {
+			return i
+		}
+	}
+
 	return -1
+}
+
+func testMultiple(m int, offsets map[int]int) bool {
+	works := 0
+	for id, offset := range offsets {
+		t := m - offset
+		if t%id == 0 {
+			works++
+		}
+	}
+
+	return works == len(offsets)
+}
+
+func offsetsFor(ref int, offsets map[int]int) map[int]int {
+	r := map[int]int{}
+	for id, time_diff := range offsets {
+		if id != ref {
+			r[id] = findFirstMatchMultiplier(ref, id, offsets[ref], time_diff)
+		}
+	}
+	return r
+}
+
+func findMagicTimestamp(routes map[int]int) int64 {
+	fmt.Println(routes)
+
+	largest, other := twoLargestIds(routes)
+	offsets := offsetsFor(largest, routes)
+
+	mult := offsets[other]
+	for true {
+		if testMultiple(mult, offsets) {
+			break
+		}
+		if mult < 0 {
+			return -1
+		}
+		mult += other
+	}
+
+	ts := int64(largest) * int64(mult)
+	ts -= int64(routes[largest])
+	return ts
 }
 
 func countLines(infile string) {
@@ -121,6 +173,5 @@ func countLines(infile string) {
 
 func main() {
 	countLines("test_input.txt")
-	countLines("input.txt")
-
+	//countLines("input.txt")
 }
