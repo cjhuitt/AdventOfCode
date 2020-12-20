@@ -89,6 +89,17 @@ func reverseSort(keys []int) []int {
 	return keys
 }
 
+func largestId(routes map[int]int) int {
+	max := -1
+	for id, _ := range routes {
+		if id > max {
+			max = id
+		}
+	}
+
+	return max
+}
+
 func twoLargestIds(routes map[int]int) (int, int) {
 	keys := []int{}
 	for id, _ := range routes {
@@ -138,7 +149,7 @@ func findMultiple(id int, offsets map[int]int) int {
 		m := findFirstMatchMultiplier(a, b, offsets[a], offsets[b])
 		return a*m + offsets[a]
 	}
-	a, _ := twoLargestIds(offsets)
+	a := largestId(offsets)
 	o := offsetsFor(a, offsets)
 	m := findMultiple(a, o)
 	return a*m + offsets[a]
@@ -153,7 +164,7 @@ func invertOffsets(orig map[int]int) map[int]int {
 }
 
 func findMagicTimestamp(routes map[int]int) int {
-	a, _ := twoLargestIds(routes)
+	a := largestId(routes)
 	o := offsetsFor(a, invertOffsets(routes))
 	m := findMultiple(a, o)
 	return a*m - routes[a]
