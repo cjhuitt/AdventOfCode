@@ -99,39 +99,6 @@ func twoLargestIds(routes map[int]int) (int, int) {
 	return keys[0], keys[1]
 }
 
-func findFirstMatchMultiplier(largest, other, large_offset, other_offset int) int {
-	for i := 0; i <= other; i++ {
-		t := largest*i - large_offset + other_offset
-		if t%other == 0 {
-			return i
-		}
-	}
-
-	return -1
-}
-
-func testMultiple(m int, offsets map[int]int) bool {
-	works := 0
-	for id, offset := range offsets {
-		t := m - offset
-		if t%id == 0 {
-			works++
-		}
-	}
-
-	return works == len(offsets)
-}
-
-func offsetsFor(ref int, offsets map[int]int) map[int]int {
-	r := map[int]int{}
-	for id, time_diff := range offsets {
-		if id != ref {
-			r[id] = findFirstMatchMultiplier(ref, id, offsets[ref], time_diff)
-		}
-	}
-	return r
-}
-
 func findFirstMatchMultiplierB(largest, other, large_offset, other_offset int) int {
 	for i := 0; i <= other; i++ {
 		t := largest*i + large_offset - other_offset
@@ -177,10 +144,17 @@ func findMultiple(id int, offsets map[int]int) int {
 	return a*m + offsets[a]
 }
 
-func findMagicTimestamp(routes map[int]int) int64 {
+func invertOffsets(orig map[int]int) map[int]int {
+	inverted := map[int]int{}
+	for id, offset := range orig {
+		inverted[id] = -offset
+	}
+	return inverted
+}
 
+func findMagicTimestamp(routes map[int]int) int64 {
 	largest, other := twoLargestIds(routes)
-	offsets := offsetsFor(largest, routes)
+	offsets := offsetsForB(largest, invertOffsets(routes))
 
 	mult := findMultiple(other, offsets)
 
