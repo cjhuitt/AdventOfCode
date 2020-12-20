@@ -152,15 +152,11 @@ func invertOffsets(orig map[int]int) map[int]int {
 	return inverted
 }
 
-func findMagicTimestamp(routes map[int]int) int64 {
-	a, b := twoLargestIds(routes)
-	offsets := offsetsFor(a, invertOffsets(routes))
-
-	mult := findMultiple(b, offsets)
-
-	ts := int64(a) * int64(mult)
-	ts -= int64(routes[a])
-	return ts
+func findMagicTimestamp(routes map[int]int) int {
+	a, _ := twoLargestIds(routes)
+	o := offsetsFor(a, invertOffsets(routes))
+	m := findMultiple(a, o)
+	return a*m - routes[a]
 }
 
 func countLines(infile string) {
