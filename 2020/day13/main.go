@@ -144,11 +144,12 @@ func offsetsFor(ref int, offsets map[int]int) map[int]int {
 }
 
 func findMultiple(id int, offsets map[int]int) int {
-	if len(offsets) == 2 {
-		a, b := twoLargestIds(offsets)
-		m := findFirstMatchMultiplier(a, b, offsets[a], offsets[b])
-		return a*m + offsets[a]
+	if len(offsets) == 1 {
+		for _, offset := range offsets {
+			return offset
+		}
 	}
+
 	a := largestId(offsets)
 	o := offsetsFor(a, offsets)
 	m := findMultiple(a, o)
