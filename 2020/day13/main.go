@@ -169,24 +169,20 @@ func findMultiple(id int, offsets map[int]int) int {
 	if len(offsets) == 2 {
 		a, b := twoLargestIds(offsets)
 		m := findFirstMatchMultiplierB(a, b, offsets[a], offsets[b])
-		fmt.Println("first match for", offsets, "is", m)
 		return a*m + offsets[a]
 	}
 	a, _ := twoLargestIds(offsets)
 	o := offsetsForB(a, offsets)
 	m := findMultiple(a, o)
-	fmt.Println("Mult for", o, "is", m)
 	return a*m + offsets[a]
 }
 
 func findMagicTimestamp(routes map[int]int) int64 {
-	fmt.Println(routes)
 
 	largest, other := twoLargestIds(routes)
 	offsets := offsetsFor(largest, routes)
 
 	mult := findMultiple(other, offsets)
-	fmt.Println("Mult for", offsets, "is", mult)
 
 	ts := int64(largest) * int64(mult)
 	ts -= int64(routes[largest])
@@ -211,7 +207,7 @@ func countLines(infile string) {
 }
 
 func main() {
-	fmt.Println("Magic:", findMagicTimestamp(map[int]int{17: 0, 13: 2, 19: 3}))
 	countLines("test_input.txt")
+	fmt.Println()
 	countLines("input.txt")
 }
