@@ -107,18 +107,6 @@ func findFirstMatchMultiplier(a, b, offa, offb int) int {
 	return -1
 }
 
-func testMultiple(m int, offsets map[int]int) bool {
-	works := 0
-	for id, offset := range offsets {
-		t := m - offset
-		if t%id == 0 {
-			works++
-		}
-	}
-
-	return works == len(offsets)
-}
-
 func offsetsFor(ref int, offsets map[int]int) map[int]int {
 	r := map[int]int{}
 	for id, time_diff := range offsets {
