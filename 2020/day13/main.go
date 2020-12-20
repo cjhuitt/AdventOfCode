@@ -132,19 +132,51 @@ func offsetsFor(ref int, offsets map[int]int) map[int]int {
 	return r
 }
 
-func findMultiple(id int, offsets map[int]int) int {
-	mult := offsets[id]
-	for true {
-		if testMultiple(mult, offsets) {
-			break
+func findFirstMatchMultiplierB(largest, other, large_offset, other_offset int) int {
+	for i := 0; i <= other; i++ {
+		t := largest*i + large_offset - other_offset
+		if t%other == 0 {
+			return i
 		}
-		if mult < 0 {
-			return -1
-		}
-		mult += id
 	}
 
-	return mult
+	return -1
+}
+
+func testMultipleB(m int, offsets map[int]int) bool {
+	works := 0
+	for id, offset := range offsets {
+		t := m - offset
+		if t%id == 0 {
+			works++
+		}
+	}
+
+	return works == len(offsets)
+}
+
+func offsetsForB(ref int, offsets map[int]int) map[int]int {
+	r := map[int]int{}
+	for id, time_diff := range offsets {
+		if id != ref {
+			r[id] = findFirstMatchMultiplierB(ref, id, offsets[ref], time_diff)
+		}
+	}
+	return r
+}
+
+func findMultiple(id int, offsets map[int]int) int {
+	if len(offsets) == 2 {
+		a, b := twoLargestIds(offsets)
+		m := findFirstMatchMultiplierB(a, b, offsets[a], offsets[b])
+		fmt.Println("first match for", offsets, "is", m)
+		return a*m + offsets[a]
+	}
+	a, _ := twoLargestIds(offsets)
+	o := offsetsForB(a, offsets)
+	m := findMultiple(a, o)
+	fmt.Println("Mult for", o, "is", m)
+	return a*m + offsets[a]
 }
 
 func findMagicTimestamp(routes map[int]int) int64 {
@@ -154,6 +186,7 @@ func findMagicTimestamp(routes map[int]int) int64 {
 	offsets := offsetsFor(largest, routes)
 
 	mult := findMultiple(other, offsets)
+	fmt.Println("Mult for", offsets, "is", mult)
 
 	ts := int64(largest) * int64(mult)
 	ts -= int64(routes[largest])
@@ -178,6 +211,7 @@ func countLines(infile string) {
 }
 
 func main() {
+	fmt.Println("Magic:", findMagicTimestamp(map[int]int{17: 0, 13: 2, 19: 3}))
 	countLines("test_input.txt")
-	//countLines("input.txt")
+	countLines("input.txt")
 }
