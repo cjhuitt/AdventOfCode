@@ -95,3 +95,20 @@ func TestExecuteMemStore(t *testing.T) {
 		t.Errorf("Expected Program().execute(%v) to result in 10 at location 8, received %v", input, p.mem)
 	}
 }
+
+func TestParseLocMask(t *testing.T) {
+	tests := []struct {
+		input string
+		want  loc_mask
+	}{
+		{input: "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X",
+			want: loc_mask{allowed: 0b111111111111111111111111111110111101,
+				predefined: 0b1000000}},
+	}
+	for i, tc := range tests {
+		got := parseLocMask(tc.input)
+		if got != tc.want {
+			t.Errorf("Expected parseMask(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
