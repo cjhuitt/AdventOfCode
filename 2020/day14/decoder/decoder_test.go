@@ -36,3 +36,25 @@ func TestApplyMask(t *testing.T) {
 		}
 	}
 }
+
+func TestStore(t *testing.T) {
+	tests := []struct {
+		m     mask
+		loc   uint64
+		input uint64
+		want  uint64
+	}{
+		{m: mask{allowed: 0xFF, predefined: 0x0}, loc: 5, input: 10, want: 10},
+		{m: mask{allowed: 0x00, predefined: 0x0}, loc: 5, input: 10, want: 0},
+		{m: mask{allowed: 0xF0, predefined: 0xF}, loc: 5, input: 0xBB, want: 0xBF},
+	}
+	for i, tc := range tests {
+		p := Program()
+		p.filter = tc.m
+		p.store(tc.loc, tc.input)
+		got := p.mem[tc.loc]
+		if got != tc.want {
+			t.Errorf("Expected program{%#v}.store(%d, %d) to result in %d, received %d from %v (case %d)", tc.m, tc.input, tc.loc, tc.want, got, p.mem, i)
+		}
+	}
+}

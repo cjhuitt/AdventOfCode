@@ -27,3 +27,18 @@ func parseMask(in string) mask {
 func (m mask) processed(in uint64) uint64 {
 	return in&m.allowed + m.predefined
 }
+
+type program struct {
+	filter mask
+	mem    map[uint64]uint64
+}
+
+func Program() program {
+	p := program{}
+	p.mem = make(map[uint64]uint64)
+	return p
+}
+
+func (p *program) store(loc, val uint64) {
+	p.mem[loc] = p.filter.processed(val)
+}
