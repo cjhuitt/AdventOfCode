@@ -26,7 +26,7 @@ func executeLines(infile string) {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ":", p)
+	fmt.Println(infile, ": Memory sum is", p.SumMemory())
 }
 
 func main() {

@@ -88,3 +88,12 @@ func (p *program) Execute(in string) {
 		p.store(loc, val)
 	}
 }
+
+func (p *program) SumMemory() uint64 {
+	var sum uint64
+	for _, val := range p.mem {
+		sum += val
+	}
+
+	return sum
+}
