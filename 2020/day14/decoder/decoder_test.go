@@ -74,3 +74,24 @@ func TestParseStore(t *testing.T) {
 		}
 	}
 }
+
+func TestExecuteMask(t *testing.T) {
+	p := Program()
+	input := "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X"
+	p.execute(input)
+	want := mask{allowed: 0b111111111111111111111111111110111101,
+		predefined: 0b1000000}
+	if p.filter != want {
+		t.Errorf("Expected Program().execute(%v) to result in mask %v, received %v", input, want, p.filter)
+	}
+}
+
+func TestExecuteMemStore(t *testing.T) {
+	p := Program()
+	input := "mem[8] = 10"
+	p.filter = mask{0xFF, 0x00}
+	p.execute(input)
+	if p.mem[8] != 10 {
+		t.Errorf("Expected Program().execute(%v) to result in 10 at location 8, received %v", input, p.mem)
+	}
+}

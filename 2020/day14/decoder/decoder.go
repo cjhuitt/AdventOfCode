@@ -78,3 +78,13 @@ func Program() program {
 func (p *program) store(loc, val uint64) {
 	p.mem[loc] = p.filter.processed(val)
 }
+
+func (p *program) execute(in string) {
+	switch in[1] {
+	case 'a':
+		p.filter = parseMask(in)
+	case 'e':
+		loc, val := parseStore(in)
+		p.store(loc, val)
+	}
+}
