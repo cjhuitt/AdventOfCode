@@ -1,5 +1,11 @@
 package decoder
 
+import (
+	"strconv"
+	"strings"
+	"text/scanner"
+)
+
 type mask struct {
 	allowed    uint64
 	predefined uint64
@@ -22,6 +28,36 @@ func parseMask(in string) mask {
 	}
 
 	return mask{allowed, predef}
+}
+
+func parseStore(in string) (uint64, uint64) {
+	var s scanner.Scanner
+	s.Init(strings.NewReader(in))
+	s.Filename = "example"
+	var loc, val uint64
+	var err error
+	loc_next, val_next := false, false
+	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
+		t := s.TokenText()
+		if t == "[" {
+			loc_next = true
+		} else if t == "=" {
+			val_next = true
+		} else if loc_next {
+			loc_next = false
+			loc, err = strconv.ParseUint(t, 10, 64)
+			if err != nil {
+				return 0, 0
+			}
+		} else if val_next {
+			val_next = false
+			val, err = strconv.ParseUint(t, 10, 64)
+			if err != nil {
+				return 0, 0
+			}
+		}
+	}
+	return loc, val
 }
 
 func (m mask) processed(in uint64) uint64 {

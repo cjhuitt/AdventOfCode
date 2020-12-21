@@ -2,7 +2,7 @@ package decoder
 
 import "testing"
 
-func TestReadMask(t *testing.T) {
+func TestParseMask(t *testing.T) {
 	tests := []struct {
 		input string
 		want  mask
@@ -55,6 +55,22 @@ func TestStore(t *testing.T) {
 		got := p.mem[tc.loc]
 		if got != tc.want {
 			t.Errorf("Expected program{%#v}.store(%d, %d) to result in %d, received %d from %v (case %d)", tc.m, tc.input, tc.loc, tc.want, got, p.mem, i)
+		}
+	}
+}
+
+func TestParseStore(t *testing.T) {
+	tests := []struct {
+		input    string
+		want_loc uint64
+		want_val uint64
+	}{
+		{input: "mem[8] = 10", want_loc: 8, want_val: 10},
+	}
+	for i, tc := range tests {
+		got_loc, got_val := parseStore(tc.input)
+		if got_loc != tc.want_loc || got_val != tc.want_val {
+			t.Errorf("Expected parseStore(%v) to result in (%d, %d), received (%d, %d) (case %d)", tc.input, tc.want_loc, tc.want_val, got_loc, got_val, i)
 		}
 	}
 }
