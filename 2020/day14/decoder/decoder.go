@@ -65,27 +65,23 @@ func (m mask) processed(in uint64) uint64 {
 }
 
 type loc_mask struct {
-	allowed    uint64
-	predefined uint64
+	base   uint64
+	varies []int
 }
 
 func parseLocMask(in string) loc_mask {
-	var allowed, predef uint64
-	for _, c := range in {
-		allowed = allowed << 1
-		predef = predef << 1
+	var l loc_mask
+	for i, c := range in {
+		l.base = l.base << 1
 		switch c {
 		case 'X':
-			allowed += 1
+			l.varies = append(l.varies, i)
 		case '1':
-			allowed += 0
-			predef += 1
-		case '0':
-			allowed += 0
+			l.base += 1
 		}
 	}
 
-	return loc_mask{allowed, predef}
+	return l
 }
 
 type program struct {

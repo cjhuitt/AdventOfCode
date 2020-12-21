@@ -97,18 +97,10 @@ func TestExecuteMemStore(t *testing.T) {
 }
 
 func TestParseLocMask(t *testing.T) {
-	tests := []struct {
-		input string
-		want  loc_mask
-	}{
-		{input: "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X",
-			want: loc_mask{allowed: 0b111111111111111111111111111110111101,
-				predefined: 0b1000000}},
+	input := "mask = 000000000000000000000000000000X1001X"
+	got := parseLocMask(input)
+	if got.base != 0b010010 {
+		t.Errorf("Expected parseLocMask(%v) to result in base 0b10010, received %b", input, got.base)
 	}
-	for i, tc := range tests {
-		got := parseLocMask(tc.input)
-		if got != tc.want {
-			t.Errorf("Expected parseMask(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
-		}
-	}
+	//			want varies: []int{5, 0}}},
 }
