@@ -23,3 +23,7 @@ func parseMask(in string) mask {
 
 	return mask{allowed, predef}
 }
+
+func (m mask) processed(in uint64) uint64 {
+	return in&m.allowed + m.predefined
+}
