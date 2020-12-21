@@ -79,7 +79,7 @@ func (p *program) store(loc, val uint64) {
 	p.mem[loc] = p.filter.processed(val)
 }
 
-func (p *program) execute(in string) {
+func (p *program) Execute(in string) {
 	switch in[1] {
 	case 'a':
 		p.filter = parseMask(in)

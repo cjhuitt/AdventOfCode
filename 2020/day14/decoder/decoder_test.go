@@ -90,7 +90,7 @@ func TestExecuteMemStore(t *testing.T) {
 	p := Program()
 	input := "mem[8] = 10"
 	p.filter = mask{0xFF, 0x00}
-	p.execute(input)
+	p.Execute(input)
 	if p.mem[8] != 10 {
 		t.Errorf("Expected Program().execute(%v) to result in 10 at location 8, received %v", input, p.mem)
 	}
