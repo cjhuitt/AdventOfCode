@@ -101,6 +101,8 @@ func TestParseLocMask(t *testing.T) {
 	got := parseLocMask(input)
 	if got.base != 0b010010 {
 		t.Errorf("Expected parseLocMask(%v) to result in base 0b10010, received %b", input, got.base)
+	} else if len(got.varies) != 2 {
+		t.Errorf("Expected parseLocMask(%v) to result in 2 varying bit locations, received %b", input, len(got.varies))
 	}
 	//			want varies: []int{5, 0}}},
 }
