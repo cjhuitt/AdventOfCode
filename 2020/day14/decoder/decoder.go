@@ -71,11 +71,12 @@ type loc_mask struct {
 
 func parseLocMask(in string) loc_mask {
 	var l loc_mask
+	t := len(in) - 1
 	for i, c := range in {
 		l.base = l.base << 1
 		switch c {
 		case 'X':
-			l.varies = append(l.varies, i)
+			l.varies = append(l.varies, t-i)
 		case '1':
 			l.base += 1
 		}
