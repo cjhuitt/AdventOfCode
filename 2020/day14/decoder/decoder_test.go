@@ -78,7 +78,7 @@ func TestParseStore(t *testing.T) {
 func TestExecuteMask(t *testing.T) {
 	p := Program()
 	input := "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X"
-	p.execute(input)
+	p.Execute(input)
 	want := mask{allowed: 0b111111111111111111111111111110111101,
 		predefined: 0b1000000}
 	if p.filter != want {
