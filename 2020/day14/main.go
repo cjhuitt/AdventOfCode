@@ -5,30 +5,32 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"decoder"
 )
 
-func countLines(infile string) {
+func executeLines(infile string) {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
-	lines := 0
+	p := decoder.Program()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines++
+		p.Execute(scanner.Text())
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ":", lines, "lines found")
+	fmt.Println(infile, ":", p)
 }
 
 func main() {
-	countLines("test_input.txt")
-	countLines("input.txt")
+	executeLines("test_input.txt")
+	executeLines("input.txt")
 
 }
