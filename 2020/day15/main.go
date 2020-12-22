@@ -49,14 +49,14 @@ func play(start []int, turns int) {
 }
 
 func main() {
-	play([]int{0, 3, 6}, 2020)
-	play([]int{1, 3, 2}, 2020)
-	play([]int{2, 1, 3}, 2020)
-	play([]int{1, 2, 3}, 2020)
-	play([]int{2, 3, 1}, 2020)
-	play([]int{3, 2, 1}, 2020)
-	play([]int{3, 1, 2}, 2020)
+	play([]int{0, 3, 6}, 30000000)
+	play([]int{1, 3, 2}, 30000000)
+	play([]int{2, 1, 3}, 30000000)
+	play([]int{1, 2, 3}, 30000000)
+	play([]int{2, 3, 1}, 30000000)
+	play([]int{3, 2, 1}, 30000000)
+	play([]int{3, 1, 2}, 30000000)
 
-	//fmt.Println()
-	//play([]int{9, 19, 1, 6, 0, 5, 4}, 2020)
+	fmt.Println()
+	play([]int{9, 19, 1, 6, 0, 5, 4}, 30000000)
 }
