@@ -16,17 +16,17 @@ func executeLines(infile string) {
 	}
 	defer file.Close()
 
-	p := decoder.Program()
+	p1 := decoder.Program()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		p.Execute(scanner.Text())
+		p1.Execute(scanner.Text())
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ": Memory sum is", p.SumMemory())
+	fmt.Println(infile, ": Variation 1 memory sum is", p1.SumMemory())
 }
 
 func main() {
