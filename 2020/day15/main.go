@@ -5,10 +5,16 @@ import (
 )
 
 type game struct {
+	mem map[int]int
 }
 
 func NewGame(start []int) game {
-	return game{}
+	g := game{}
+	g.mem = make(map[int]int)
+	for i, n := range start {
+		g.mem[n] = i + 1
+	}
+	return g
 }
 
 func (g *game) Turn() int {
