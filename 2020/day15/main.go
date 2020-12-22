@@ -7,15 +7,18 @@ import (
 type game struct {
 	mem  map[int]int
 	turn int
+	last int
 }
 
 func NewGame(start []int) game {
 	g := game{}
 	g.mem = make(map[int]int)
-	for i, n := range start {
+	for i := 0; i < len(start)-1; i++ {
+		n := start[i]
 		g.mem[n] = i + 1
 	}
 	g.turn = len(g.mem) + 1
+	g.last = start[g.turn-1]
 	return g
 }
 
@@ -25,7 +28,7 @@ func (g *game) Turn() int {
 
 func (g *game) NextTurn() int {
 	g.turn++
-	return 0
+	return g.last
 }
 
 func play(start []int, turns int) {
