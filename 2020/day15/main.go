@@ -50,7 +50,7 @@ func play(start []int, turns int) {
 }
 
 func main() {
-	play([]int{0, 3, 6}, 4)
+	play([]int{0, 3, 6}, 2020)
 	//play([]int{1, 3, 2}, 2020)
 	//play([]int{2, 1, 3}, 2020)
 	//play([]int{1, 2, 3}, 2020)
