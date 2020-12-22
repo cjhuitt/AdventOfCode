@@ -30,5 +30,4 @@ func countLines(infile string) {
 func main() {
 	countLines("test_input.txt")
 	countLines("input.txt")
-
 }
