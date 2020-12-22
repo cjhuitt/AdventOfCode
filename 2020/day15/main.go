@@ -5,12 +5,12 @@ import (
 )
 
 func play(start []int, turns int) {
-	fmt.Println("Starting with", start, "after", turns, "turns the number is")
+	fmt.Println("Starting with", start, "after", turns, "turns the last number is")
 	fmt.Println()
 }
 
 func main() {
-	play([]int{0, 3, 6}, 2020)
+	play([]int{0, 3, 6}, 4)
 	//play([]int{1, 3, 2}, 2020)
 	//play([]int{2, 1, 3}, 2020)
 	//play([]int{1, 2, 3}, 2020)
