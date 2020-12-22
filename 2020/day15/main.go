@@ -41,7 +41,7 @@ func (g *game) NextTurn() int {
 func play(start []int, turns int) {
 	g := NewGame(start)
 	last := 0
-	for g.Turn() <= turns {
+	for g.Turn() < turns {
 		last = g.NextTurn()
 	}
 
