@@ -85,11 +85,11 @@ func parseLocMask(in string) loc_mask {
 	return l
 }
 
-func getMemLocs(base uint64, varying []int) []uint64 {
+func getMemLocs(base, loc uint64, varying []int) []uint64 {
 	if len(varying) == 0 {
-		return []uint64{base}
+		return []uint64{base | loc}
 	}
-	orig := getMemLocs(base, varying[1:])
+	orig := getMemLocs(base, loc, varying[1:])
 	flip := []uint64{}
 	f := uint64(1) << varying[0]
 	for _, m := range orig {
@@ -98,8 +98,8 @@ func getMemLocs(base uint64, varying []int) []uint64 {
 	return append(orig, flip...)
 }
 
-func (l *loc_mask) set(mem map[uint64]uint64, val uint64) {
-	for _, m := range getMemLocs(l.base, l.varies) {
+func (l *loc_mask) set(mem map[uint64]uint64, loc uint64, val uint64) {
+	for _, m := range getMemLocs(l.base, loc, l.varies) {
 		mem[m] = val
 	}
 }
@@ -130,6 +130,36 @@ func (p *program) Execute(in string) {
 }
 
 func (p *program) SumMemory() uint64 {
+	var sum uint64
+	for _, val := range p.mem {
+		sum += val
+	}
+
+	return sum
+}
+
+type program2 struct {
+	store loc_mask
+	mem   map[uint64]uint64
+}
+
+func Program2() program2 {
+	p := program2{}
+	p.mem = make(map[uint64]uint64)
+	return p
+}
+
+func (p *program2) Execute(in string) {
+	switch in[1] {
+	case 'a':
+		p.store = parseLocMask(in)
+	case 'e':
+		loc, val := parseStore(in)
+		p.store.set(p.mem, loc, val)
+	}
+}
+
+func (p *program2) SumMemory() uint64 {
 	var sum uint64
 	for _, val := range p.mem {
 		sum += val
