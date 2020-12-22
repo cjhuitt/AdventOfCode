@@ -27,6 +27,13 @@ func (g *game) Turn() int {
 }
 
 func (g *game) NextTurn() int {
+	r := g.mem[g.last]
+	g.mem[g.last] = g.turn
+	if r == 0 {
+		g.last = 0
+	} else {
+		g.last = g.turn - r
+	}
 	g.turn++
 	return g.last
 }
