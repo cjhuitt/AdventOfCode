@@ -85,6 +85,25 @@ func parseLocMask(in string) loc_mask {
 	return l
 }
 
+func getMemLocs(base uint64, varying []int) []uint64 {
+	if len(varying) == 0 {
+		return []uint64{base}
+	}
+	orig := getMemLocs(base, varying[1:])
+	flip := []uint64{}
+	f := uint64(1) << varying[0]
+	for _, m := range orig {
+		flip = append(flip, m|f)
+	}
+	return append(orig, flip...)
+}
+
+func (l *loc_mask) set(mem map[uint64]uint64, val uint64) {
+	for _, m := range getMemLocs(l.base, l.varies) {
+		mem[m] = val
+	}
+}
+
 type program struct {
 	filter mask
 	mem    map[uint64]uint64
