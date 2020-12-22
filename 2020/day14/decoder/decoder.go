@@ -66,6 +66,7 @@ func (m mask) processed(in uint64) uint64 {
 
 type loc_mask struct {
 	base   uint64
+	mask   uint64
 	varies []int
 }
 
@@ -74,11 +75,14 @@ func parseLocMask(in string) loc_mask {
 	t := len(in) - 1
 	for i, c := range in {
 		l.base = l.base << 1
+		l.mask = l.mask << 1
 		switch c {
 		case 'X':
 			l.varies = append(l.varies, t-i)
 		case '1':
 			l.base += 1
+		case '0':
+			l.mask += 1
 		}
 	}
 
@@ -99,7 +103,7 @@ func getMemLocs(base, loc uint64, varying []int) []uint64 {
 }
 
 func (l *loc_mask) set(mem map[uint64]uint64, loc uint64, val uint64) {
-	for _, m := range getMemLocs(l.base, loc, l.varies) {
+	for _, m := range getMemLocs(l.base, loc&l.mask, l.varies) {
 		mem[m] = val
 	}
 }

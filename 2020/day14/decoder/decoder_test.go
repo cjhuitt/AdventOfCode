@@ -112,7 +112,7 @@ func TestSetMem(t *testing.T) {
 	input := "mask = 0X1001X"
 	m := parseLocMask(input)
 	got := make(map[uint64]uint64)
-	m.set(got, 0b100, 10)
+	m.set(got, 0b101, 10)
 	if len(got) != 4 {
 		t.Errorf("Expected parseLocMask(%v).set(got, 0b100, 10) to set 4 locations, received %d", input, len(got))
 	}
