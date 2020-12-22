@@ -4,8 +4,29 @@ import (
 	"fmt"
 )
 
+type game struct {
+}
+
+func NewGame(start []int) game {
+	return game{}
+}
+
+func (g *game) Turn() int {
+	return 0
+}
+
+func (g *game) NextTurn() int {
+	return 0
+}
+
 func play(start []int, turns int) {
-	fmt.Println("Starting with", start, "after", turns, "turns the last number is")
+	g := NewGame(start)
+	last := 0
+	for g.Turn() > turns {
+		last = g.NextTurn()
+	}
+
+	fmt.Println("Starting with", start, "after", turns, "turns the last number is", last)
 	fmt.Println()
 }
 
