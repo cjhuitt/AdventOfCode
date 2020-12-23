@@ -78,3 +78,15 @@ func (f *fieldspec) Equal(other fieldspec) bool {
 
 	return true
 }
+
+//==============================================================================
+type ticket struct {
+}
+
+func parseTicket(in string) ticket {
+	return ticket{}
+}
+
+func (t *ticket) Equal(other ticket) bool {
+	return true
+}

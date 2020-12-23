@@ -23,13 +23,28 @@ func TestParseFieldSpec(t *testing.T) {
 		input string
 		want  fieldspec
 	}{
-		{input: "", want: fieldspec{"", []constraint{}}},
+		{input: "", want: fieldspec{}},
 		{input: "class: 1-3 or 5-7", want: fieldspec{"class", []constraint{constraint{1, 3}, constraint{5, 7}}}},
 	}
 	for i, tc := range tests {
 		got := parseFieldSpec(tc.input)
 		if !got.Equal(tc.want) {
 			t.Errorf("Expected parseFieldSpec(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
+
+func TestParseTicket(t *testing.T) {
+	tests := []struct {
+		input string
+		want  ticket
+	}{
+		{input: "", want: ticket{}},
+	}
+	for i, tc := range tests {
+		got := parseTicket(tc.input)
+		if !got.Equal(tc.want) {
+			t.Errorf("Expected parseTicket(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
 }
