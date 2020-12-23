@@ -55,23 +55,27 @@ func TestParseFieldSpec(t *testing.T) {
 	}
 }
 
-func TestValidateField(t *testing.T) {
+func TestPassField(t *testing.T) {
 	spec := fieldspec{"class", []constraint{{1, 3}, {5, 7}}}
 	tests := []struct {
-		input      []int
-		want_valid bool
-		want_error int
+		input int
+		want  bool
 	}{
-		{input: []int{}, want_valid: true, want_error: 0},
-		{input: []int{1, 2, 3}, want_valid: true, want_error: 0},
-		{input: []int{4, 5, 6}, want_valid: false, want_error: 4},
-		{input: []int{1, 3, 5}, want_valid: true, want_error: 0},
-		{input: []int{1, 9, 5}, want_valid: false, want_error: 9},
+		{input: -1, want: false},
+		{input: 0, want: false},
+		{input: 1, want: true},
+		{input: 2, want: true},
+		{input: 3, want: true},
+		{input: 4, want: false},
+		{input: 5, want: true},
+		{input: 6, want: true},
+		{input: 7, want: true},
+		{input: 8, want: false},
 	}
 	for i, tc := range tests {
-		got_valid, got_error := spec.validateFields(tc.input)
-		if got_valid != tc.want_valid || got_error != tc.want_error {
-			t.Errorf("Expected validating fields (%v) to be (%v, %v), received (%v, %v) (case %d)", tc.input, tc.want_valid, tc.want_error, got_valid, got_error, i)
+		got := spec.passes(tc.input)
+		if got != tc.want {
+			t.Errorf("Expected %#v.passes(%v) to be %v, received %v (case %d)", spec, tc.input, tc.want, got, i)
 		}
 	}
 }

@@ -93,14 +93,12 @@ func (f *fieldspec) isValid(test int) bool {
 	return false
 }
 
-func (f *fieldspec) validateFields(fields []int) (bool, int) {
-	for _, t := range fields {
-		if !f.isValid(t) {
-			return false, t
-		}
+func (f *fieldspec) passes(test int) bool {
+	if !f.isValid(test) {
+		return false
 	}
 
-	return true, 0
+	return true
 }
 
 //==============================================================================
