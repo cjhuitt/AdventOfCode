@@ -26,6 +26,9 @@ func TestValidateFields(t *testing.T) {
 		want_error int
 	}{
 		{input: []int{}, want_valid: true, want_error: 0},
+		{input: []int{1, 2, 3}, want_valid: true, want_error: 0},
+		{input: []int{4, 5, 6}, want_valid: false, want_error: 4},
+		{input: []int{1, 3, 5}, want_valid: false, want_error: 5},
 	}
 	for i, tc := range tests {
 		got_valid, got_error := c.validateFields(tc.input)
