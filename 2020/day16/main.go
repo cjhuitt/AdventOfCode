@@ -81,6 +81,15 @@ func countLines(infile string) {
 
 	fmt.Println(infile, ":", len(specs), "specifications found")
 	fmt.Println(infile, ":", len(others), "other tickets found")
+
+	rate := 0
+	for _, t := range others {
+		g, e := t.Validate(specs)
+		if !g {
+			rate += e
+		}
+	}
+	fmt.Println(infile, ": error rate is", rate)
 }
 
 func main() {
