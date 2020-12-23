@@ -32,8 +32,19 @@ type fieldspec struct {
 	rules []constraint
 }
 
+func parseName(in string) (string, string) {
+	parts := strings.Split(in, ":")
+	if len(parts) != 2 {
+		return "", ""
+	}
+	return parts[0], parts[1]
+}
+
 func parseFieldSpec(in string) fieldspec {
-	return fieldspec{}
+	f := fieldspec{}
+	name, _ := parseName(in)
+	f.name = name
+	return f
 }
 
 func (f *fieldspec) Equal(other fieldspec) bool {
