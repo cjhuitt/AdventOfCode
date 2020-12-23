@@ -9,6 +9,22 @@ import (
 	"tickets"
 )
 
+func readSpecs(scanner *bufio.Scanner) []tickets.FieldSpec {
+	specs := []tickets.FieldSpec{}
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" {
+			break
+		}
+		specs = append(specs, tickets.ParseFieldSpec(line))
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return specs
+}
+
 func countLines(infile string) {
 	file, err := os.Open(infile)
 	if err != nil {
@@ -16,20 +32,9 @@ func countLines(infile string) {
 	}
 	defer file.Close()
 
-	specs := []tickets.FieldSpec{}
-	lines := 0
 	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" {
-			break
-		}
-		specs = append(specs, tickets.ParseFieldSpec(line))
-		lines++
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
+
+	specs := readSpecs(scanner)
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -39,7 +44,6 @@ func countLines(infile string) {
 		if line == "" {
 			break
 		}
-		lines++
 	}
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
@@ -55,7 +59,6 @@ func countLines(infile string) {
 			break
 		}
 		others = append(others, tickets.ParseTicket(line))
-		lines++
 	}
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
