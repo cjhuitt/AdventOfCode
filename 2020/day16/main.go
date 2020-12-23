@@ -46,18 +46,7 @@ func readMyTicket(scanner *bufio.Scanner) tickets.Ticket {
 	return t
 }
 
-func countLines(infile string) {
-	file, err := os.Open(infile)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-
-	specs := readSpecs(scanner)
-	_ = readMyTicket(scanner)
-
+func readOtherTickets(scanner *bufio.Scanner) []tickets.Ticket {
 	others := []tickets.Ticket{}
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -69,9 +58,26 @@ func countLines(infile string) {
 		}
 		others = append(others, tickets.ParseTicket(line))
 	}
+
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
+
+	return others
+}
+
+func countLines(infile string) {
+	file, err := os.Open(infile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	specs := readSpecs(scanner)
+	_ = readMyTicket(scanner)
+	others := readOtherTickets(scanner)
 
 	fmt.Println(infile, ":", len(specs), "specifications found")
 	fmt.Println(infile, ":", len(others), "other tickets found")
