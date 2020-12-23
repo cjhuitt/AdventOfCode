@@ -110,3 +110,7 @@ func (t *ticket) Equal(other ticket) bool {
 
 	return true
 }
+
+func (t *ticket) Validate(fields []fieldspec) (bool, int) {
+	return true, 0
+}
