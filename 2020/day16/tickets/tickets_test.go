@@ -18,6 +18,23 @@ func TestParseConstraint(t *testing.T) {
 	}
 }
 
+func TestValidateFields(t *testing.T) {
+	c := constraint{1, 3}
+	tests := []struct {
+		input      []int
+		want_valid bool
+		want_error int
+	}{
+		{input: []int{}, want_valid: true, want_error: 0},
+	}
+	for i, tc := range tests {
+		got_valid, got_error := c.validateFields(tc.input)
+		if got_valid != tc.want_valid || got_error != tc.want_error {
+			t.Errorf("Expected validating fields (%v) to be (%v, %v), received (%v, %v) (case %d)", tc.input, tc.want_valid, tc.want_error, got_valid, got_error, i)
+		}
+	}
+}
+
 func TestParseFieldSpec(t *testing.T) {
 	tests := []struct {
 		input string
