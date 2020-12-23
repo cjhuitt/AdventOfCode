@@ -35,7 +35,7 @@ func (c *constraint) passes(test int) bool {
 }
 
 //==============================================================================
-type fieldspec struct {
+type FieldSpec struct {
 	name  string
 	rules []constraint
 }
@@ -62,15 +62,15 @@ func parseConstraints(in string) []constraint {
 	return r
 }
 
-func parseFieldSpec(in string) fieldspec {
-	f := fieldspec{}
+func ParseFieldSpec(in string) FieldSpec {
+	f := FieldSpec{}
 	name, other := parseName(in)
 	f.name = name
 	f.rules = parseConstraints(other)
 	return f
 }
 
-func (f *fieldspec) Equal(other fieldspec) bool {
+func (f *FieldSpec) Equal(other FieldSpec) bool {
 	if f.name != other.name || len(f.rules) != len(other.rules) {
 		return false
 	}
@@ -83,7 +83,7 @@ func (f *fieldspec) Equal(other fieldspec) bool {
 	return true
 }
 
-func (f *fieldspec) passes(test int) bool {
+func (f *FieldSpec) passes(test int) bool {
 	for _, r := range f.rules {
 		if r.passes(test) {
 			return true
@@ -94,12 +94,12 @@ func (f *fieldspec) passes(test int) bool {
 }
 
 //==============================================================================
-type ticket struct {
+type Ticket struct {
 	fields []int
 }
 
-func parseTicket(in string) ticket {
-	t := ticket{}
+func ParseTicket(in string) Ticket {
+	t := Ticket{}
 	parts := strings.Split(in, ",")
 	if len(parts) <= 1 {
 		return t
@@ -111,7 +111,7 @@ func parseTicket(in string) ticket {
 	return t
 }
 
-func (t *ticket) Equal(other ticket) bool {
+func (t *Ticket) Equal(other Ticket) bool {
 	if len(t.fields) != len(other.fields) {
 		return false
 	}
@@ -125,7 +125,7 @@ func (t *ticket) Equal(other ticket) bool {
 	return true
 }
 
-func passes(test int, specs []fieldspec) bool {
+func passes(test int, specs []FieldSpec) bool {
 	for _, s := range specs {
 		if s.passes(test) {
 			return true
@@ -135,7 +135,7 @@ func passes(test int, specs []fieldspec) bool {
 	return false
 }
 
-func (t *ticket) Validate(specs []fieldspec) (bool, int) {
+func (t *Ticket) Validate(specs []FieldSpec) (bool, int) {
 	for _, f := range t.fields {
 		if !passes(f, specs) {
 			return false, f
