@@ -61,10 +61,12 @@ func countLines(infile string) {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ":", lines, "lines found")
+	fmt.Println(infile, ":", len(specs), "specifications found")
+	fmt.Println(infile, ":", len(others), "other tickets found")
 }
 
 func main() {
 	countLines("test_input.txt")
+	fmt.Println()
 	countLines("input.txt")
 }
