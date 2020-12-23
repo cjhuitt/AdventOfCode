@@ -83,7 +83,7 @@ func (f *fieldspec) Equal(other fieldspec) bool {
 	return true
 }
 
-func (f *fieldspec) isValid(test int) bool {
+func (f *fieldspec) passes(test int) bool {
 	for _, r := range f.rules {
 		if r.passes(test) {
 			return true
@@ -91,14 +91,6 @@ func (f *fieldspec) isValid(test int) bool {
 	}
 
 	return false
-}
-
-func (f *fieldspec) passes(test int) bool {
-	if !f.isValid(test) {
-		return false
-	}
-
-	return true
 }
 
 //==============================================================================
