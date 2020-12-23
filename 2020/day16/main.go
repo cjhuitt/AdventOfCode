@@ -75,7 +75,17 @@ func fieldEntries(good []tickets.Ticket, field int) []int {
 }
 
 func findFieldOrder(specs []tickets.FieldSpec, good []tickets.Ticket) []tickets.FieldSpec {
-	return specs
+	r := []tickets.FieldSpec{}
+	for i := 0; i < good[0].NumFields(); i++ {
+		entries := fieldEntries(good, i)
+		for _, s := range specs {
+			if s.PassesAll(entries) {
+				r = append(r, s)
+				break
+			}
+		}
+	}
+	return r
 }
 
 func processFile(infile string) {

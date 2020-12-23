@@ -93,6 +93,16 @@ func (f *FieldSpec) passes(test int) bool {
 	return false
 }
 
+func (f *FieldSpec) PassesAll(test []int) bool {
+	for _, t := range test {
+		if !f.passes(t) {
+			return false
+		}
+	}
+
+	return true
+}
+
 func (f *FieldSpec) Name() string {
 	return f.name
 }
@@ -153,4 +163,8 @@ func (t *Ticket) Field(num int) int {
 		return -1
 	}
 	return t.fields[num]
+}
+
+func (t *Ticket) NumFields() int {
+	return len(t.fields)
 }
