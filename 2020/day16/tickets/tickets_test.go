@@ -8,6 +8,7 @@ func TestParseConstraint(t *testing.T) {
 		want  constraint
 	}{
 		{input: "", want: constraint{-1, -1}},
+		{input: "1-3", want: constraint{min: 1, max: 3}},
 	}
 	for i, tc := range tests {
 		got := parseConstraint(tc.input)
