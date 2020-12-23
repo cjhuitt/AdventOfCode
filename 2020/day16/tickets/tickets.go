@@ -83,6 +83,26 @@ func (f *fieldspec) Equal(other fieldspec) bool {
 	return true
 }
 
+func (f *fieldspec) isValid(test int) bool {
+	for _, r := range f.rules {
+		if r.passes(test) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (f *fieldspec) validateFields(fields []int) (bool, int) {
+	for _, t := range fields {
+		if !f.isValid(t) {
+			return false, t
+		}
+	}
+
+	return true, 0
+}
+
 //==============================================================================
 type ticket struct {
 	fields []int

@@ -55,6 +55,27 @@ func TestParseFieldSpec(t *testing.T) {
 	}
 }
 
+func TestValidateField(t *testing.T) {
+	spec := fieldspec{"class", []constraint{{1, 3}, {5, 7}}}
+	tests := []struct {
+		input      []int
+		want_valid bool
+		want_error int
+	}{
+		{input: []int{}, want_valid: true, want_error: 0},
+		{input: []int{1, 2, 3}, want_valid: true, want_error: 0},
+		{input: []int{4, 5, 6}, want_valid: false, want_error: 4},
+		{input: []int{1, 3, 5}, want_valid: true, want_error: 0},
+		{input: []int{1, 9, 5}, want_valid: false, want_error: 9},
+	}
+	for i, tc := range tests {
+		got_valid, got_error := spec.validateFields(tc.input)
+		if got_valid != tc.want_valid || got_error != tc.want_error {
+			t.Errorf("Expected validating fields (%v) to be (%v, %v), received (%v, %v) (case %d)", tc.input, tc.want_valid, tc.want_error, got_valid, got_error, i)
+		}
+	}
+}
+
 func TestParseTicket(t *testing.T) {
 	tests := []struct {
 		input string
