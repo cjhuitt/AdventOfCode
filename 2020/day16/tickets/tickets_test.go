@@ -18,22 +18,23 @@ func TestParseConstraint(t *testing.T) {
 	}
 }
 
-func TestValidateFields(t *testing.T) {
+func TestPassConstraint(t *testing.T) {
 	c := constraint{1, 3}
 	tests := []struct {
-		input      []int
-		want_valid bool
-		want_error int
+		input int
+		want  bool
 	}{
-		{input: []int{}, want_valid: true, want_error: 0},
-		{input: []int{1, 2, 3}, want_valid: true, want_error: 0},
-		{input: []int{4, 5, 6}, want_valid: false, want_error: 4},
-		{input: []int{1, 3, 5}, want_valid: false, want_error: 5},
+		{input: -1, want: false},
+		{input: 0, want: false},
+		{input: 1, want: true},
+		{input: 2, want: true},
+		{input: 3, want: true},
+		{input: 4, want: false},
 	}
 	for i, tc := range tests {
-		got_valid, got_error := c.validateFields(tc.input)
-		if got_valid != tc.want_valid || got_error != tc.want_error {
-			t.Errorf("Expected validating fields (%v) to be (%v, %v), received (%v, %v) (case %d)", tc.input, tc.want_valid, tc.want_error, got_valid, got_error, i)
+		got := c.passes(tc.input)
+		if got != tc.want {
+			t.Errorf("Expected %#v.passes(%v) to be %v, received %v (case %d)", c, tc.input, tc.want, got, i)
 		}
 	}
 }

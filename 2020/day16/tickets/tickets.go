@@ -30,14 +30,8 @@ func (c *constraint) isValid() bool {
 	return c.min >= 0 && c.max >= 0
 }
 
-func (c *constraint) validateFields(fields []int) (bool, int) {
-	for _, f := range fields {
-		if f < c.min || f > c.max {
-			return false, f
-		}
-	}
-
-	return true, 0
+func (c *constraint) passes(test int) bool {
+	return test >= c.min && test <= c.max
 }
 
 //==============================================================================
