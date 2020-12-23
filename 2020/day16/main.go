@@ -66,7 +66,7 @@ func readOtherTickets(scanner *bufio.Scanner) []tickets.Ticket {
 	return others
 }
 
-func countLines(infile string) {
+func processFile(infile string) {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
@@ -93,7 +93,7 @@ func countLines(infile string) {
 }
 
 func main() {
-	countLines("test_input.txt")
+	processFile("test_input.txt")
 	fmt.Println()
-	countLines("input.txt")
+	processFile("input.txt")
 }
