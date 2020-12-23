@@ -66,6 +66,18 @@ func readOtherTickets(scanner *bufio.Scanner) []tickets.Ticket {
 	return others
 }
 
+func fieldEntries(good []tickets.Ticket, field int) []int {
+	r := []int{}
+	for _, t := range good {
+		r = append(r, t.Field(field))
+	}
+	return r
+}
+
+func findFieldOrder(specs []tickets.FieldSpec, good []tickets.Ticket) []tickets.FieldSpec {
+	return specs
+}
+
 func processFile(infile string) {
 	file, err := os.Open(infile)
 	if err != nil {
@@ -83,13 +95,24 @@ func processFile(infile string) {
 	fmt.Println(infile, ":", len(others), "other tickets found")
 
 	rate := 0
+	good := []tickets.Ticket{}
 	for _, t := range others {
 		g, e := t.Validate(specs)
-		if !g {
+		if g {
+			good = append(good, t)
+		} else {
 			rate += e
 		}
 	}
 	fmt.Println(infile, ": error rate is", rate)
+	fmt.Println(infile, ":", len(good), "good other tickets found")
+
+	ordered := findFieldOrder(specs, good)
+	fmt.Printf("%s : ", infile)
+	for _, s := range ordered {
+		fmt.Printf("%s, ", s.Name())
+	}
+	fmt.Printf("\n")
 }
 
 func main() {

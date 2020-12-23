@@ -93,6 +93,10 @@ func (f *FieldSpec) passes(test int) bool {
 	return false
 }
 
+func (f *FieldSpec) Name() string {
+	return f.name
+}
+
 //==============================================================================
 type Ticket struct {
 	fields []int
@@ -142,4 +146,11 @@ func (t *Ticket) Validate(specs []FieldSpec) (bool, int) {
 		}
 	}
 	return true, 0
+}
+
+func (t *Ticket) Field(num int) int {
+	if num < 0 || num >= len(t.fields) {
+		return -1
+	}
+	return t.fields[num]
 }
