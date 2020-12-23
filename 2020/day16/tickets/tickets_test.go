@@ -40,6 +40,7 @@ func TestParseTicket(t *testing.T) {
 		want  ticket
 	}{
 		{input: "", want: ticket{}},
+		{input: "7,1,14", want: ticket{[]int{7, 1, 14}}},
 	}
 	for i, tc := range tests {
 		got := parseTicket(tc.input)

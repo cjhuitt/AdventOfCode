@@ -81,12 +81,32 @@ func (f *fieldspec) Equal(other fieldspec) bool {
 
 //==============================================================================
 type ticket struct {
+	fields []int
 }
 
 func parseTicket(in string) ticket {
-	return ticket{}
+	t := ticket{}
+	parts := strings.Split(in, ",")
+	if len(parts) <= 1 {
+		return t
+	}
+
+	for _, p := range parts {
+		t.fields = append(t.fields, extractInt(p))
+	}
+	return t
 }
 
 func (t *ticket) Equal(other ticket) bool {
+	if len(t.fields) != len(other.fields) {
+		return false
+	}
+
+	for i := 0; i < len(t.fields); i++ {
+		if t.fields[i] != other.fields[i] {
+			return false
+		}
+	}
+
 	return true
 }
