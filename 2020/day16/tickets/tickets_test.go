@@ -108,6 +108,10 @@ func TestValidateTicket(t *testing.T) {
 		want_error int
 	}{
 		{input: "", want_valid: true, want_error: 0},
+		{input: "7,3,47", want_valid: true, want_error: 0},
+		{input: "40,4,50", want_valid: false, want_error: 4},
+		{input: "55,2,20", want_valid: false, want_error: 55},
+		{input: "38,6,12", want_valid: false, want_error: 12},
 	}
 	for i, tc := range tests {
 		tkt := parseTicket(tc.input)

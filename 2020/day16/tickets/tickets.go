@@ -127,12 +127,12 @@ func (t *ticket) Equal(other ticket) bool {
 
 func passes(test int, specs []fieldspec) bool {
 	for _, s := range specs {
-		if !s.passes(test) {
-			return false
+		if s.passes(test) {
+			return true
 		}
 	}
 
-	return true
+	return false
 }
 
 func (t *ticket) Validate(specs []fieldspec) (bool, int) {
