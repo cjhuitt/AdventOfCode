@@ -24,8 +24,7 @@ func TestParseFieldSpec(t *testing.T) {
 		want  fieldspec
 	}{
 		{input: "", want: fieldspec{"", []constraint{}}},
-		{input: "class: 1-3 or 5-7", want: fieldspec{"class", []constraint{}}},
-		//{input: "class: 1-3 or 5-7", want: fieldspec{"class", []constraint{constraint{1, 3}, constraint{5, 7}}}},
+		{input: "class: 1-3 or 5-7", want: fieldspec{"class", []constraint{constraint{1, 3}, constraint{5, 7}}}},
 	}
 	for i, tc := range tests {
 		got := parseFieldSpec(tc.input)

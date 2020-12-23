@@ -26,6 +26,10 @@ func parseConstraint(in string) constraint {
 	return constraint{extractInt(parts[0]), extractInt(parts[1])}
 }
 
+func (c *constraint) isValid() bool {
+	return c.min >= 0 && c.max >= 0
+}
+
 //==============================================================================
 type fieldspec struct {
 	name  string
@@ -40,10 +44,25 @@ func parseName(in string) (string, string) {
 	return parts[0], parts[1]
 }
 
+func parseConstraints(in string) []constraint {
+	r := []constraint{}
+	parts := strings.Split(in, " ")
+	for _, p := range parts {
+		if p != "or" {
+			c := parseConstraint(p)
+			if c.isValid() {
+				r = append(r, c)
+			}
+		}
+	}
+	return r
+}
+
 func parseFieldSpec(in string) fieldspec {
 	f := fieldspec{}
-	name, _ := parseName(in)
+	name, other := parseName(in)
 	f.name = name
+	f.rules = parseConstraints(other)
 	return f
 }
 
