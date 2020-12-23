@@ -18,11 +18,32 @@ func readSpecs(scanner *bufio.Scanner) []tickets.FieldSpec {
 		}
 		specs = append(specs, tickets.ParseFieldSpec(line))
 	}
+
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
 	return specs
+}
+
+func readMyTicket(scanner *bufio.Scanner) tickets.Ticket {
+	t := tickets.Ticket{}
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "your ticket:" {
+			continue
+		}
+		if line == "" {
+			break
+		}
+		t = tickets.ParseTicket(line)
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return t
 }
 
 func countLines(infile string) {
@@ -35,19 +56,7 @@ func countLines(infile string) {
 	scanner := bufio.NewScanner(file)
 
 	specs := readSpecs(scanner)
-
-	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "your ticket:" {
-			continue
-		}
-		if line == "" {
-			break
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
+	_ = readMyTicket(scanner)
 
 	others := []tickets.Ticket{}
 	for scanner.Scan() {
