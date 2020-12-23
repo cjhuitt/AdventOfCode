@@ -97,10 +97,10 @@ func TestParseTicket(t *testing.T) {
 }
 
 func TestValidateTicket(t *testing.T) {
-	fields := []fieldspec{}
-	fields = append(fields, fieldspec{"class", []constraint{{1, 3}, {5, 7}}})
-	fields = append(fields, fieldspec{"row", []constraint{{6, 11}, {33, 44}}})
-	fields = append(fields, fieldspec{"seat", []constraint{{13, 40}, {45, 50}}})
+	specs := []fieldspec{}
+	specs = append(specs, fieldspec{"class", []constraint{{1, 3}, {5, 7}}})
+	specs = append(specs, fieldspec{"row", []constraint{{6, 11}, {33, 44}}})
+	specs = append(specs, fieldspec{"seat", []constraint{{13, 40}, {45, 50}}})
 
 	tests := []struct {
 		input      string
@@ -111,7 +111,7 @@ func TestValidateTicket(t *testing.T) {
 	}
 	for i, tc := range tests {
 		tkt := parseTicket(tc.input)
-		got_valid, got_error := tkt.Validate(fields)
+		got_valid, got_error := tkt.Validate(specs)
 		if got_valid != tc.want_valid || got_error != tc.want_error {
 			t.Errorf("Expected validating ticket (%v) to be (%v, %v), received (%v, %v) (case %d)", tc.input, tc.want_valid, tc.want_error, got_valid, got_error, i)
 		}

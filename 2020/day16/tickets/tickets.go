@@ -125,6 +125,21 @@ func (t *ticket) Equal(other ticket) bool {
 	return true
 }
 
-func (t *ticket) Validate(fields []fieldspec) (bool, int) {
+func passes(test int, specs []fieldspec) bool {
+	for _, s := range specs {
+		if !s.passes(test) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (t *ticket) Validate(specs []fieldspec) (bool, int) {
+	for _, f := range t.fields {
+		if !passes(f, specs) {
+			return false, f
+		}
+	}
 	return true, 0
 }
