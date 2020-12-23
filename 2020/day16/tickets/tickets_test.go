@@ -17,3 +17,18 @@ func TestParseConstraint(t *testing.T) {
 		}
 	}
 }
+
+func TestParseFieldSpec(t *testing.T) {
+	tests := []struct {
+		input string
+		want  fieldspec
+	}{
+		{input: "", want: fieldspec{"", []constraint{}}},
+	}
+	for i, tc := range tests {
+		got := parseFieldSpec(tc.input)
+		if !got.Equal(tc.want) {
+			t.Errorf("Expected parseFieldSpec(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
