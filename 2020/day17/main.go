@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"grid"
 )
 
 func readFile(infile string) []string {
@@ -29,7 +31,8 @@ func readFile(infile string) []string {
 
 func countLines(infile string) {
 	lines := readFile(infile)
-	fmt.Println(infile, ":", len(lines), "lines found")
+	g := grid.Parse(lines)
+	fmt.Println(infile, ":", g.NumActive(), "active at start")
 }
 
 func main() {
