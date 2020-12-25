@@ -1,15 +1,17 @@
 package grid
 
+//==============================================================================
 type cell struct {
-	active    bool
-	neighbors []*cell
+	active          bool
+	row, col, plane int
 }
 
-func readCell(val rune) *cell {
-	c := cell{active: val == '#'}
+func readCell(val rune, row, col int) *cell {
+	c := cell{active: val == '#', row: row, col: col}
 	return &c
 }
 
+//==============================================================================
 type list struct {
 	contents []*cell
 }
@@ -22,15 +24,16 @@ func (l *list) contains(row, col, plane int) bool {
 	return false
 }
 
+//==============================================================================
 type grid struct {
 	list []*cell
 }
 
 func Parse(in []string) grid {
 	g := grid{}
-	for _, line := range in {
-		for _, val := range line {
-			g.list = append(g.list, readCell(val))
+	for row, line := range in {
+		for col, val := range line {
+			g.list = append(g.list, readCell(val, row, col))
 		}
 	}
 	return g
