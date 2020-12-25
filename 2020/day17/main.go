@@ -41,7 +41,8 @@ func process(infile string, steps int) {
 }
 
 func main() {
-	process("test_input.txt", 6)
+	process("test_input.txt", 1)
+	//process("test_input.txt", 6)
 	fmt.Println()
 	process("input.txt", 6)
 }

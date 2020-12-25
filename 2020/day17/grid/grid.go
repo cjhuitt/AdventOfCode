@@ -74,6 +74,11 @@ func (c *cell) calculateStep(neighbors list) {
 	}
 }
 
+func (c *cell) applyStep() {
+	c.active = c.next_state
+	c.next_state = false
+}
+
 //==============================================================================
 type list struct {
 	contents []*cell
@@ -152,4 +157,11 @@ func (g *grid) Neighbors(loc coord) list {
 }
 
 func (g *grid) Step() {
+	for _, c := range g.universe.contents {
+		n := g.Neighbors(c.loc)
+		c.calculateStep(n)
+	}
+	for _, c := range g.universe.contents {
+		c.applyStep()
+	}
 }
