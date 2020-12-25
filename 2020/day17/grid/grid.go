@@ -2,15 +2,15 @@ package grid
 
 //==============================================================================
 type coord struct {
-	x, y, z int
+	x, y, z, w int
 }
 
-func at(x, y, z int) coord {
-	return coord{x, y, z}
+func at(x, y, z, w int) coord {
+	return coord{x, y, z, w}
 }
 
 func inPlane(x, y int) coord {
-	return coord{x, y, 0}
+	return coord{x, y, 0, 0}
 }
 
 func origin() coord {
@@ -26,9 +26,11 @@ func (me *coord) neighbors() []coord {
 	for x := me.x - 1; x <= me.x+1; x++ {
 		for y := me.y - 1; y <= me.y+1; y++ {
 			for z := me.z - 1; z <= me.z+1; z++ {
-				t := at(x, y, z)
-				if t != *me {
-					l = append(l, t)
+				for w := me.w - 1; w <= me.w+1; w++ {
+					t := at(x, y, z, w)
+					if t != *me {
+						l = append(l, t)
+					}
 				}
 			}
 		}
