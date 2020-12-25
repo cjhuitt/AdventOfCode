@@ -2,18 +2,21 @@ package grid
 
 import "testing"
 
-func TestInitGrid(t *testing.T) {
+func TestInitGridForActiveCells(t *testing.T) {
 	tests := []struct {
-		input string
-		want  grid
+		input []string
+		want  int
 	}{
 		// empty
-		{input: "", want: grid{}},
+		{input: []string{}, want: 0},
+
+		{input: []string{"."}, want: 0},
 	}
 	for i, tc := range tests {
-		got := Parse(tc.input)
+		g := Parse(tc.input)
+		got := g.NumActive()
 		if got != tc.want {
-			t.Errorf("Expected Parse(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+			t.Errorf("Expected Parse(%v) to result in %v active cells, received %v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
 }
