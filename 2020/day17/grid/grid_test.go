@@ -11,6 +11,7 @@ func TestInitGridForActiveCells(t *testing.T) {
 		{input: []string{}, want: 0},
 
 		{input: []string{"."}, want: 0},
+		{input: []string{"#"}, want: 1},
 	}
 	for i, tc := range tests {
 		g := Parse(tc.input)
