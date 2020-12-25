@@ -34,15 +34,12 @@ func process(infile string, steps int) {
 	g := grid.Parse(lines)
 	fmt.Println(infile, ":", g.NumActive(), "active at start")
 
-	for i := 0; i < steps; i++ {
-		g.Step()
-	}
+	g.StepTo(steps)
 	fmt.Println(infile, ":", g.NumActive(), "active after", steps, "steps")
 }
 
 func main() {
-	process("test_input.txt", 1)
-	//process("test_input.txt", 6)
+	process("test_input.txt", 6)
 	fmt.Println()
 	process("input.txt", 6)
 }
