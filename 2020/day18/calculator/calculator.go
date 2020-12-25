@@ -1,6 +1,7 @@
 package calculator
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -25,16 +26,45 @@ func tokenize(in string) []string {
 	return tokens
 }
 
+func findParens(tokens []string) (int, int) {
+	var start int
+	for i, t := range tokens {
+		switch t {
+		case "(":
+			start = i
+		case ")":
+			return start, i
+		}
+	}
+	return 0, 0
+}
+
+func processParens(tokens []string) []string {
+	start, end := findParens(tokens)
+	if start == end {
+		return tokens
+	}
+	val := calc(tokens[start+1 : end])
+	r := tokens[0:start]
+	r = append(r, fmt.Sprintf("%d", val))
+	r = append(r, tokens[end:len(tokens)-1]...)
+	return r
+}
+
 func calc(tokens []string) int {
+	extracted := processParens(tokens)
+	for len(extracted) != len(tokens) {
+		tokens = extracted
+		extracted = processParens(tokens)
+	}
 	var stored int
-	for i := len(tokens) - 1; i >= 0; i-- {
-		t := tokens[i]
+	for i := len(extracted) - 1; i >= 0; i-- {
+		t := extracted[i]
 		switch t {
 		case "+":
-			return stored + calc(tokens[0:i])
+			return stored + calc(extracted[0:i])
 		case "*":
-			return stored * calc(tokens[0:i])
-		case "(", ")":
+			return stored * calc(extracted[0:i])
 		default:
 			stored = toInt(t)
 		}
