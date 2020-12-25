@@ -7,24 +7,29 @@ import (
 	"os"
 )
 
-func countLines(infile string) {
+func readFile(infile string) []string {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
-	lines := 0
+	lines := []string{}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines++
+		lines = append(lines, scanner.Text())
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ":", lines, "lines found")
+	return lines
+}
+
+func countLines(infile string) {
+	lines := readFile(infile)
+	fmt.Println(infile, ":", len(lines), "lines found")
 }
 
 func main() {
