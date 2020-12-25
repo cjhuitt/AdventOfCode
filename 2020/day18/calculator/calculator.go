@@ -26,8 +26,7 @@ func tokenize(in string) []string {
 	return tokens
 }
 
-func Calculate(in string) int {
-	tokens := tokenize(in)
+func calc(tokens []string) int {
 	var value int
 	var op string
 	for _, t := range tokens {
@@ -44,6 +43,11 @@ func Calculate(in string) int {
 			}
 		}
 	}
+	return value
+}
+
+func Calculate(in string) int {
+	value := calc(tokenize(in))
 	fmt.Println(in, "=", value)
 	return value
 }
