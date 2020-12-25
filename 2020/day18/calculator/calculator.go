@@ -28,7 +28,7 @@ func tokenize(in string) []string {
 
 func Calculate(in string) int {
 	tokens := tokenize(in)
-	var operand int
+	var value int
 	var op string
 	for _, t := range tokens {
 		switch t {
@@ -36,14 +36,14 @@ func Calculate(in string) int {
 			op = "+"
 		default:
 			if op == "" {
-				operand = toInt(t)
+				value = toInt(t)
 			} else {
 				var b int
 				b = toInt(t)
-				operand = operand + b
+				value = value + b
 			}
 		}
 	}
-	fmt.Println(in, "=", operand)
-	return operand
+	fmt.Println(in, "=", value)
+	return value
 }
