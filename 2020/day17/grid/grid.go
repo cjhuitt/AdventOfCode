@@ -1,23 +1,36 @@
 package grid
 
 //==============================================================================
-type cell struct {
-	active          bool
+type coord struct {
 	row, col, plane int
 }
 
-func readCell(val rune, row, col int) *cell {
-	c := cell{active: val == '#', row: row, col: col}
+func at(row, col, plane int) coord {
+	return coord{row, col, plane}
+}
+
+func inPlane(row, col int) coord {
+	return coord{row, col, 0}
+}
+
+//==============================================================================
+type cell struct {
+	active bool
+	loc    coord
+}
+
+func readCell(val rune, loc coord) *cell {
+	c := cell{active: val == '#', loc: loc}
 	return &c
 }
 
-func createCell(row, col, plane int) *cell {
-	c := cell{row: row, col: col, plane: plane}
+func createCell(loc coord) *cell {
+	c := cell{loc: loc}
 	return &c
 }
 
-func (c *cell) isAt(row, col, plane int) bool {
-	return c.row == row && c.col == col && c.plane == plane
+func (c *cell) isAt(loc coord) bool {
+	return c.loc == loc
 }
 
 //==============================================================================
@@ -29,8 +42,8 @@ func (l *list) Length() int {
 	return len(l.contents)
 }
 
-func (l *list) contains(row, col, plane int) bool {
-	return l.find(row, col, plane) != nil
+func (l *list) contains(loc coord) bool {
+	return l.find(loc) != nil
 }
 
 func (l *list) add(c *cell) {
@@ -39,9 +52,9 @@ func (l *list) add(c *cell) {
 	}
 }
 
-func (l *list) find(row, col, plane int) *cell {
+func (l *list) find(loc coord) *cell {
 	for _, c := range l.contents {
-		if c.isAt(row, col, plane) {
+		if c.isAt(loc) {
 			return c
 		}
 	}
@@ -49,10 +62,10 @@ func (l *list) find(row, col, plane int) *cell {
 	return nil
 }
 
-func (l *list) findOrAdd(row, col, plane int) *cell {
-	c := l.find(row, col, plane)
+func (l *list) findOrAdd(loc coord) *cell {
+	c := l.find(loc)
 	if c == nil {
-		c = createCell(row, col, plane)
+		c = createCell(loc)
 		l.add(c)
 	}
 	return c
@@ -77,7 +90,7 @@ func Parse(in []string) grid {
 	g := grid{}
 	for row, line := range in {
 		for col, val := range line {
-			g.universe.add(readCell(val, row, col))
+			g.universe.add(readCell(val, inPlane(row, col)))
 		}
 	}
 	return g
@@ -87,13 +100,14 @@ func (g *grid) NumActive() int {
 	return g.universe.numActive()
 }
 
-func (g *grid) Neighbors(row, col, plane int) list {
+func (g *grid) Neighbors(loc coord) list {
 	l := list{}
-	for r := row - 1; r <= row+1; r++ {
-		for c := col - 1; c <= col+1; c++ {
-			for p := plane - 1; p <= plane+1; p++ {
-				if r != row || c != col || p != plane {
-					l.add(g.universe.findOrAdd(r, c, p))
+	for r := loc.row - 1; r <= loc.row+1; r++ {
+		for c := loc.col - 1; c <= loc.col+1; c++ {
+			for p := loc.plane - 1; p <= loc.plane+1; p++ {
+				t := at(r, c, p)
+				if t != loc {
+					l.add(g.universe.findOrAdd(t))
 				}
 			}
 		}
