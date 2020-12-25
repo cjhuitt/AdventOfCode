@@ -9,27 +9,26 @@ import (
 	"calculator"
 )
 
-func countLines(infile string) {
+func process(infile string) {
 	file, err := os.Open(infile)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
-	lines := 0
+	sum := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines++
+		sum += calculator.Calculate(scanner.Text())
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ":", lines, "lines found")
+	fmt.Println(infile, ": lines sum to", sum)
 }
 
 func main() {
-	calculator.Calculate("1 + 2")
-	//countLines("input.txt")
+	process("input.txt")
 }
