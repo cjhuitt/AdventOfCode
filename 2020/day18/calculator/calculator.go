@@ -27,23 +27,17 @@ func tokenize(in string) []string {
 }
 
 func calc(tokens []string) int {
-	var value int
-	var op string
-	for _, t := range tokens {
+	var stored int
+	for i, t := range tokens {
 		switch t {
 		case "+":
-			op = "+"
+			tmp := stored + calc(tokens[i+1:len(tokens)])
+			return tmp
 		default:
-			if op == "" {
-				value = toInt(t)
-			} else {
-				var b int
-				b = toInt(t)
-				value = value + b
-			}
+			stored = toInt(t)
 		}
 	}
-	return value
+	return stored
 }
 
 func Calculate(in string) int {
