@@ -11,6 +11,11 @@ func readCell(val rune, row, col int) *cell {
 	return &c
 }
 
+func createCell(row, col, plane int) *cell {
+	c := cell{row: row, col: col, plane: plane}
+	return &c
+}
+
 func (c *cell) isAt(row, col, plane int) bool {
 	return c.row == row && c.col == col && c.plane == plane
 }
@@ -25,14 +30,16 @@ func (l *list) Length() int {
 }
 
 func (l *list) contains(row, col, plane int) bool {
-	return false
+	return l.find(row, col, plane) != nil
 }
 
 func (l *list) add(c *cell) {
-	l.contents = append(l.contents, c)
+	if c != nil {
+		l.contents = append(l.contents, c)
+	}
 }
 
-func (l *list) findOrAdd(row, col, plane int) *cell {
+func (l *list) find(row, col, plane int) *cell {
 	for _, c := range l.contents {
 		if c.isAt(row, col, plane) {
 			return c
@@ -40,6 +47,15 @@ func (l *list) findOrAdd(row, col, plane int) *cell {
 	}
 
 	return nil
+}
+
+func (l *list) findOrAdd(row, col, plane int) *cell {
+	c := l.find(row, col, plane)
+	if c == nil {
+		c = createCell(row, col, plane)
+		l.add(c)
+	}
+	return c
 }
 
 func (l *list) numActive() int {
@@ -72,12 +88,12 @@ func (g *grid) NumActive() int {
 }
 
 func (g *grid) Neighbors(row, col, plane int) list {
-	l := list{make([]*cell, 26)}
+	l := list{}
 	for r := row - 1; r <= row+1; r++ {
 		for c := col - 1; c <= col+1; c++ {
 			for p := plane - 1; p <= plane+1; p++ {
 				if r != row || c != col || p != plane {
-					//l.add(g.list.findOrAdd(r, c, p))
+					l.add(g.universe.findOrAdd(r, c, p))
 				}
 			}
 		}

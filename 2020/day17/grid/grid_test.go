@@ -29,12 +29,13 @@ func TestGetNeighbors(t *testing.T) {
 	got := g.Neighbors(0, 0, 0)
 	if got.Length() != 26 {
 		t.Errorf("Expected to get 26 neighbors, received %v", got.Length())
-	}
-	for row := -1; row <= 1; row++ {
-		for col := -1; col <= 1; col++ {
-			for plane := -1; plane <= 1; plane++ {
-				if (row != 0 || col != 0 || plane != 0) && !got.contains(row, col, plane) {
-					t.Errorf("Expected neighbors to contain (%d, %d, %d), it did not", row, col, plane)
+	} else {
+		for row := -1; row <= 1; row++ {
+			for col := -1; col <= 1; col++ {
+				for plane := -1; plane <= 1; plane++ {
+					if (row != 0 || col != 0 || plane != 0) && !got.contains(row, col, plane) {
+						t.Errorf("Expected neighbors to contain (%d, %d, %d), it did not", row, col, plane)
+					}
 				}
 			}
 		}
