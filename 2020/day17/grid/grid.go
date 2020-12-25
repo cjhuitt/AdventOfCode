@@ -123,6 +123,8 @@ func (l *list) numActive() int {
 }
 
 //==============================================================================
+// TODO: just keep a slice of active locations and do all calculations locally?
+// Will probably be more efficient.
 type grid struct {
 	universe list
 }
@@ -147,4 +149,7 @@ func (g *grid) Neighbors(loc coord) list {
 		l.add(g.universe.findOrAdd(n))
 	}
 	return l
+}
+
+func (g *grid) Step() {
 }
