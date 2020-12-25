@@ -11,7 +11,7 @@ func TestCalculate(t *testing.T) {
 		{input: "1 + 2", want: 3},
 		{input: "2 * 2", want: 4},
 		{input: "1 + 2 * 3", want: 9},
-		{input: "1 + 2 * 3 + 4 * f + 6", want: 71},
+		{input: "1 + 2 * 3 + 4 * 5 + 6", want: 71},
 	}
 	for i, tc := range tests {
 		got := Calculate(tc.input)
