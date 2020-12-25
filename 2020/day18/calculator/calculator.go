@@ -16,13 +16,21 @@ func toInt(in string) int {
 	return i
 }
 
-func Calculate(in string) int {
+func tokenize(in string) []string {
 	var s scanner.Scanner
 	s.Init(strings.NewReader(in))
+	tokens := []string{}
+	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
+		tokens = append(tokens, s.TokenText())
+	}
+	return tokens
+}
+
+func Calculate(in string) int {
+	tokens := tokenize(in)
 	var operand int
 	var op string
-	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
-		t := s.TokenText()
+	for _, t := range tokens {
 		switch t {
 		case "+":
 			op = "+"
