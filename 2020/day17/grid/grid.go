@@ -5,25 +5,31 @@ type cell struct {
 	neighbors []*cell
 }
 
-func readCell(val byte) cell {
-	return cell{active: val == '#'}
+func readCell(val rune) *cell {
+	c := cell{active: val == '#'}
+	return &c
 }
 
 type grid struct {
-	origin cell
+	list []*cell
 }
 
 func Parse(in []string) grid {
 	g := grid{}
-	if len(in) > 0 && len(in[0]) > 0 {
-		g.origin = readCell(in[0][0])
+	for _, line := range in {
+		for _, val := range line {
+			g.list = append(g.list, readCell(val))
+		}
 	}
 	return g
 }
 
 func (g *grid) NumActive() int {
-	if g.origin.active {
-		return 1
+	total := 0
+	for _, c := range g.list {
+		if c.active {
+			total++
+		}
 	}
-	return 0
+	return total
 }
