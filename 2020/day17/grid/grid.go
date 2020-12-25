@@ -21,6 +21,22 @@ func (c *coord) isOrigin() bool {
 	return c.row == 0 && c.col == 0 && c.plane == 0
 }
 
+func (me *coord) neighbors() []coord {
+	l := []coord{}
+	for r := me.row - 1; r <= me.row+1; r++ {
+		for c := me.col - 1; c <= me.col+1; c++ {
+			for p := me.plane - 1; p <= me.plane+1; p++ {
+				t := at(r, c, p)
+				if t != *me {
+					l = append(l, t)
+				}
+			}
+		}
+	}
+
+	return l
+}
+
 //==============================================================================
 type cell struct {
 	active bool
@@ -110,15 +126,8 @@ func (g *grid) NumActive() int {
 
 func (g *grid) Neighbors(loc coord) list {
 	l := list{}
-	for r := loc.row - 1; r <= loc.row+1; r++ {
-		for c := loc.col - 1; c <= loc.col+1; c++ {
-			for p := loc.plane - 1; p <= loc.plane+1; p++ {
-				t := at(r, c, p)
-				if t != loc {
-					l.add(g.universe.findOrAdd(t))
-				}
-			}
-		}
+	for _, n := range loc.neighbors() {
+		l.add(g.universe.findOrAdd(n))
 	}
 	return l
 }
