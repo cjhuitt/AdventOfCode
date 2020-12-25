@@ -74,14 +74,49 @@ func fieldEntries(good []tickets.Ticket, field int) []int {
 	return r
 }
 
-func findFieldOrder(specs []tickets.FieldSpec, good []tickets.Ticket) []tickets.FieldSpec {
+func potentialSpecsFor(values []int, specs []tickets.FieldSpec) []tickets.FieldSpec {
 	r := []tickets.FieldSpec{}
+	for _, s := range specs {
+		if s.PassesAll(values) {
+			r = append(r, s)
+		}
+	}
+
+	return r
+}
+
+func removeFrom(specs []tickets.FieldSpec, spec tickets.FieldSpec) []tickets.FieldSpec {
+	r := []tickets.FieldSpec{}
+	for _, s := range specs {
+		if !s.Equal(spec) {
+			r = append(r, s)
+		}
+	}
+
+	return r
+}
+
+func removeAssignedCandidate(candidates map[int][]tickets.FieldSpec, spec tickets.FieldSpec) {
+	for pos, list := range candidates {
+		candidates[pos] = removeFrom(list, spec)
+	}
+}
+
+func findFieldOrder(specs []tickets.FieldSpec, good []tickets.Ticket) []tickets.FieldSpec {
+	candidates := map[int][]tickets.FieldSpec{}
 	for i := 0; i < good[0].NumFields(); i++ {
 		entries := fieldEntries(good, i)
-		for _, s := range specs {
-			if s.PassesAll(entries) {
-				r = append(r, s)
-				break
+		candidates[i] = potentialSpecsFor(entries, specs)
+	}
+
+	r := make([]tickets.FieldSpec, len(specs))
+	for len(candidates) > 0 {
+		for pos, list := range candidates {
+			if len(list) == 1 {
+				spec := list[0]
+				r[pos] = spec
+				removeAssignedCandidate(candidates, spec)
+				delete(candidates, pos)
 			}
 		}
 	}
