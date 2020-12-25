@@ -18,6 +18,10 @@ func (l *list) Length() int {
 	return len(l.contents)
 }
 
+func (l *list) contains(row, col, plane int) bool {
+	return false
+}
+
 type grid struct {
 	list []*cell
 }
