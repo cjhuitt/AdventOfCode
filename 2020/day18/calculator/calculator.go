@@ -1,7 +1,6 @@
 package calculator
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -42,6 +41,5 @@ func calc(tokens []string) int {
 
 func Calculate(in string) int {
 	value := calc(tokenize(in))
-	fmt.Println(in, "=", value)
 	return value
 }
