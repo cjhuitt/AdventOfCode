@@ -7,6 +7,7 @@ func TestCalculate(t *testing.T) {
 		input string
 		want  int
 	}{
+		{input: "1", want: 1},
 		{input: "1 + 2", want: 3},
 	}
 	for i, tc := range tests {
