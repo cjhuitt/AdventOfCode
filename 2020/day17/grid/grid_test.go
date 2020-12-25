@@ -24,17 +24,17 @@ func TestInitGridForActiveCells(t *testing.T) {
 	}
 }
 
-func TestGetNeighbors(t *testing.T) {
-	g := Parse([]string{"."})
-	got := g.Neighbors(origin())
-	if got.Length() != 26 {
-		t.Errorf("Expected to get 26 neighbors, received %v", got.Length())
+func TestNeighborCoords(t *testing.T) {
+	o := origin()
+	got := o.neighbors()
+	if len(got) != 26 {
+		t.Errorf("Expected to get 26 neighbors, received %v", len(got))
 	} else {
 		for row := -1; row <= 1; row++ {
 			for col := -1; col <= 1; col++ {
 				for plane := -1; plane <= 1; plane++ {
 					loc := at(row, col, plane)
-					if !loc.isOrigin() && !got.contains(loc) {
+					if !loc.isOrigin() && !contains(got, loc) {
 						t.Errorf("Expected neighbors to contain %v, it did not", loc)
 					}
 				}
@@ -43,35 +43,22 @@ func TestGetNeighbors(t *testing.T) {
 	}
 }
 
-func TestCalculateStep(t *testing.T) {
+func TestStepping(t *testing.T) {
+	g := Parse([]string{".#.", "..#", "###"})
 	tests := []struct {
-		active    bool
-		neighbors []bool
-		want      bool
+		steps int
+		want  int
 	}{
-		// Turn active with three & only 3 active neighbors
-		{active: false, neighbors: []bool{true, false, false, false}, want: false},
-		{active: false, neighbors: []bool{true, true, false, false}, want: false},
-		{active: false, neighbors: []bool{true, true, true, false}, want: true},
-		{active: false, neighbors: []bool{true, true, true, true}, want: false},
-
-		// stay active with only 2 or 3 active neighbors
-		{active: true, neighbors: []bool{true, false, false, false}, want: false},
-		{active: true, neighbors: []bool{true, true, false, false}, want: true},
-		{active: true, neighbors: []bool{true, true, true, false}, want: true},
-		{active: true, neighbors: []bool{true, true, true, true}, want: false},
+		{steps: 0, want: 5},
+		{steps: 1, want: 11},
 	}
 	for i, tc := range tests {
-		c := cell{active: tc.active}
-		n := list{}
-		for i, v := range tc.neighbors {
-			tmp := n.findOrAdd(at(i, 0, 0))
-			tmp.active = v
+		for j := 0; j < tc.steps; j++ {
+			g.Step()
 		}
-		c.calculateStep(n)
-		got := c.next_state
+		got := g.NumActive()
 		if got != tc.want {
-			t.Errorf("Expected calculateNext() to have next state active %v, received %v (case %d)", tc.want, got, i)
+			t.Errorf("Expected stepping to result in %v active cells, received %v (case %d)", tc.want, got, i)
 		}
 	}
 }

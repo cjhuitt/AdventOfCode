@@ -37,131 +37,53 @@ func (me *coord) neighbors() []coord {
 	return l
 }
 
-//==============================================================================
-type cell struct {
-	active     bool
-	next_state bool
-	loc        coord
-}
-
-func readCell(val rune, loc coord) *cell {
-	c := cell{active: val == '#', loc: loc}
-	return &c
-}
-
-func createCell(loc coord) *cell {
-	c := cell{loc: loc}
-	return &c
-}
-
-func (c *cell) isAt(loc coord) bool {
-	return c.loc == loc
-}
-
-func (c *cell) calculateStep(neighbors list) {
-	count := 0
-	for _, n := range neighbors.contents {
-		if n.active {
-			count++
-		}
-	}
-	if !c.active && count == 3 {
-		c.next_state = true
-	} else if c.active && count != 2 && count != 3 {
-		c.next_state = false
-	} else {
-		c.next_state = c.active
-	}
-}
-
-func (c *cell) applyStep() {
-	c.active = c.next_state
-	c.next_state = false
-}
-
-//==============================================================================
-type list struct {
-	contents []*cell
-}
-
-func (l *list) Length() int {
-	return len(l.contents)
-}
-
-func (l *list) contains(loc coord) bool {
-	return l.find(loc) != nil
-}
-
-func (l *list) add(c *cell) {
-	if c != nil {
-		l.contents = append(l.contents, c)
-	}
-}
-
-func (l *list) find(loc coord) *cell {
-	for _, c := range l.contents {
-		if c.isAt(loc) {
-			return c
+func contains(l []coord, t coord) bool {
+	for _, c := range l {
+		if c == t {
+			return true
 		}
 	}
 
-	return nil
-}
-
-func (l *list) findOrAdd(loc coord) *cell {
-	c := l.find(loc)
-	if c == nil {
-		c = createCell(loc)
-		l.add(c)
-	}
-	return c
-}
-
-func (l *list) numActive() int {
-	total := 0
-	for _, c := range l.contents {
-		if c.active {
-			total++
-		}
-	}
-	return total
+	return false
 }
 
 //==============================================================================
-// TODO: just keep a slice of active locations and do all calculations locally?
-// Will probably be more efficient.
 type grid struct {
-	universe list
+	active []coord
 }
 
 func Parse(in []string) grid {
 	g := grid{}
 	for row, line := range in {
 		for col, val := range line {
-			g.universe.add(readCell(val, inPlane(row, col)))
+			if val == '#' {
+				g.active = append(g.active, inPlane(row, col))
+			}
 		}
 	}
 	return g
 }
 
 func (g *grid) NumActive() int {
-	return g.universe.numActive()
-}
-
-func (g *grid) Neighbors(loc coord) list {
-	l := list{}
-	for _, n := range loc.neighbors() {
-		l.add(g.universe.findOrAdd(n))
-	}
-	return l
+	return len(g.active)
 }
 
 func (g *grid) Step() {
-	for _, c := range g.universe.contents {
-		n := g.Neighbors(c.loc)
-		c.calculateStep(n)
+	counts := map[coord]int{}
+	for _, c := range g.active {
+		for _, n := range c.neighbors() {
+			counts[n] += 1
+		}
 	}
-	for _, c := range g.universe.contents {
-		c.applyStep()
+
+	new_active := []coord{}
+	for coord, num := range counts {
+		if contains(g.active, coord) && (num == 2 || num == 3) {
+			new_active = append(new_active, coord)
+		} else if num == 3 {
+			new_active = append(new_active, coord)
+		}
 	}
+
+	g.active = new_active
 }
