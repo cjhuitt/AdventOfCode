@@ -10,12 +10,19 @@ import (
 	"text/scanner"
 )
 
+func toInt(in string) int {
+	i, err := strconv.Atoi(in)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return i
+}
+
 func calculate(in string) int {
 	var s scanner.Scanner
 	s.Init(strings.NewReader(in))
 	var operand int
 	var op string
-	var err error
 	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
 		t := s.TokenText()
 		switch t {
@@ -23,16 +30,10 @@ func calculate(in string) int {
 			op = "+"
 		default:
 			if op == "" {
-				operand, err = strconv.Atoi(t)
-				if err != nil {
-					log.Fatal(err)
-				}
+				operand = toInt(t)
 			} else {
 				var b int
-				b, err = strconv.Atoi(t)
-				if err != nil {
-					log.Fatal(err)
-				}
+				b = toInt(t)
 				operand = operand + b
 			}
 		}
