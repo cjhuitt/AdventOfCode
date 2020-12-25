@@ -33,3 +33,8 @@ func (g *grid) NumActive() int {
 	}
 	return total
 }
+
+func (g *grid) Neighbors(row, col, plane int) []*cell {
+	r := make([]*cell, 26)
+	return r
+}
