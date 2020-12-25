@@ -27,12 +27,13 @@ func tokenize(in string) []string {
 
 func calc(tokens []string) int {
 	var stored int
-	for i, t := range tokens {
+	for i := len(tokens) - 1; i >= 0; i-- {
+		t := tokens[i]
 		switch t {
 		case "+":
-			return stored + calc(tokens[i+1:len(tokens)])
+			return stored + calc(tokens[0:i])
 		case "*":
-			return stored * calc(tokens[i+1:len(tokens)])
+			return stored * calc(tokens[0:i])
 		default:
 			stored = toInt(t)
 		}
