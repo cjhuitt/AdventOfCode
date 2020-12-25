@@ -49,13 +49,17 @@ func TestCalculateStep(t *testing.T) {
 		neighbors []bool
 		want      bool
 	}{
-		{active: false, neighbors: []bool{false, false, false, false}, want: false},
-
 		// Turn active with three & only 3 active neighbors
 		{active: false, neighbors: []bool{true, false, false, false}, want: false},
 		{active: false, neighbors: []bool{true, true, false, false}, want: false},
 		{active: false, neighbors: []bool{true, true, true, false}, want: true},
 		{active: false, neighbors: []bool{true, true, true, true}, want: false},
+
+		// stay active with only 2 or 3 active neighbors
+		{active: true, neighbors: []bool{true, false, false, false}, want: false},
+		{active: true, neighbors: []bool{true, true, false, false}, want: true},
+		{active: true, neighbors: []bool{true, true, true, false}, want: true},
+		{active: true, neighbors: []bool{true, true, true, true}, want: false},
 	}
 	for i, tc := range tests {
 		c := cell{active: tc.active}

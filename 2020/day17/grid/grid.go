@@ -65,7 +65,13 @@ func (c *cell) calculateStep(neighbors list) {
 			count++
 		}
 	}
-	c.next_state = count == 3
+	if !c.active && count == 3 {
+		c.next_state = true
+	} else if c.active && count != 2 && count != 3 {
+		c.next_state = false
+	} else {
+		c.next_state = c.active
+	}
 }
 
 //==============================================================================
