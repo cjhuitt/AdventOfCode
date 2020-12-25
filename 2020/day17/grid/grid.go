@@ -59,6 +59,13 @@ func (c *cell) isAt(loc coord) bool {
 }
 
 func (c *cell) calculateStep(neighbors list) {
+	count := 0
+	for _, n := range neighbors.contents {
+		if n.active {
+			count++
+		}
+	}
+	c.next_state = count == 3
 }
 
 //==============================================================================
