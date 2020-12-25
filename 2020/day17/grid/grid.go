@@ -2,15 +2,15 @@ package grid
 
 //==============================================================================
 type coord struct {
-	row, col, plane int
+	x, y, z int
 }
 
-func at(row, col, plane int) coord {
-	return coord{row, col, plane}
+func at(x, y, z int) coord {
+	return coord{x, y, z}
 }
 
-func inPlane(row, col int) coord {
-	return coord{row, col, 0}
+func inPlane(x, y int) coord {
+	return coord{x, y, 0}
 }
 
 func origin() coord {
@@ -18,15 +18,15 @@ func origin() coord {
 }
 
 func (c *coord) isOrigin() bool {
-	return c.row == 0 && c.col == 0 && c.plane == 0
+	return c.x == 0 && c.y == 0 && c.z == 0
 }
 
 func (me *coord) neighbors() []coord {
 	l := []coord{}
-	for r := me.row - 1; r <= me.row+1; r++ {
-		for c := me.col - 1; c <= me.col+1; c++ {
-			for p := me.plane - 1; p <= me.plane+1; p++ {
-				t := at(r, c, p)
+	for x := me.x - 1; x <= me.x+1; x++ {
+		for y := me.y - 1; y <= me.y+1; y++ {
+			for z := me.z - 1; z <= me.z+1; z++ {
+				t := at(x, y, z)
 				if t != *me {
 					l = append(l, t)
 				}
@@ -54,10 +54,10 @@ type grid struct {
 
 func Parse(in []string) grid {
 	g := grid{}
-	for row, line := range in {
-		for col, val := range line {
+	for x, line := range in {
+		for y, val := range line {
 			if val == '#' {
-				g.active = append(g.active, inPlane(row, col))
+				g.active = append(g.active, inPlane(x, y))
 			}
 		}
 	}
