@@ -44,14 +44,14 @@ func (l *list) findOrAdd(row, col, plane int) *cell {
 
 //==============================================================================
 type grid struct {
-	list []*cell
+	universe []*cell
 }
 
 func Parse(in []string) grid {
 	g := grid{}
 	for row, line := range in {
 		for col, val := range line {
-			g.list = append(g.list, readCell(val, row, col))
+			g.universe = append(g.universe, readCell(val, row, col))
 		}
 	}
 	return g
@@ -59,7 +59,7 @@ func Parse(in []string) grid {
 
 func (g *grid) NumActive() int {
 	total := 0
-	for _, c := range g.list {
+	for _, c := range g.universe {
 		if c.active {
 			total++
 		}
