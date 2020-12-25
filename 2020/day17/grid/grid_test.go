@@ -55,9 +55,7 @@ func TestStepping(t *testing.T) {
 	}
 	for i, tc := range tests {
 		g := Parse([]string{".#.", "..#", "###"})
-		for j := 0; j < tc.steps; j++ {
-			g.Step()
-		}
+		g.StepTo(tc.steps)
 		got := g.NumActive()
 		if got != tc.want {
 			t.Errorf("Expected stepping to result in %v active cells, received %v (case %d)", tc.want, got, i)

@@ -87,3 +87,9 @@ func (g *grid) Step() {
 
 	g.active = new_active
 }
+
+func (g *grid) StepTo(count int) {
+	for i := 0; i < count; i++ {
+		g.Step()
+	}
+}
