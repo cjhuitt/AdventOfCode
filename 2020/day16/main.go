@@ -123,6 +123,17 @@ func findFieldOrder(specs []tickets.FieldSpec, good []tickets.Ticket) []tickets.
 	return r
 }
 
+func multDepartures(specs []tickets.FieldSpec, ticket tickets.Ticket) int {
+	m := 1
+	for i, s := range specs {
+		if s.IsDepartureField() {
+			m *= ticket.Field(i)
+		}
+	}
+
+	return m
+}
+
 func processFile(infile string) {
 	file, err := os.Open(infile)
 	if err != nil {
@@ -133,7 +144,7 @@ func processFile(infile string) {
 	scanner := bufio.NewScanner(file)
 
 	specs := readSpecs(scanner)
-	_ = readMyTicket(scanner)
+	mine := readMyTicket(scanner)
 	others := readOtherTickets(scanner)
 
 	fmt.Println(infile, ":", len(specs), "specifications found")
@@ -153,11 +164,13 @@ func processFile(infile string) {
 	fmt.Println(infile, ":", len(good), "good other tickets found")
 
 	ordered := findFieldOrder(specs, good)
-	fmt.Printf("%s : ", infile)
+	fmt.Printf("%s : Field order is", infile)
 	for _, s := range ordered {
 		fmt.Printf("%s, ", s.Name())
 	}
 	fmt.Printf("\n")
+
+	fmt.Println(infile, ": multiplied departure fields are", multDepartures(ordered, mine))
 }
 
 func main() {

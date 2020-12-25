@@ -107,6 +107,10 @@ func (f *FieldSpec) Name() string {
 	return f.name
 }
 
+func (f *FieldSpec) IsDepartureField() bool {
+	return strings.Contains(f.name, "departure")
+}
+
 //==============================================================================
 type Ticket struct {
 	fields []int
