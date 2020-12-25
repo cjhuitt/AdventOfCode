@@ -30,8 +30,9 @@ func calc(tokens []string) int {
 	for i, t := range tokens {
 		switch t {
 		case "+":
-			tmp := stored + calc(tokens[i+1:len(tokens)])
-			return tmp
+			return stored + calc(tokens[i+1:len(tokens)])
+		case "*":
+			return stored * calc(tokens[i+1:len(tokens)])
 		default:
 			stored = toInt(t)
 		}
