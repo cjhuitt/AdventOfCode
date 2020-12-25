@@ -13,6 +13,14 @@ func inPlane(row, col int) coord {
 	return coord{row, col, 0}
 }
 
+func origin() coord {
+	return coord{}
+}
+
+func (c *coord) isOrigin() bool {
+	return c.row == 0 && c.col == 0 && c.plane == 0
+}
+
 //==============================================================================
 type cell struct {
 	active bool
