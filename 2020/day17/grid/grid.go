@@ -42,29 +42,33 @@ func (l *list) findOrAdd(row, col, plane int) *cell {
 	return nil
 }
 
+func (l *list) numActive() int {
+	total := 0
+	for _, c := range l.contents {
+		if c.active {
+			total++
+		}
+	}
+	return total
+}
+
 //==============================================================================
 type grid struct {
-	universe []*cell
+	universe list
 }
 
 func Parse(in []string) grid {
 	g := grid{}
 	for row, line := range in {
 		for col, val := range line {
-			g.universe = append(g.universe, readCell(val, row, col))
+			g.universe.add(readCell(val, row, col))
 		}
 	}
 	return g
 }
 
 func (g *grid) NumActive() int {
-	total := 0
-	for _, c := range g.universe {
-		if c.active {
-			total++
-		}
-	}
-	return total
+	return g.universe.numActive()
 }
 
 func (g *grid) Neighbors(row, col, plane int) list {
