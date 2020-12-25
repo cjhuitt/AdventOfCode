@@ -30,10 +30,10 @@ func TestNeighborCoords(t *testing.T) {
 	if len(got) != 26 {
 		t.Errorf("Expected to get 26 neighbors, received %v", len(got))
 	} else {
-		for row := -1; row <= 1; row++ {
-			for col := -1; col <= 1; col++ {
-				for plane := -1; plane <= 1; plane++ {
-					loc := at(row, col, plane)
+		for x := -1; x <= 1; x++ {
+			for y := -1; y <= 1; y++ {
+				for z := -1; z <= 1; z++ {
+					loc := at(x, y, z)
 					if !loc.isOrigin() && !contains(got, loc) {
 						t.Errorf("Expected neighbors to contain %v, it did not", loc)
 					}
