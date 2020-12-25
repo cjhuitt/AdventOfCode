@@ -39,8 +39,9 @@ func (me *coord) neighbors() []coord {
 
 //==============================================================================
 type cell struct {
-	active bool
-	loc    coord
+	active     bool
+	next_state bool
+	loc        coord
 }
 
 func readCell(val rune, loc coord) *cell {
@@ -55,6 +56,9 @@ func createCell(loc coord) *cell {
 
 func (c *cell) isAt(loc coord) bool {
 	return c.loc == loc
+}
+
+func (c *cell) calculateStep(neighbors list) {
 }
 
 //==============================================================================

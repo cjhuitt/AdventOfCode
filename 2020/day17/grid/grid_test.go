@@ -42,3 +42,26 @@ func TestGetNeighbors(t *testing.T) {
 		}
 	}
 }
+
+func TestCalculateStep(t *testing.T) {
+	tests := []struct {
+		active    bool
+		neighbors []bool
+		want      bool
+	}{
+		{active: false, neighbors: []bool{false, false, false, false}, want: false},
+	}
+	for i, tc := range tests {
+		c := cell{active: tc.active}
+		n := list{}
+		for i, v := range tc.neighbors {
+			tmp := n.findOrAdd(at(i, 0, 0))
+			tmp.active = v
+		}
+		c.calculateStep(n)
+		got := c.next_state
+		if got != tc.want {
+			t.Errorf("Expected calculateNext() to have next state active %v, received %v (case %d)", tc.want, got, i)
+		}
+	}
+}
