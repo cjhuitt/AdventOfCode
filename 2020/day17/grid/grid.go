@@ -10,6 +10,14 @@ func readCell(val rune) *cell {
 	return &c
 }
 
+type list struct {
+	contents []*cell
+}
+
+func (l *list) Length() int {
+	return len(l.contents)
+}
+
 type grid struct {
 	list []*cell
 }
@@ -34,7 +42,7 @@ func (g *grid) NumActive() int {
 	return total
 }
 
-func (g *grid) Neighbors(row, col, plane int) []*cell {
-	r := make([]*cell, 26)
+func (g *grid) Neighbors(row, col, plane int) list {
+	r := list{make([]*cell, 26)}
 	return r
 }
