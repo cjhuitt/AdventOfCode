@@ -44,15 +44,17 @@ func TestNeighborCoords(t *testing.T) {
 }
 
 func TestStepping(t *testing.T) {
-	g := Parse([]string{".#.", "..#", "###"})
 	tests := []struct {
 		steps int
 		want  int
 	}{
 		{steps: 0, want: 5},
 		{steps: 1, want: 11},
+		{steps: 2, want: 21},
+		{steps: 6, want: 112},
 	}
 	for i, tc := range tests {
+		g := Parse([]string{".#.", "..#", "###"})
 		for j := 0; j < tc.steps; j++ {
 			g.Step()
 		}
