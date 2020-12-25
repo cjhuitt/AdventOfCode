@@ -34,6 +34,7 @@ func calc(tokens []string) int {
 			return stored + calc(tokens[0:i])
 		case "*":
 			return stored * calc(tokens[0:i])
+		case "(", ")":
 		default:
 			stored = toInt(t)
 		}
