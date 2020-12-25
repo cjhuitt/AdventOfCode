@@ -29,20 +29,19 @@ func readFile(infile string) []string {
 	return lines
 }
 
-func countLines(infile string) {
+func process(infile string, steps int) {
 	lines := readFile(infile)
 	g := grid.Parse(lines)
 	fmt.Println(infile, ":", g.NumActive(), "active at start")
 
-	var i int
-	for i = 0; i < 6; i++ {
+	for i := 0; i < steps; i++ {
 		g.Step()
 	}
-	fmt.Println(infile, ":", g.NumActive(), "active after", i, "steps")
+	fmt.Println(infile, ":", g.NumActive(), "active after", steps, "steps")
 }
 
 func main() {
-	countLines("test_input.txt")
+	process("test_input.txt", 6)
 	fmt.Println()
-	countLines("input.txt")
+	process("input.txt", 6)
 }
