@@ -44,10 +44,16 @@ func processParens(tokens []string) []string {
 	if start == end {
 		return tokens
 	}
-	val := calc(tokens[start+1 : end])
-	r := tokens[0:start]
-	r = append(r, fmt.Sprintf("%d", val))
-	r = append(r, tokens[end:len(tokens)-1]...)
+	temp := tokens[start+1 : end]
+	val := calc(temp)
+	r := make([]string, len(tokens)-(end-start))
+	if start > 0 {
+		copy(r, tokens[0:start])
+	}
+	r[start] = fmt.Sprintf("%d", val)
+	if end < len(tokens)-1 {
+		copy(r[start+1:len(r)], tokens[end+1:len(tokens)])
+	}
 	return r
 }
 

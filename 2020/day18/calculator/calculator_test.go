@@ -44,3 +44,22 @@ func TestFindParens(t *testing.T) {
 		}
 	}
 }
+
+func TestProcessParens(t *testing.T) {
+	tests := []struct {
+		input []string
+		want  []string
+	}{
+		{input: []string{}, want: []string{}},
+		{input: []string{"1"}, want: []string{"1"}},
+		{input: []string{"(", "1", ")"}, want: []string{"1"}},
+		{input: []string{"(", "1", ")", "+", "(", "2", ")"}, want: []string{"1", "+", "(", "2", ")"}},
+		{input: []string{"(", "(", "1", ")", ")"}, want: []string{"(", "1", ")"}},
+	}
+	for i, tc := range tests {
+		got := processParens(tc.input)
+		if len(got) != len(tc.want) {
+			t.Errorf("Expected processParens(%v) to result in (%v), received (%v) (case %d)", tc.input, tc.want, got, i)
+		}
+	}
+}
