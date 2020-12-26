@@ -97,16 +97,36 @@ func newNode(op string) *node {
 	return &n
 }
 
+func (n *node) isFull() bool {
+	return n.left != nil && n.right != nil
+}
+
 func (n *node) calculate() int {
+	switch n.op {
+	case "+":
+		return n.left.calculate() + n.right.calculate()
+	}
 	return toInt(n.op)
 }
 
 func build(tokens []string) *node {
-	var curr *node
+	var last *node
 	for _, t := range tokens {
-		curr = newNode(t)
+		n := newNode(t)
+		switch t {
+		case "+":
+			n.left, last = last, n
+		default:
+			if last == nil {
+				last = n
+			} else if last.isFull() {
+				n.right, last = last, n
+			} else {
+				last.right = n
+			}
+		}
 	}
-	return curr
+	return last
 }
 
 func CalculateWithTree(in string) int {
