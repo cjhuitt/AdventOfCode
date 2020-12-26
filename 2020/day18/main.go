@@ -16,17 +16,19 @@ func process(infile string) {
 	}
 	defer file.Close()
 
-	sum := 0
+	var sum1, sum2 int
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		sum += calculator.Calculate(scanner.Text())
+		sum1 += calculator.Calculate(scanner.Text())
+		sum2 += calculator.Calculate2(scanner.Text())
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(infile, ": lines sum to", sum)
+	fmt.Println(infile, ": lines sum to", sum1, "(left-to-right)")
+	fmt.Println(infile, ": lines sum to", sum2, "(addition has priority)")
 }
 
 func main() {
