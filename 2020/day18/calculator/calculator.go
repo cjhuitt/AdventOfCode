@@ -156,6 +156,7 @@ func (n *mult) calculate() int {
 	return n.left.calculate() * n.right.calculate()
 }
 
+//==============================================================================
 func newNode(op string) node {
 	var n node
 	switch op {
@@ -171,7 +172,8 @@ func newNode(op string) node {
 
 func build(tokens []string) node {
 	var top node
-	for _, t := range tokens {
+	for i := 0; i < len(tokens); i++ {
+		t := tokens[i]
 		n := newNode(t)
 		if top == nil {
 			top = n
