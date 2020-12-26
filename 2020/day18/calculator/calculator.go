@@ -104,7 +104,6 @@ func (n *node) add(other *node) *node {
 		return nil
 	}
 	if n.left == nil {
-		fmt.Println("added", other.op, "to left of", n.op)
 		n.left = other
 		return n
 	}
@@ -113,15 +112,10 @@ func (n *node) add(other *node) *node {
 		return r
 	}
 	if n.right == nil {
-		fmt.Println("added", other.op, "to right of", n.op)
 		n.right = other
 		return n
 	}
 	return n.right.add(other)
-}
-
-func (n *node) isFull() bool {
-	return n.left != nil && n.right != nil
 }
 
 func (n *node) calculate() int {
