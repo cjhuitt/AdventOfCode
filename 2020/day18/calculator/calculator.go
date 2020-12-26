@@ -86,18 +86,23 @@ func Calculate(in string) int {
 }
 
 //==============================================================================
-type node struct {
-	left  *node
-	op    string
-	right *node
+type node interface {
+	add(node) node
+	calculate() int
 }
 
-func newNode(op string) *node {
-	n := node{op: op}
+type everythingNode struct {
+	left  node
+	op    string
+	right node
+}
+
+func newNode(op string) *everythingNode {
+	n := everythingNode{op: op}
 	return &n
 }
 
-func (n *node) add(other *node) *node {
+func (n *everythingNode) add(other node) node {
 	switch n.op {
 	case "*", "+":
 	default:
@@ -118,7 +123,7 @@ func (n *node) add(other *node) *node {
 	return n.right.add(other)
 }
 
-func (n *node) calculate() int {
+func (n *everythingNode) calculate() int {
 	switch n.op {
 	case "+":
 		return n.left.calculate() + n.right.calculate()
@@ -128,8 +133,8 @@ func (n *node) calculate() int {
 	return toInt(n.op)
 }
 
-func build(tokens []string) *node {
-	var top *node
+func build(tokens []string) node {
+	var top node
 	for _, t := range tokens {
 		n := newNode(t)
 		if top == nil {
