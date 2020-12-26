@@ -97,6 +97,29 @@ func newNode(op string) *node {
 	return &n
 }
 
+func (n *node) add(other *node) *node {
+	switch n.op {
+	case "*", "+":
+	default:
+		return nil
+	}
+	if n.left == nil {
+		fmt.Println("added", other.op, "to left of", n.op)
+		n.left = other
+		return n
+	}
+	r := n.left.add(other)
+	if r != nil {
+		return r
+	}
+	if n.right == nil {
+		fmt.Println("added", other.op, "to right of", n.op)
+		n.right = other
+		return n
+	}
+	return n.right.add(other)
+}
+
 func (n *node) isFull() bool {
 	return n.left != nil && n.right != nil
 }
@@ -115,16 +138,13 @@ func build(tokens []string) *node {
 	var top *node
 	for _, t := range tokens {
 		n := newNode(t)
-		switch t {
-		case "+", "*":
-			n.left, top = top, n
-		default:
-			if top == nil {
+		if top == nil {
+			top = n
+		} else {
+			r := top.add(n)
+			if r == nil {
+				n.add(top)
 				top = n
-			} else if top.isFull() {
-				n.right, top = top, n
-			} else {
-				top.right = n
 			}
 		}
 	}
