@@ -146,3 +146,8 @@ func Calculate(in string) int {
 	top, _ := build(tokenize(in))
 	return top.calculate()
 }
+
+func Calculate2(in string) int {
+	top, _ := build(tokenize(in))
+	return top.calculate()
+}
