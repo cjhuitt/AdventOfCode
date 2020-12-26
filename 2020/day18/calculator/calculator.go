@@ -8,6 +8,7 @@ import (
 	"text/scanner"
 )
 
+//==============================================================================
 func toInt(in string) int {
 	i, err := strconv.Atoi(in)
 	if err != nil {
@@ -16,6 +17,7 @@ func toInt(in string) int {
 	return i
 }
 
+//==============================================================================
 func tokenize(in string) []string {
 	var s scanner.Scanner
 	s.Init(strings.NewReader(in))
@@ -81,4 +83,33 @@ func calc(tokens []string) int {
 func Calculate(in string) int {
 	value := calc(tokenize(in))
 	return value
+}
+
+//==============================================================================
+type node struct {
+	left  *node
+	op    string
+	right *node
+}
+
+func newNode(op string) *node {
+	n := node{op: op}
+	return &n
+}
+
+func (n *node) calculate() int {
+	return toInt(n.op)
+}
+
+func build(tokens []string) *node {
+	var curr *node
+	for _, t := range tokens {
+		curr = newNode(t)
+	}
+	return curr
+}
+
+func CalculateWithTree(in string) int {
+	top := build(tokenize(in))
+	return top.calculate()
 }
