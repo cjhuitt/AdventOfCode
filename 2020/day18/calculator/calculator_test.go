@@ -33,9 +33,9 @@ func TestCalculate2(t *testing.T) {
 		want  int
 	}{
 		{input: "1", want: 1},
-		//{input: "1 + 2", want: 3},
-		//{input: "2 * 2", want: 4},
-		//{input: "1 + 2 * 3", want: 9},
+		{input: "1 + 2", want: 3},
+		{input: "2 * 2", want: 4},
+		{input: "1 + 2 * 3", want: 9},
 		//{input: "1 + 2 * 3 + 4 * 5 + 6", want: 231},
 		//{input: "1 + (2 * 3)", want: 7},
 
