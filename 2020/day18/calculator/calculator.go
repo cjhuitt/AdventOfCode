@@ -104,6 +104,33 @@ func (n *operand) calculate() int {
 	return toInt(n.op)
 }
 
+//==============================================================================
+type plus struct {
+	left  node
+	right node
+}
+
+func (n *plus) add(other node) node {
+	if n.left == nil {
+		n.left = other
+		return n
+	}
+	r := n.left.add(other)
+	if r != nil {
+		return r
+	}
+	if n.right == nil {
+		n.right = other
+		return n
+	}
+	return n.right.add(other)
+}
+
+func (n *plus) calculate() int {
+	return n.left.calculate() + n.right.calculate()
+}
+
+//==============================================================================
 type everythingNode struct {
 	left  node
 	op    string
@@ -144,7 +171,9 @@ func (n *everythingNode) calculate() int {
 func newNode(op string) node {
 	var n node
 	switch op {
-	case "+", "*":
+	case "+":
+		n = &plus{}
+	case "*":
 		n = &everythingNode{op: op}
 	default:
 		n = &operand{op: op}
