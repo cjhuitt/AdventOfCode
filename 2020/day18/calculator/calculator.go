@@ -1,7 +1,6 @@
 package calculator
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -17,7 +16,6 @@ func toInt(in string) int {
 	return i
 }
 
-//==============================================================================
 func tokenize(in string) []string {
 	var s scanner.Scanner
 	s.Init(strings.NewReader(in))
@@ -26,63 +24,6 @@ func tokenize(in string) []string {
 		tokens = append(tokens, s.TokenText())
 	}
 	return tokens
-}
-
-func findParens(tokens []string) (int, int) {
-	var start int
-	for i, t := range tokens {
-		switch t {
-		case "(":
-			start = i
-		case ")":
-			return start, i
-		}
-	}
-	return 0, 0
-}
-
-func processParens(tokens []string) []string {
-	start, end := findParens(tokens)
-	if start == end {
-		return tokens
-	}
-	temp := tokens[start+1 : end]
-	val := calc(temp)
-	r := make([]string, len(tokens)-(end-start))
-	if start > 0 {
-		copy(r, tokens[0:start])
-	}
-	r[start] = fmt.Sprintf("%d", val)
-	if end < len(tokens)-1 {
-		copy(r[start+1:len(r)], tokens[end+1:len(tokens)])
-	}
-	return r
-}
-
-func calc(tokens []string) int {
-	extracted := processParens(tokens)
-	for len(extracted) != len(tokens) {
-		tokens = extracted
-		extracted = processParens(tokens)
-	}
-	var stored int
-	for i := len(extracted) - 1; i >= 0; i-- {
-		t := extracted[i]
-		switch t {
-		case "+":
-			return stored + calc(extracted[0:i])
-		case "*":
-			return stored * calc(extracted[0:i])
-		default:
-			stored = toInt(t)
-		}
-	}
-	return stored
-}
-
-func Calculate(in string) int {
-	value := calc(tokenize(in))
-	return value
 }
 
 //==============================================================================
@@ -201,7 +142,7 @@ func build(tokens []string) (node, int) {
 	return top, i
 }
 
-func CalculateWithTree(in string) int {
+func Calculate(in string) int {
 	top, _ := build(tokenize(in))
 	return top.calculate()
 }
