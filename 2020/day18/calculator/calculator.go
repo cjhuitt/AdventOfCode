@@ -76,6 +76,8 @@ func (n *plus) calculate() int {
 }
 
 func (n *plus) transform() node {
+	n.left = n.left.transform()
+	n.right = n.right.transform()
 	return n
 }
 
@@ -106,6 +108,8 @@ func (n *mult) calculate() int {
 }
 
 func (n *mult) transform() node {
+	n.left = n.left.transform()
+	n.right = n.right.transform()
 	return n
 }
 
@@ -127,6 +131,7 @@ func (n *subexpr) calculate() int {
 }
 
 func (n *subexpr) transform() node {
+	n.top = n.top.transform()
 	return n
 }
 
