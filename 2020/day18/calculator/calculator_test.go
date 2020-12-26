@@ -37,12 +37,12 @@ func TestCalculate2(t *testing.T) {
 		{input: "2 * 2", want: 4},
 		{input: "1 + 2 * 3", want: 9},
 		{input: "1 + 2 * 3 + 4 * 5 + 6", want: 231},
-		//{input: "1 + (2 * 3)", want: 7},
+		{input: "1 + (2 * 3)", want: 7},
 
-		//{input: "2 * 3 + (4 * 5)", want: 46},
-		//{input: "5 + (8 * 3 + 9 + 3 * 4 * 3)", want: 1445},
-		//{input: "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", want: 669060},
-		//{input: "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", want: 23340},
+		{input: "2 * 3 + (4 * 5)", want: 46},
+		{input: "5 + (8 * 3 + 9 + 3 * 4 * 3)", want: 1445},
+		{input: "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", want: 669060},
+		{input: "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", want: 23340},
 	}
 	for i, tc := range tests {
 		got := Calculate2(tc.input)
