@@ -76,10 +76,10 @@ func TestCalculateWithTree(t *testing.T) {
 		{input: "1 + 2 * 3 + 4 * 5 + 6", want: 71},
 		{input: "1 + (2 * 3)", want: 7},
 
-		//{input: "2 * 3 + (4 * 5)", want: 26},
-		//{input: "5 + (8 * 3 + 9 + 3 * 4 * 3)", want: 437},
-		//{input: "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", want: 12240},
-		//{input: "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", want: 13632},
+		{input: "2 * 3 + (4 * 5)", want: 26},
+		{input: "5 + (8 * 3 + 9 + 3 * 4 * 3)", want: 437},
+		{input: "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", want: 12240},
+		{input: "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", want: 13632},
 	}
 	for i, tc := range tests {
 		got := CalculateWithTree(tc.input)
