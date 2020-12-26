@@ -105,6 +105,8 @@ func (n *node) calculate() int {
 	switch n.op {
 	case "+":
 		return n.left.calculate() + n.right.calculate()
+	case "*":
+		return n.left.calculate() * n.right.calculate()
 	}
 	return toInt(n.op)
 }
@@ -114,7 +116,7 @@ func build(tokens []string) *node {
 	for _, t := range tokens {
 		n := newNode(t)
 		switch t {
-		case "+":
+		case "+", "*":
 			n.left, last = last, n
 		default:
 			if last == nil {
