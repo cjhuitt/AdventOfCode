@@ -97,11 +97,6 @@ type everythingNode struct {
 	right node
 }
 
-func newNode(op string) *everythingNode {
-	n := everythingNode{op: op}
-	return &n
-}
-
 func (n *everythingNode) add(other node) node {
 	switch n.op {
 	case "*", "+":
@@ -131,6 +126,11 @@ func (n *everythingNode) calculate() int {
 		return n.left.calculate() * n.right.calculate()
 	}
 	return toInt(n.op)
+}
+
+func newNode(op string) node {
+	n := everythingNode{op: op}
+	return &n
 }
 
 func build(tokens []string) node {
