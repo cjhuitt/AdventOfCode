@@ -91,6 +91,19 @@ type node interface {
 	calculate() int
 }
 
+//==============================================================================
+type operand struct {
+	op string
+}
+
+func (n *operand) add(other node) node {
+	return nil
+}
+
+func (n *operand) calculate() int {
+	return toInt(n.op)
+}
+
 type everythingNode struct {
 	left  node
 	op    string
@@ -129,8 +142,14 @@ func (n *everythingNode) calculate() int {
 }
 
 func newNode(op string) node {
-	n := everythingNode{op: op}
-	return &n
+	var n node
+	switch op {
+	case "+", "*":
+		n = &everythingNode{op: op}
+	default:
+		n = &operand{op: op}
+	}
+	return n
 }
 
 func build(tokens []string) node {
