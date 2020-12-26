@@ -170,25 +170,38 @@ func newNode(op string) node {
 	return n
 }
 
-func build(tokens []string) node {
+func build(tokens []string) (node, int) {
 	var top node
-	for i := 0; i < len(tokens); i++ {
+	var i int
+	for i = 0; i < len(tokens); i++ {
 		t := tokens[i]
-		n := newNode(t)
-		if top == nil {
-			top = n
-		} else {
-			r := top.add(n)
-			if r == nil {
-				n.add(top)
+		if t == "(" {
+			n, diff := build(tokens[i+1 : len(tokens)])
+			if top == nil {
 				top = n
+			} else {
+				_ = top.add(n)
+			}
+			i += diff + 1
+		} else if t == ")" {
+			return top, i
+		} else {
+			n := newNode(t)
+			if top == nil {
+				top = n
+			} else {
+				r := top.add(n)
+				if r == nil {
+					n.add(top)
+					top = n
+				}
 			}
 		}
 	}
-	return top
+	return top, i
 }
 
 func CalculateWithTree(in string) int {
-	top := build(tokenize(in))
+	top, _ := build(tokenize(in))
 	return top.calculate()
 }

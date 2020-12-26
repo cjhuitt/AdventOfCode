@@ -74,7 +74,7 @@ func TestCalculateWithTree(t *testing.T) {
 		{input: "2 * 2", want: 4},
 		{input: "1 + 2 * 3", want: 9},
 		{input: "1 + 2 * 3 + 4 * 5 + 6", want: 71},
-		//{input: "1 + (2 * 3)", want: 7},
+		{input: "1 + (2 * 3)", want: 7},
 
 		//{input: "2 * 3 + (4 * 5)", want: 26},
 		//{input: "5 + (8 * 3 + 9 + 3 * 4 * 3)", want: 437},
