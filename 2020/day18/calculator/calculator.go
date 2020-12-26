@@ -98,17 +98,34 @@ func (n *mult) calculate() int {
 }
 
 //==============================================================================
+type subexpr struct {
+	top node
+}
+
+func (n *subexpr) add(other node) node {
+	if n.top == nil {
+		n.top = other
+		return n
+	}
+	return n.top.add(other)
+}
+
+func (n *subexpr) calculate() int {
+	return n.top.calculate()
+}
+
+//==============================================================================
 func newNode(op string) node {
-	var n node
 	switch op {
 	case "+":
-		n = &plus{}
+		return &plus{}
 	case "*":
-		n = &mult{}
+		return &mult{}
+	case "(":
+		return &subexpr{}
 	default:
-		n = &operand{op: op}
 	}
-	return n
+	return &operand{op: op}
 }
 
 func build(tokens []string) (node, int) {
@@ -116,8 +133,10 @@ func build(tokens []string) (node, int) {
 	var i int
 	for i = 0; i < len(tokens); i++ {
 		t := tokens[i]
+		n := newNode(t)
 		if t == "(" {
-			n, diff := build(tokens[i+1 : len(tokens)])
+			o, diff := build(tokens[i+1 : len(tokens)])
+			n.add(o)
 			if top == nil {
 				top = n
 			} else {
@@ -127,7 +146,6 @@ func build(tokens []string) (node, int) {
 		} else if t == ")" {
 			return top, i
 		} else {
-			n := newNode(t)
 			if top == nil {
 				top = n
 			} else {
