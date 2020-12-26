@@ -112,23 +112,23 @@ func (n *node) calculate() int {
 }
 
 func build(tokens []string) *node {
-	var last *node
+	var top *node
 	for _, t := range tokens {
 		n := newNode(t)
 		switch t {
 		case "+", "*":
-			n.left, last = last, n
+			n.left, top = top, n
 		default:
-			if last == nil {
-				last = n
-			} else if last.isFull() {
-				n.right, last = last, n
+			if top == nil {
+				top = n
+			} else if top.isFull() {
+				n.right, top = top, n
 			} else {
-				last.right = n
+				top.right = n
 			}
 		}
 	}
-	return last
+	return top
 }
 
 func CalculateWithTree(in string) int {
