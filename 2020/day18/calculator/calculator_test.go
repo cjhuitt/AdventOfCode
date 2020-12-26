@@ -36,7 +36,7 @@ func TestCalculate2(t *testing.T) {
 		{input: "1 + 2", want: 3},
 		{input: "2 * 2", want: 4},
 		{input: "1 + 2 * 3", want: 9},
-		//{input: "1 + 2 * 3 + 4 * 5 + 6", want: 231},
+		{input: "1 + 2 * 3 + 4 * 5 + 6", want: 231},
 		//{input: "1 + (2 * 3)", want: 7},
 
 		//{input: "2 * 3 + (4 * 5)", want: 46},
@@ -45,9 +45,9 @@ func TestCalculate2(t *testing.T) {
 		//{input: "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", want: 23340},
 	}
 	for i, tc := range tests {
-		got := Calculate(tc.input)
+		got := Calculate2(tc.input)
 		if got != tc.want {
-			t.Errorf("Expected Calculate(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
+			t.Errorf("Expected Calculate2(%v) to result in %v, received %v (case %d)", tc.input, tc.want, got, i)
 		}
 	}
 }

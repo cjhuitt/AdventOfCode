@@ -78,6 +78,13 @@ func (n *plus) calculate() int {
 func (n *plus) transform() node {
 	n.left = n.left.transform()
 	n.right = n.right.transform()
+	switch n.left.(type) {
+	case *mult:
+		m := n.left.(*mult)
+		n.left, m.right = m.right, n
+		return m
+	default:
+	}
 	return n
 }
 
