@@ -26,10 +26,10 @@ func tokenize(in string) []string {
 	return tokens
 }
 
-//==============================================================================
 type node interface {
 	add(node) node
 	calculate() int
+	transform() node
 }
 
 //==============================================================================
@@ -43,6 +43,10 @@ func (n *operand) add(other node) node {
 
 func (n *operand) calculate() int {
 	return toInt(n.op)
+}
+
+func (n *operand) transform() node {
+	return n
 }
 
 //==============================================================================
@@ -71,6 +75,10 @@ func (n *plus) calculate() int {
 	return n.left.calculate() + n.right.calculate()
 }
 
+func (n *plus) transform() node {
+	return n
+}
+
 //==============================================================================
 type mult struct {
 	left  node
@@ -97,6 +105,10 @@ func (n *mult) calculate() int {
 	return n.left.calculate() * n.right.calculate()
 }
 
+func (n *mult) transform() node {
+	return n
+}
+
 //==============================================================================
 type subexpr struct {
 	top node
@@ -112,6 +124,10 @@ func (n *subexpr) add(other node) node {
 
 func (n *subexpr) calculate() int {
 	return n.top.calculate()
+}
+
+func (n *subexpr) transform() node {
+	return n
 }
 
 //==============================================================================
@@ -167,5 +183,6 @@ func Calculate(in string) int {
 
 func Calculate2(in string) int {
 	top, _ := build(tokenize(in))
+	top = top.transform()
 	return top.calculate()
 }
