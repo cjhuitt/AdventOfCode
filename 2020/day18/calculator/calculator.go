@@ -131,18 +131,12 @@ func (n *plus) calculate() int {
 }
 
 //==============================================================================
-type everythingNode struct {
+type mult struct {
 	left  node
-	op    string
 	right node
 }
 
-func (n *everythingNode) add(other node) node {
-	switch n.op {
-	case "*", "+":
-	default:
-		return nil
-	}
+func (n *mult) add(other node) node {
 	if n.left == nil {
 		n.left = other
 		return n
@@ -158,14 +152,8 @@ func (n *everythingNode) add(other node) node {
 	return n.right.add(other)
 }
 
-func (n *everythingNode) calculate() int {
-	switch n.op {
-	case "+":
-		return n.left.calculate() + n.right.calculate()
-	case "*":
-		return n.left.calculate() * n.right.calculate()
-	}
-	return toInt(n.op)
+func (n *mult) calculate() int {
+	return n.left.calculate() * n.right.calculate()
 }
 
 func newNode(op string) node {
@@ -174,7 +162,7 @@ func newNode(op string) node {
 	case "+":
 		n = &plus{}
 	case "*":
-		n = &everythingNode{op: op}
+		n = &mult{}
 	default:
 		n = &operand{op: op}
 	}
