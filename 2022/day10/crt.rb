@@ -46,7 +46,8 @@ class CRT
 end
 
 cpu = CPU.new
-File.foreach("input.txt", chomp: true) do |line|
+input = ARGV.fetch(0, "input.txt")
+File.foreach(input, chomp: true) do |line|
   instruction = line.split
   case instruction[0]
   when "noop"
@@ -62,6 +63,7 @@ signal_strength = [20, 60, 100, 140, 180, 220].collect do |tick|
   cpu.regx_history[tick - 1] * tick
 end
 puts "Summed strengths: #{signal_strength.sum}"
+puts
 
 crt = CRT.new(cpu)
 crt.lines.each {|l| puts "#{l}"}
