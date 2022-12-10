@@ -24,6 +24,27 @@ class CPU
   end
 end
 
+class CRT
+  attr_reader :lines
+
+  def initialize(cpu)
+    @lines = []
+    line = ""
+    0.upto 5  do |row|
+      0.upto 39 do |col|
+        tick = 40 * row + col
+        if [col - 1, col, col + 1].include? cpu.regx_history[tick]
+          line << "X"
+        else
+          line << "."
+        end
+      end
+      @lines << line
+      line = ""
+    end
+  end
+end
+
 cpu = CPU.new
 File.foreach("input.txt", chomp: true) do |line|
   instruction = line.split
@@ -42,4 +63,5 @@ signal_strength = [20, 60, 100, 140, 180, 220].collect do |tick|
 end
 puts "Summed strengths: #{signal_strength.sum}"
 
-
+crt = CRT.new(cpu)
+crt.lines.each {|l| puts "#{l}"}
