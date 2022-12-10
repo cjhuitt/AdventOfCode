@@ -1,10 +1,10 @@
 class CPU
-  attr_reader :regx, :clock, :signal_strength
+  attr_reader :regx, :regx_history, :clock
 
   def initialize()
     @regx = 1
+    @regx_history = []
     @clock = 0
-    @signal_strength = []
   end
 
   def noop()
@@ -20,12 +20,7 @@ class CPU
   private
   def tick
     @clock += 1
-    accumulate_signal() if [20, 60, 100, 140, 180, 220].include? @clock
-#    puts "Tick #{@clock}: #{@regx}"
-  end
-
-  def accumulate_signal
-    @signal_strength << @regx * @clock
+    @regx_history << @regx
   end
 end
 
@@ -42,4 +37,9 @@ File.foreach("input.txt", chomp: true) do |line|
   end
 end
 
-puts "Summed strengths: #{cpu.signal_strength.sum}"
+signal_strength = [20, 60, 100, 140, 180, 220].collect do |tick|
+  cpu.regx_history[tick - 1] * tick
+end
+puts "Summed strengths: #{signal_strength.sum}"
+
+
