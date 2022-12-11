@@ -1,3 +1,42 @@
+class Num
+  attr_reader :val
+  def initialize(val)
+    @val = val
+  end
+
+  def +(other)
+    if other.is_a? Num
+      Num.new(@val + other.val)
+    else
+      Num.new(@val + other)
+    end
+  end
+
+  def *(other)
+    if other.is_a? Num
+      Num.new(@val * other.val)
+    else
+      Num.new(@val * other)
+    end
+  end
+
+  def /(other)
+    if other.is_a? Num
+      Num.new((@val / other.val).floor)
+    else
+      Num.new((@val / other).floor)
+    end
+  end
+
+  def divisible(other)
+    @val % other == 0
+  end
+
+  def to_s
+    "#{@val}"
+  end
+end
+
 class Monkey
   attr_reader :id, :test, :inspections
 
@@ -18,7 +57,7 @@ class Monkey
   def inspect_items(monkey_list)
     @items.each do |item|
       val = inspect item
-      val = (val / 3).floor
+      val = val / 3
       throw_to(monkey_list, val)
     end
     @inspections += @items.length
@@ -35,7 +74,7 @@ class Monkey
   end
 
   def extract_items(string)
-    string.split(":").last.split(", ").collect {|s| s.to_i}
+    string.split(":").last.split(", ").collect {|s| Num.new(s.to_i)}
   end
 
   def extract_op(string)
@@ -64,7 +103,7 @@ class Monkey
   end
 
   def throw_to(monkey_list, item)
-    monkey_list[@recipients[item % @test == 0]].catch item
+    monkey_list[@recipients[item.divisible(test)]].catch item
   end
 end
 
