@@ -86,3 +86,7 @@ end
 nodes.each {|n| n.prune_connections}
 end_node.begin_search
 puts "\nDistance from start is #{start_node.distance}"
+
+starts = nodes.filter {|n| n.height == 1 and n.distance }
+distances = starts.collect {|n| n.distance }
+puts "\nDistance from shortest start is #{distances.sort.first}"
