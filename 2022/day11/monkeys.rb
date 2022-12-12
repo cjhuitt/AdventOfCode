@@ -1,65 +1,3 @@
-class Num
-  attr_reader :val, :num_factors
-  attr_accessor :factor
-
-  def initialize(val, factor, num_factors)
-    @val = val
-    @factor = factor
-    @num_factors = num_factors
-  end
-
-  def +(other)
-    if other.is_a? Num
-      Num.new(@val + other.val, @factor, @num_factors)
-    else
-      Num.new(@val + other, @factor, @num_factors)
-    end
-  end
-
-  def *(other)
-    ov = if other.is_a? Num
-      other.val
-    else
-      other
-    end
-
-    on = if other.is_a? Num
-      other.num_factors
-    else
-      other
-    end
-
-    n = @num_factors * on
-    val = @val * ov
-    n += (val / @factor).floor
-    val = val % @factor
-
-    Num.new(val, @factor, n)
-  end
-
-  def /(other)
-    return self if other == 1
-    val = @val / other.to_f
-    m = @num_factors / other.to_f
-    n = m.floor
-    r = m - n
-    val = val + (@factor * r).round
-    Num.new(val.floor, @factor, n)
-  end
-
-  def divisible(other)
-    @val % other == 0
-  end
-
-  def to_s
-    if @num_factors > 0
-      "(#{@num_factors} * #{@factor} + #{@val})"
-    else
-      "#{@val}"
-    end
-  end
-end
-
 class Monkey
   attr_reader :id, :test, :inspections
 
@@ -77,10 +15,11 @@ class Monkey
     "Monkey #{@id} (#{@inspections} inspections) has items: #{@items.collect{|i| i.to_s}.join(", ")}"
   end
 
-  def inspect_items(monkey_list, relief_factor, debug)
+  def inspect_items(monkey_list, relief_factor, cycle_factor, debug)
     @items.each do |item|
       val = inspect item
       val = val / relief_factor
+      val = val % cycle_factor
       throw_to(monkey_list, val, item, debug)
     end
     @inspections += @items.length
@@ -101,7 +40,7 @@ class Monkey
   end
 
   def extract_items(string)
-    string.split(":").last.split(", ").collect {|s| Num.new(s.to_i, 0, 0)}
+    string.split(":").last.split(", ").collect {|s| s.to_i}
   end
 
   def extract_op(string)
@@ -130,38 +69,49 @@ class Monkey
   end
 
   def throw_to(monkey_list, item, was, debug)
-    monkey_list[@recipients[item.divisible(test)]].catch item
+    rec = @recipients[item % @test == 0]
+    monkey_list[rec].catch item
     if debug
-      r = monkey_list[@recipients[item.divisible(test)]].id
+      r = monkey_list[rec].id
       puts "\n#{@id} throwing #{item} (was #{was}) to #{r}"
       monkey_list.each {|m| puts "#{m}"}
     end
   end
 end
 
-monkeys = []
+monkeys1 = []
+monkeys2 = []
 input = ARGV.fetch(0, "input.txt")
 lines = File.readlines(input, chomp: true)
 until lines.empty?
   definition = lines.shift(7)
-  monkeys << Monkey.new(definition.dup)
+  monkeys1 << Monkey.new(definition.dup)
+  monkeys2 << Monkey.new(definition.dup)
 end
 
-puts "#{monkeys.length} total monkeys"
+puts "#{monkeys1.length} total monkeys"
 puts
 
 def keep_away(monkeys, rounds, relief_factor)
-  factor = 1
+  factor = relief_factor
   monkeys.each {|m| factor *= m.test}
-  monkeys.each {|m| m.apply_factor(factor)}
   1.upto rounds do |round|
     monkeys.each do |monkey|
-      monkey.inspect_items(monkeys, relief_factor, false)
+      monkey.inspect_items(monkeys, relief_factor, factor, false)
     end
   end
 end
 
-keep_away(monkeys, 20, 3)
-inspections = monkeys.collect {|m| m.inspections }.sort
+keep_away(monkeys1, 20, 3)
+inspections = monkeys1.collect {|m| m.inspections }.sort
 puts "Part 1 monkey business: #{inspections.pop * inspections.pop}"
+
+$stdout.sync = true
+100.downto 1 do |n|
+  keep_away(monkeys2, 100, 1)
+  print "."
+  print "\b\b\b\b\b#    \b\b\b\b" if n % 5 == 0
+end
+inspections = monkeys2.collect {|m| m.inspections }.sort
+puts "\nPart 2 monkey business: #{inspections.pop * inspections.pop}"
 
