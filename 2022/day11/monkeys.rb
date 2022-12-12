@@ -1,31 +1,50 @@
 class Num
-  attr_reader :val
-  def initialize(val)
+  attr_reader :val, :num_factors
+  attr_accessor :factor
+
+  def initialize(val, factor, num_factors)
     @val = val
+    @factor = factor
+    @num_factors = num_factors
   end
 
   def +(other)
     if other.is_a? Num
-      Num.new(@val + other.val)
+      Num.new(@val + other.val, @factor, @num_factors)
     else
-      Num.new(@val + other)
+      Num.new(@val + other, @factor, @num_factors)
     end
   end
 
   def *(other)
-    if other.is_a? Num
-      Num.new(@val * other.val)
+    ov = if other.is_a? Num
+      other.val
     else
-      Num.new(@val * other)
+      other
     end
+
+    on = if other.is_a? Num
+      other.num_factors
+    else
+      other
+    end
+
+    n = @num_factors * on
+    val = @val * ov
+    n += (val / @factor).floor
+    val = val % @factor
+
+    Num.new(val, @factor, n)
   end
 
   def /(other)
-    if other.is_a? Num
-      Num.new((@val / other.val).floor)
-    else
-      Num.new((@val / other).floor)
-    end
+    return self if other == 1
+    val = @val / other.to_f
+    m = @num_factors / other.to_f
+    n = m.floor
+    r = m - n
+    val = val + (@factor * r).round
+    Num.new(val.floor, @factor, n)
   end
 
   def divisible(other)
@@ -33,7 +52,11 @@ class Num
   end
 
   def to_s
-    "#{@val}"
+    if @num_factors > 0
+      "(#{@num_factors} * #{@factor} + #{@val})"
+    else
+      "#{@val}"
+    end
   end
 end
 
@@ -54,11 +77,11 @@ class Monkey
     "Monkey #{@id} (#{@inspections} inspections) has items: #{@items.collect{|i| i.to_s}.join(", ")}"
   end
 
-  def inspect_items(monkey_list)
+  def inspect_items(monkey_list, relief_factor, debug)
     @items.each do |item|
       val = inspect item
-      val = val / 3
-      throw_to(monkey_list, val)
+      val = val / relief_factor
+      throw_to(monkey_list, val, item, debug)
     end
     @inspections += @items.length
     @items = []
@@ -68,13 +91,17 @@ class Monkey
     @items << item
   end
 
+  def apply_factor(factor)
+    @items.each {|i| i.factor = factor}
+  end
+
   private
   def extract_id(string)
     string.chop.split.last.to_i
   end
 
   def extract_items(string)
-    string.split(":").last.split(", ").collect {|s| Num.new(s.to_i)}
+    string.split(":").last.split(", ").collect {|s| Num.new(s.to_i, 0, 0)}
   end
 
   def extract_op(string)
@@ -102,8 +129,13 @@ class Monkey
     end
   end
 
-  def throw_to(monkey_list, item)
+  def throw_to(monkey_list, item, was, debug)
     monkey_list[@recipients[item.divisible(test)]].catch item
+    if debug
+      r = monkey_list[@recipients[item.divisible(test)]].id
+      puts "\n#{@id} throwing #{item} (was #{was}) to #{r}"
+      monkey_list.each {|m| puts "#{m}"}
+    end
   end
 end
 
@@ -118,17 +150,18 @@ end
 puts "#{monkeys.length} total monkeys"
 puts
 
-def keep_away(monkeys, rounds)
+def keep_away(monkeys, rounds, relief_factor)
+  factor = 1
+  monkeys.each {|m| factor *= m.test}
+  monkeys.each {|m| m.apply_factor(factor)}
   1.upto rounds do |round|
     monkeys.each do |monkey|
-      monkey.inspect_items(monkeys)
+      monkey.inspect_items(monkeys, relief_factor, false)
     end
-    #puts "\nRound #{round}"
-    #monkeys.each {|m| puts "#{m}"}
   end
 end
 
-keep_away(monkeys, 20)
+keep_away(monkeys, 20, 3)
 inspections = monkeys.collect {|m| m.inspections }.sort
 puts "Part 1 monkey business: #{inspections.pop * inspections.pop}"
 
