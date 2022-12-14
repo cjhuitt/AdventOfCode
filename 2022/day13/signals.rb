@@ -21,7 +21,9 @@ def compare(first, second, subs)
   first_parts.length.<=>(second_parts.length)
 end
 
-def less?(first, second)
+def less?(one, two)
+  first = one.dup
+  second = two.dup
   substr = "a"
   subs = {}
   while first.match? $pattern
@@ -48,6 +50,8 @@ sum = 0
 index = 0
 input = ARGV.fetch(0, "input.txt")
 lines = File.readlines(input, chomp: true)
+dividers = ["[[2]]", "[[6]]"]
+lines2 = dividers + lines.reject {|l| l.empty?}
 until lines.empty?
   signals = lines.shift(3)
   index += 1
@@ -56,3 +60,8 @@ end
 
 puts "\n#{index} pairs"
 puts "Sum of correct order indices: #{sum}"
+
+lines2.sort! {|a,b| less?(a, b) ? -1 : 1}
+decoder = 1
+dividers.each {|d| decoder *= (lines2.find_index(d) + 1)}
+puts "Decoder key: #{decoder}"
