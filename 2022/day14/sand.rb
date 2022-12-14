@@ -13,9 +13,8 @@ class Space
   end
 
   def add_sand(x, y)
-    last = point = [x,y]
+    point = [x,y]
     until @contents.has_key? point
-      last = point
       a = [point[0], point[1] + 1]
       b = [point[0] - 1, point[1] + 1]
       c = [point[0] + 1, point[1] + 1]
@@ -38,12 +37,40 @@ class Space
     nil
   end
 
+  def fill_sand(x, y)
+    max_row = @row_span.max + 2
+    point = [x,y]
+    until @contents.has_key? point
+      a = [point[0], point[1] + 1]
+      b = [point[0] - 1, point[1] + 1]
+      c = [point[0] + 1, point[1] + 1]
+      if a[1] == max_row
+        @contents[point] = :sand
+        @col_span = (@col_span + [point[0]]).minmax
+        return point
+      elsif not @contents.has_key? a
+        point = a
+      elsif not @contents.has_key? b
+        point = b
+      elsif not @contents.has_key? c
+        point = c
+      else
+        @contents[point] = :sand
+        @col_span = (@col_span + [point[0]]).minmax
+        return point
+      end
+    end
+    nil
+  end
+
   def to_s
     lines = []
-    max_row = @row_span.max
+    max_row = @row_span.max + 1
+    min_x = @col_span[0] - 2
+    max_x = @col_span[1] + 2
     (0..max_row).each do |r|
       line = ""
-      (@col_span[0]..@col_span[1]).each do |c|
+      (min_x..max_x).each do |c|
         case @contents[[c,r]]
         when :rock
          line << "#"
@@ -55,7 +82,7 @@ class Space
       end
       lines << line
     end
-    lines
+    lines << "#" * (max_x - min_x + 1)
   end
 end
 
@@ -85,7 +112,14 @@ sand = 0
 while cavern.add_sand(500, 0)
   sand += 1
 end
-puts "Added #{sand} sand"
+puts "Part 1: Added #{sand} sand"
+
+until cavern.fill_sand(500, 0) == [500, 0]
+  sand += 1
+end
+# add 1 for the final one placed
+sand += 1
+puts "Part 2: Added #{sand} sand"
 
 #puts
 #cavern.to_s.each {|l| puts l}
