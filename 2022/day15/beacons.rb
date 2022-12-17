@@ -78,3 +78,19 @@ end
 cols = 0
 covered.each {|s| cols += s.count}
 puts "Row #{check_row} has #{cols - others.length} unavailable beacon spots"
+
+gap_row = -1
+(0..4000000).each do |check_row|
+  covered = row_span(node_distances, check_row)
+  if covered.size > 1
+    gap_row = check_row
+    break
+  end
+end
+
+ranges = row_span(node_distances, gap_row).sort {|a,b| a.min < b.min ? -1 : 1}
+puts "#{ranges}"
+gap_col = ranges[0].max + 1
+puts "Row #{gap_row} possible position at #{gap_col}"
+puts "Frequency: #{gap_col * 4000000 + gap_row}"
+
