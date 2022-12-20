@@ -47,38 +47,57 @@ end
 class Column
   attr_reader :space
   def initialize
-    @space = Array.new(11000) {Array.new(7) {false}}
+    @space = Array.new(50) {Array.new(7) {false}}
     @top = -1
+    @internal_top = -1
+    @back = 0
   end
 
   def blocked?(coords)
+    trim_offset = Point.new(0,-@back)
     coords.any? do |coord|
-      return true if coord.y == -1
-      return true if coord.x == -1
-      return true if coord.x == 7
-      @space[coord.y][coord.x]
+      test = coord + trim_offset
+      return true if test.y == -1
+      return true if test.x == -1
+      return true if test.x == 7
+      @space[test.y][test.x]
     end
   end
 
   def fixate(rock)
-    rows = [@top]
+    rows = [@internal_top]
+    trim_offset = Point.new(0,-@back)
     rock.offsets.each do |offset|
-      p = rock.position + offset
+      p = rock.position + offset + trim_offset
       @space[p.y][p.x] = true
       rows << p.y
     end
-    @top = rows.max
+    @internal_top = rows.max
+    @top = @internal_top + @back
+    trim_window if @internal_top > 50
+    grow_window if @internal_top + 25 > @space.length
   end
 
   def highest
     @top + 1
   end
 
-  def output(lines)
-    (0..lines).each do |row|
-      print "|#{@space[lines - row].collect {|v| v ? "#" : "."}.join}|\n"
+  private
+  def trim_window
+    back = @internal_top
+    columns = Array.new(7) {false}
+    until columns.count(true) == 7 || back < 0
+      columns = columns.zip(@space[back]).collect {|a,b| a or b }
+      back -= 1
     end
-    print "+-------+"
+    return if back < 0
+    @back += back
+    @space = @space[back..]
+    @internal_top -= back
+  end
+
+  def grow_window
+    @space = @space + Array.new(50) {Array.new(7) {false}}
   end
 end
 
@@ -86,14 +105,16 @@ rock_cycle = [:dash, :plus, :reverse_l, :capital_i, :block]
 column = Column.new
 input = ARGV.fetch(0, "input.txt")
 jets = File.open(input, chomp: true, &:readline).strip
+rock_count = ARGV.fetch(1, 2022).to_i
 
 jet_index = 0
 
-(0...2022).each do |count|
+(0...rock_count).each do |count|
   rock = Rock.new(rock_cycle[count % rock_cycle.length], Point.new(2, column.highest + 3))
   jet_index += 1 while rock.move(jets[jet_index % jets.length], column)
   column.fixate(rock)
   jet_index += 1
+  puts "Rock #{count}" if count % 100000 == 0
 end
 
 puts "Column reached #{column.highest}"
