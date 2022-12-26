@@ -28,20 +28,41 @@ class List
   end
 
   def move(node)
-    n = @head
-    n = n.next until n == node
-    v = n.value # % @length - doesn't work how I want on negatives
-    if v < 0
-      (v...0).each { move_prev(n) }
-      #backward
+    return if node.value == 0
+    after = advance(node, node.value)
+    return if after == node
+    remove(node)
+    insert(node, after)
+  end
+
+  def remove(node)
+    p = node.prev
+    n = node.next
+    p.next = n unless p.nil?
+    n.prev = p unless n.nil?
+    @head = n if @head == node
+    @tail = p if @tail == node
+  end
+
+  def insert(node, after)
+    if after.nil?
+      @tail.next = node
+      node.prev = @tail
+      @tail = node
     else
-      #forward
-      (0...v).each { move_next(n) }
+      p = after
+      n = after.next
+      p.next = node
+      node.prev = p
+      node.next = n
+      n.prev = node unless n.nil?
+      @tail = node if @tail == p
     end
   end
 
-  def next(node, steps)
-    (0...steps).each do
+  def advance(node, steps)
+    normed = normalize(steps)
+    (0...normed).each do
       if node == @tail
         node = @head
       else
@@ -62,80 +83,33 @@ class List
   end
 
   private
-  def move_prev(node)
-    if node == @head
-      # N@H, m, ...y, z@T => m@h, ..., y, N, z@T
-      m = node.next
-      z = @tail
-      y = z.prev
-      m.prev = nil
-      y.next = node
-      node.prev = y
-      node.next = z
-      z.prev = node
-      @head = m
-    else
-      # l, m, N, o => l, N, m, o
-      m = node.prev
-      l = m.prev
-      o = node.next
-      l.next = node unless l.nil?
-      node.prev = l
-      node.next = m
-      m.prev = node
-      m.next = o
-      o.prev = m unless o.nil?
-      @head = node if @head == m
-      @tail = m if @tail == node
-    end
-  end
-
-  def move_next(node)
-    if node == @tail
-      # a@H, b, ... m, N@T => a@H, N, b, ... m@T
-      a = @head
-      b = a.next
-      m = node.prev
-      m.next = nil
-      a.next = node
-      node.prev = a
-      node.next = b
-      b.prev = node
-      @tail = m
-    else
-      # m, N, o, p => m, o, N, p
-      m = node.prev
-      o = node.next
-      p = o.next
-      m.next = o unless m.nil?
-      o.prev = m
-      o.next = node
-      node.prev = o
-      node.next = p
-      p.prev = node unless p.nil?
-      @tail = node if @tail == o
-      @head = o if @head == node
-    end
+  def normalize(val)
+    r = val.abs % @length
+    return r if val >= 0
+    @length - r - 1
   end
 end
 
 order = []
 list = List.new
+zero = nil
 input = ARGV.fetch(0, "input.txt")
 File.foreach(input, chomp: true).with_index do |line, index|
   v = line.to_i
   order << v
-  list.add(Struct::Node.new(v, nil, nil))
+  node = Struct::Node.new(v, nil, nil)
+  list.add(node)
+  zero = node if v == 0
 end
 
-order.each do |val|
+order.each.with_index do |val, index|
   list.move(list.find(val))
 #  puts "#{val}: #{list}"
 end
 
-index = list.find(0)
+index = zero
 values = (0..2).collect do
-  index = list.next(index, 1000)
+  index = list.advance(index, 1000)
   index.value
 end
 puts "#{values} sum to #{values.sum}"
