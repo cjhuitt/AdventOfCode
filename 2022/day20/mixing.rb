@@ -90,16 +90,16 @@ zero = nil
 input = ARGV.fetch(0, "input.txt")
 File.foreach(input, chomp: true).with_index do |line, index|
   v = line.to_i
-  order << v
   node = Struct::Node.new(v, nil, nil)
+  order << node
   list.add(node)
   zero = node if v == 0
 end
 
 puts "Start:\t\t#{list}" if list.length < 10
-order.each.with_index do |val, index|
-  list.move(list.find(val))
-  puts "#{val}:\t\t#{list}" if list.length < 10
+order.each do |node|
+  list.move(node)
+  puts "#{node.value}:\t\t#{list}" if list.length < 10
 end
 
 index = zero
