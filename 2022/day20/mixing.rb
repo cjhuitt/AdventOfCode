@@ -30,11 +30,6 @@ class List
   def move(node)
     return if node.value == 0
     from = remove(node)
-    if node.value < 0
-      from = from.next
-      from = @head if from.nil?
-    end
-    from = from.next if node.value < 0
     after = advance(from, node.value)
     insert(node, after)
   end
@@ -70,17 +65,10 @@ class List
   end
 
   def advance(node, steps)
-    normed = normalize(steps)
-    if normed >= 0
-      1.upto(normed).each do
-        node = node.next
-        node = @head if node.nil?
-      end
-    else
-      1.downto(normed).each do
-        node = node.prev
-        node = @tail if node.nil?
-      end
+    normed = steps % @length
+    1.upto(normed).each do
+      node = node.next
+      node = @head if node.nil?
     end
     node
   end
@@ -93,13 +81,6 @@ class List
       lines << n.value
     end
     lines.join(", ")
-  end
-
-  private
-  def normalize(val)
-    r = val.abs % @length
-    return r if val >= 0
-    -r
   end
 end
 
