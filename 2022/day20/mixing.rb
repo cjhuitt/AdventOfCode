@@ -19,14 +19,6 @@ class List
     @length += 1
   end
 
-  def find(v)
-    node = @head
-    until node.nil?
-      return node if node.value == v
-      node = node.next
-    end
-  end
-
   def move(node)
     return if node.value == 0
     from = remove(node)
@@ -84,12 +76,16 @@ class List
   end
 end
 
+#multiplier = 1
+#loops = 1
+multiplier = 811589153
+loops = 10
 order = []
 list = List.new
 zero = nil
 input = ARGV.fetch(0, "input.txt")
 File.foreach(input, chomp: true).with_index do |line, index|
-  v = line.to_i
+  v = line.to_i * multiplier
   node = Struct::Node.new(v, nil, nil)
   order << node
   list.add(node)
@@ -97,9 +93,11 @@ File.foreach(input, chomp: true).with_index do |line, index|
 end
 
 puts "Start:\t\t#{list}" if list.length < 10
-order.each do |node|
-  list.move(node)
-  puts "#{node.value}:\t\t#{list}" if list.length < 10
+1.upto(loops).each do
+  order.each do |node|
+    list.move(node)
+    puts "#{node.value}:\t\t#{list}" if list.length < 10
+  end
 end
 
 index = zero
@@ -107,4 +105,4 @@ values = (0..2).collect do
   index = list.advance(index, 1000)
   index.value
 end
-puts "#{values} sum to #{values.sum}"
+puts "Part 1: #{values} sum to #{values.sum}"
