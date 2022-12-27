@@ -29,9 +29,13 @@ class List
 
   def move(node)
     return if node.value == 0
-    after = advance(node, node.value)
-    return if after == node
-    remove(node)
+    from = remove(node)
+    if node.value < 0
+      from = from.next
+      from = @head if from.nil?
+    end
+    from = from.next if node.value < 0
+    after = advance(from, node.value)
     insert(node, after)
   end
 
@@ -40,8 +44,12 @@ class List
     n = node.next
     p.next = n unless p.nil?
     n.prev = p unless n.nil?
+    node.prev = nil
+    node.next = nil
     @head = n if @head == node
     @tail = p if @tail == node
+    @length -= 1
+    p.nil? ? @tail : p
   end
 
   def insert(node, after)
@@ -58,15 +66,20 @@ class List
       n.prev = node unless n.nil?
       @tail = node if @tail == p
     end
+    @length += 1
   end
 
   def advance(node, steps)
     normed = normalize(steps)
-    (0...normed).each do
-      if node == @tail
-        node = @head
-      else
+    if normed >= 0
+      1.upto(normed).each do
         node = node.next
+        node = @head if node.nil?
+      end
+    else
+      1.downto(normed).each do
+        node = node.prev
+        node = @tail if node.nil?
       end
     end
     node
@@ -86,7 +99,7 @@ class List
   def normalize(val)
     r = val.abs % @length
     return r if val >= 0
-    @length - r - 1
+    -r
   end
 end
 
@@ -102,9 +115,10 @@ File.foreach(input, chomp: true).with_index do |line, index|
   zero = node if v == 0
 end
 
+puts "Start:\t\t#{list}" if list.length < 10
 order.each.with_index do |val, index|
   list.move(list.find(val))
-#  puts "#{val}: #{list}"
+  puts "#{val}:\t\t#{list}" if list.length < 10
 end
 
 index = zero
