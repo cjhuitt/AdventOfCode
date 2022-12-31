@@ -109,3 +109,38 @@ test_order = [:north, :south, :east, :west]
 end
 
 puts "Part 1: #{empty_spots(elves)} empty positions"
+
+moved = 1
+round = 10
+until moved == 0
+  moved = 0
+  round += 1
+  proposed = []
+  elves.each do |elf|
+    propose = nil
+    propose = elf if clear?(elf, elf.around, elves)
+    test_order.each do |try|
+      view = test[try].collect{ |delta| elf + delta }
+      if propose.nil? and clear?(elf, view, elves)
+        propose = elf + move[try]
+        break
+      end
+    end
+    proposed << (propose.nil? ? elf : propose)
+  end
+  new = []
+  elves.zip(proposed).each do |current, want|
+    if current != want and proposed.count(want) == 1
+      new << want
+      moved += 1
+    else
+      new << current
+    end
+  end
+  elves = new
+  test_order.rotate!
+  print_grid("Round #{round}", elves) if elves.count < 30
+  puts "Round #{round}: #{moved} moved" if round % 10 == 0 and elves.count > 30
+end
+
+puts "Part 2: #{rounds} total to move"
